@@ -102,12 +102,12 @@ Call the following code inside onDeviceReady(), because only after device ready 
 	  
 	  // optional, in case respond to events
     function registerAdEvents() {
-      document.addEventListener(admob.onAdLoaded, function (e) {});
-      document.addEventListener(admob.onAdFailedToLoad, function (e) {});
-      document.addEventListener(admob.onAdOpened, function (e) {});
-      document.addEventListener(admob.onAdClosed, function (e) {});
-      document.addEventListener(admob.onAdLeftApplication, function (e) {});
-      document.addEventListener(admob.onInAppPurchaseRequested, function (e) { });
+      document.addEventListener(admob.events.onAdLoaded, function (e) {});
+      document.addEventListener(admob.events.onAdFailedToLoad, function (e) {});
+      document.addEventListener(admob.events.onAdOpened, function (e) {});
+      document.addEventListener(admob.events.onAdClosed, function (e) {});
+      document.addEventListener(admob.events.onAdLeftApplication, function (e) {});
+      document.addEventListener(admob.events.onInAppPurchaseRequested, function (e) { });
     }
 ```
 
