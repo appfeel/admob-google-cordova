@@ -42,7 +42,7 @@
     <source-file src="src/android/libs/google-play-services.jar" target-dir="libs/"/>
     <source-file src="src/android/AdMobAds.java" target-dir="src/com/appfeel/cordova/admob" />
     <source-file src="src/android/AdMobAdsAdListener.java" target-dir="src/com/appfeel/cordova/admob" />
-    <source-file src="src/android/AdMobAds.java" target-dir="src/com/appfeel/cordova/admob" />
+    <source-file src="src/android/AdMobAdsAppPurchaseListener.java" target-dir="src/com/appfeel/cordova/admob" />
   </platform>
 
   <!-- ios -->
