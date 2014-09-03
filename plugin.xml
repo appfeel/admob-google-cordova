@@ -39,7 +39,7 @@
       <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     </config-file>
     
-    <source-file src="src/android/libs/GoogleAdMobAdsSdk-6.4.1.jar" target-dir="libs/"/>
+    <source-file src="src/android/libs/google-play-services.jar" target-dir="libs/"/>
     <source-file src="src/android/AdMobAds.java" target-dir="src/com/appfeel/cordova/admob" />
   </platform>
 
