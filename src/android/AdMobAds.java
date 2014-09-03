@@ -30,6 +30,7 @@ import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.mediation.admob.AdMobExtras;
+import com.google.android.gms.ads.purchase.InAppPurchase;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
@@ -50,7 +51,7 @@ public class AdMobAds extends CordovaPlugin {
   private static final String ACTION_SHOW_INTERSTITIAL_AD = "showInterstitialAd";
   private static final String ACTION_RECORD_RESOLUTION = "recordResolution";
   private static final String ACTION_RECORD_PLAY_BILLING_RESOLUTION = "recordPlayBillingResolution";
-  
+
   /* options */
   private static final String OPT_PUBLISHER_ID = "publisherId";
   private static final String OPT_INTERSTITIAL_AD_ID = "interstitialAdId";
@@ -145,12 +146,12 @@ public class AdMobAds extends CordovaPlugin {
       int purchaseId = args.getInt(0);
       int resolution = args.getInt(1);
       result = executeRecordResolution(purchaseId, resolution, callbackContext);
-      
+
     } else if (ACTION_RECORD_PLAY_BILLING_RESOLUTION.equals(action)) {
       int purchaseId = args.getInt(0);
       int billingResponseCode = args.getInt(1);
       result = executeRecordPlayBillingResolution(purchaseId, billingResponseCode, callbackContext);
-      
+
     } else {
       Log.d(ADMOBADS_LOGTAG, String.format("Invalid action passed: %s", action));
       return false;
@@ -201,7 +202,7 @@ public class AdMobAds extends CordovaPlugin {
       this.isAutoShow = options.optBoolean(OPT_AUTO_SHOW);
     }
   }
-  
+
   private PluginResult executeCreateBannerView(JSONObject options, final CallbackContext callbackContext) {
     this.setOptions(options);
     if (this.publisherId.length() == 0) {
@@ -238,7 +239,7 @@ public class AdMobAds extends CordovaPlugin {
     });
     return null;
   }
-  
+
   @SuppressLint("DefaultLocale")
   @SuppressWarnings("unchecked")
   private AdRequest buildAdRequest() {
@@ -382,7 +383,7 @@ public class AdMobAds extends CordovaPlugin {
     });
     return null;
   }
-  
+
   private PluginResult createInterstitialView(JSONObject options, final CallbackContext callbackContext) {
     this.setOptions(options);
     if (this.interstialAdId.length() == 0) {
@@ -418,7 +419,7 @@ public class AdMobAds extends CordovaPlugin {
       this.setOptions(options);
       if (interstitialAd == null) {
         return createInterstitialView(options, callbackContext);
-        
+
       } else {
         cordova.getActivity().runOnUiThread(new Runnable() {
           @Override
@@ -463,17 +464,17 @@ public class AdMobAds extends CordovaPlugin {
           Log.d(ADMOBADS_LOGTAG, "AdMobAds.recordResolution: Recording purchase resolution");
           purchase.recordResolution(resolution);
           inAppPurchaseListener.removePurchase(purchaseId);
-          
+
           if (callbackContext != null) {
             callbackContext.success();
           }
         }
       });
-      
+
     } else if (callbackContext != null) {
       callbackContext.success();
     }
-    
+
     return null;
   }
 
@@ -486,7 +487,7 @@ public class AdMobAds extends CordovaPlugin {
           Log.d(ADMOBADS_LOGTAG, "AdMobAds.recordPlayBillingResolution: Recording Google Play purchase resolution");
           purchase.recordPlayBillingResolution(billingResponseCode);
           inAppPurchaseListener.removePurchase(purchaseId);
-          
+
           if (callbackContext != null) {
             callbackContext.success();
           }
@@ -495,10 +496,10 @@ public class AdMobAds extends CordovaPlugin {
     } else if (callbackContext != null) {
       callbackContext.success();
     }
-    
+
     return null;
   }
-  
+
   @Override
   public void onResume(boolean multitasking) {
     super.onResume(multitasking);
