@@ -102,7 +102,7 @@ Call the following code inside onDeviceReady(), because only after device ready 
 	  
 	  // optional, in case respond to events
     function registerAdEvents() {
-    	document.addEventListener(window.plugins.admob.onAdLoaded, function (e) {});
+      document.addEventListener(window.plugins.admob.onAdLoaded, function (e) {});
       document.addEventListener(window.plugins.admob.onAdFailedToLoad, function (e) {});
       document.addEventListener(window.plugins.admob.onAdOpened, function (e) {});
       document.addEventListener(window.plugins.admob.onAdClosed, function (e) {});
