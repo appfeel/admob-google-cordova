@@ -69,7 +69,7 @@ Call the following code inside onDeviceReady(), because only after device ready 
     }
     
     function initAd() {
-      if ( window.plugins && window.plugins.admob ) {
+      if (admob ) {
     	  var ad_units = {
 				  ios : {
 					  banner: 'ca-app-pub-xxx/4806197152',
@@ -83,7 +83,7 @@ Call the following code inside onDeviceReady(), because only after device ready 
     	  
         var admobid = ( /(android)/i.test(navigator.userAgent) ) ? ad_units.android : ad_units.ios;
             
-        window.plugins.admob.setOptions({
+        admob.setOptions({
           publisherId: admobid.banner,
           interstitialAdId: admobid.interstitial,
           bannerAtTop: false, // set to true, to put banner at top
@@ -102,12 +102,12 @@ Call the following code inside onDeviceReady(), because only after device ready 
 	  
 	  // optional, in case respond to events
     function registerAdEvents() {
-      document.addEventListener(window.plugins.admob.onAdLoaded, function (e) {});
-      document.addEventListener(window.plugins.admob.onAdFailedToLoad, function (e) {});
-      document.addEventListener(window.plugins.admob.onAdOpened, function (e) {});
-      document.addEventListener(window.plugins.admob.onAdClosed, function (e) {});
-      document.addEventListener(window.plugins.admob.onAdLeftApplication, function (e) {});
-      document.addEventListener(window.plugins.admob.onInAppPurchaseRequested, function (e) { });
+      document.addEventListener(admob.onAdLoaded, function (e) {});
+      document.addEventListener(admob.onAdFailedToLoad, function (e) {});
+      document.addEventListener(admob.onAdOpened, function (e) {});
+      document.addEventListener(admob.onAdClosed, function (e) {});
+      document.addEventListener(admob.onAdLeftApplication, function (e) {});
+      document.addEventListener(admob.onInAppPurchaseRequested, function (e) { });
     }
 ```
 
