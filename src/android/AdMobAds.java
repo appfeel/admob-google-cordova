@@ -66,6 +66,7 @@ public class AdMobAds extends CordovaPlugin {
 
   private AdMobAdsAdListener bannerListener = new AdMobAdsAdListener(BANNER, AdMobAds.this);
   private AdMobAdsAdListener interstitialListener = new AdMobAdsAdListener(INTERSTITIAL, AdMobAds.this);
+  private AdMobAdsAppPurchaseListener inAppPurchaseListener = new AdMobAdsAppPurchaseListener(this);
 
   /** The adView to display to the user. */
   private AdView adView;
@@ -148,7 +149,7 @@ public class AdMobAds extends CordovaPlugin {
     } else if (ACTION_RECORD_PLAY_BILLING_RESOLUTION.equals(action)) {
       int purchaseId = args.getInt(0);
       int billingResponseCode = args.getInt(1);
-      resutl = executeRecordPlayBillingResolution(purchaseId, billingResponseCode, callbacContext);
+      result = executeRecordPlayBillingResolution(purchaseId, billingResponseCode, callbackContext);
       
     } else {
       Log.d(ADMOBADS_LOGTAG, String.format("Invalid action passed: %s", action));
@@ -456,7 +457,7 @@ public class AdMobAds extends CordovaPlugin {
   private PluginResult executeRecordResolution(final int purchaseId, final int resolution, final CallbackContext callbackContext) {
     final InAppPurchase purchase = inAppPurchaseListener.getPurchase(purchaseId);
     if (purchase != null) {
-      activity.runOnUiThread(new Runnable() {
+      cordova.getActivity().runOnUiThread(new Runnable() {
         @Override
         public void run() {
           Log.d(ADMOBADS_LOGTAG, "AdMobAds.recordResolution: Recording purchase resolution");
@@ -479,7 +480,7 @@ public class AdMobAds extends CordovaPlugin {
   private PluginResult executeRecordPlayBillingResolution(final int purchaseId, final int billingResponseCode, final CallbackContext callbackContext) {
     final InAppPurchase purchase = inAppPurchaseListener.getPurchase(purchaseId);
     if (purchase != null) {
-      activity.runOnUiThread(new Runnable() {
+      cordova.getActivity().runOnUiThread(new Runnable() {
         @Override
         public void run() {
           Log.d(ADMOBADS_LOGTAG, "AdMobAds.recordPlayBillingResolution: Recording Google Play purchase resolution");
