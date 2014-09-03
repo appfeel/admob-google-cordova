@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  id="com.admob.google"
+  version="1.0.1">
+
+  <name>admob</name>
+  <description>The famous AdMob plugin for PhoneGap and Cordova, supports latest Android (with Google Play Services) and iOS. Easy-to-use API. Actively maintained.</description>
+  <author>AppFeel</author>
+  <license>MIT</license>
+  <keywords>ad,admob,google,play,services,iad,flurry,monetization,money,appfeel</keywords>
+  <repo>https://github.com/appfeel/admob-google-cordova.git</repo>
+  <issue>https://github.com/appfeel/admob-google-cordova/issues</issue>
+
+  <engines>
+    <engine name="cordova" version=">=2.9" />
+  </engines>
+
+  <js-module src="www/admob.js" name="admob">
+    <clobbers target="window.admob" />
+  </js-module>
+
+  <!-- android -->
+  <platform name="android">
+    <config-file target="res/xml/config.xml" parent="/*">
+      <feature name="admob">
+        <param name="android-package" value="com.appfeel.cordova.admob.AdMobAds"/>
+      </feature>
+    </config-file>
+    
+    <config-file target="AndroidManifest.xml" parent="/manifest/application">
+      <meta-data android:name="com.google.android.gms.version" android:value="4452000" />
+      <activity android:name="com.google.ads.AdActivity" android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
+    </config-file>
+    
+    <config-file target="AndroidManifest.xml" parent="/*">
+      <uses-permission android:name="android.permission.INTERNET" />
+      <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    </config-file>
+    
+    <source-file src="src/android/libs/GoogleAdMobAdsSdk-6.4.1.jar" target-dir="libs/"/>
+    <source-file src="src/android/AdMobAds.java" target-dir="src/com/appfeel/cordova/admob" />
+  </platform>
+
+  <!-- ios -->
+  <platform name="ios">
+    <config-file target="config.xml" parent="/*">
+      <feature name="admob">
+       <param name="ios-package" value="AdMobAds" />
+      </feature>
+    </config-file>
+    
+    <header-file src="src/ios/AdMobAds.h" />
+    <source-file src="src/ios/AdMobAds.m" />
+    
+     <!-- Google AdMob header files -->
+    <header-file src="src/ios/GADAdMobExtras.h" />
+    <header-file src="src/ios/GADAdNetworkExtras.h" />
+    <header-file src="src/ios/GADAdSize.h" />
+    <header-file src="src/ios/GADBannerView.h" />
+    <header-file src="src/ios/GADBannerViewDelegate.h" />
+    <header-file src="src/ios/GADInterstitial.h" />
+    <header-file src="src/ios/GADInterstitialDelegate.h" />
+    <header-file src="src/ios/GADRequest.h" />
+    <header-file src="src/ios/GADRequestError.h" />
+    
+    <!-- Google AdMob 6.5.1 framework -->
+    <source-file src="src/ios/libGoogleAdMobAds.a" framework="true" />
+    
+    <!-- iOS development frameworks need by Google AdMob 6.5.1 framework -->
+    <framework src="StoreKit.framework" />
+    <framework src="AudioToolbox.framework" />
+    <framework src="MessageUI.framework" />
+    <framework src="SystemConfiguration.framework" />
+    <framework src="CoreGraphics.framework" />
+    <framework src="AdSupport.framework" />
+  </platform>
+  
+</plugin>
