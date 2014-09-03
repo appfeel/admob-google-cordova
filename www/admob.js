@@ -122,4 +122,40 @@ admobExport.showInterstitialAd = function (successCallback, failureCallback) {
   cordova.exec(successCallback, failureCallback, 'AdMobAds', 'showInterstitialAd', []);
 };
 
+/**
+ * Records a resolution after an inAppPurchase.
+ *
+ * @param {Integer}    purchaseId      The id of the purchase.
+ * @param {Integer}    resolution      The resolution code.
+ * @param {function()} successCallback The function to call if the ad was shown successfully.
+ * @param {function()} successCallback The function to call if the ad was shown successfully.
+ * @param {function()} failureCallback The function to call if the ad failed to be shown.
+ */
+admobExport.recordResolution = function (purchaseId, resolution, successCallback, failureCallback) {
+  if (purchaseId === undefined || resolution === undefined) {
+    if (typeof failureCallback === 'function') {
+      failureCallback('purchaseId and resolution should be specified.')
+    }
+  }
+  cordova.exec(successCallback, failureCallback, 'AdMobAds', 'recordResolution', [ purchaseId, resolution ]);
+};
+
+/**
+ * Records a resolution after an inAppPurchase.
+ *
+ * @param {Integer}    purchaseId           The id of the purchase.
+ * @param {Integer}    billingResponseCode  The resolution code.
+ * @param {function()} successCallback      The function to call if the ad was shown successfully.
+ * @param {function()} successCallback      The function to call if the ad was shown successfully.
+ * @param {function()} failureCallback      The function to call if the ad failed to be shown.
+ */
+admobExport.recordPlayBillingResolution = function (purchaseId, billingResponseCode, successCallback, failureCallback) {
+  if (purchaseId === undefined || billingResponseCode === undefined) {
+    if (typeof failureCallback === 'function') {
+      failureCallback('purchaseId and billingResponseCode should be specified.')
+    }
+  }
+  cordova.exec(successCallback, failureCallback, 'AdMobAds', 'recordResolution', [ purchaseId, billingResponseCode ]);
+};
+
 module.exports = admobExport;
