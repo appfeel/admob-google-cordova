@@ -580,6 +580,7 @@ public class AdMobAds extends CordovaPlugin implements IAdLoadedAvailable {
     } else if (BANNER.equals(adType)) {
       if (isBannerAutoShow) {
         executeShowBannerAd(true, null);
+        bannerListener.onAdOpened();
       }
     }
   }
