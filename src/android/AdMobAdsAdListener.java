@@ -10,20 +10,23 @@ import com.google.android.gms.ads.AdRequest;
 public class AdMobAdsAdListener extends AdListener {
   private String adType = "";
   private AdMobAds admobAds;
+  private IAdLoadedAvailable iAdLoadedAvailable;
 
-  public AdMobAdsAdListener(String adType, AdMobAds admobAds) {
+  public interface IAdLoadedAvailable {
+    void onAdLoaded(String adType);
+
+    void onAdOpened(String adType);
+  }
+
+  public AdMobAdsAdListener(String adType, AdMobAds admobAds, IAdLoadedAvailable iAdLoadedAvailable) {
     this.adType = adType;
     this.admobAds = admobAds;
+    this.iAdLoadedAvailable = iAdLoadedAvailable;
   }
 
   @Override
   public void onAdLoaded() {
-    if (adType == AdMobAds.INTERSTITIAL) {
-      admobAds.isInterstitialAvailable = true;
-      if (admobAds.isAutoShow) {
-        admobAds.showInterstitialAd(null);
-      }
-    }
+    iAdLoadedAvailable.onAdLoaded(adType);
     Log.d(AdMobAds.ADMOBADS_LOGTAG, adType + ": ad loaded");
     String event = String.format("javascript:cordova.fireDocumentEvent(admob.events.onAdLoaded, { 'adType': '%s' });", adType);
     admobAds.webView.loadUrl(event);
@@ -59,9 +62,7 @@ public class AdMobAdsAdListener extends AdListener {
 
   @Override
   public void onAdOpened() {
-    if (adType == AdMobAds.INTERSTITIAL) {
-      admobAds.isInterstitialAvailable = false;
-    }
+    iAdLoadedAvailable.onAdOpened(adType);
     Log.d(AdMobAds.ADMOBADS_LOGTAG, adType + ": ad opened");
     String event = String.format("javascript:cordova.fireDocumentEvent(admob.events.onAdOpened, { 'adType': '%s' });", adType);
     admobAds.webView.loadUrl(event);

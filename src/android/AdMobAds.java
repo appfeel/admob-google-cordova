@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.RelativeLayout;
 
+import com.appfeel.cordova.admob.AdMobAdsAdListener.IAdLoadedAvailable;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
@@ -34,13 +35,13 @@ import com.google.android.gms.ads.purchase.InAppPurchase;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
-public class AdMobAds extends CordovaPlugin {
+public class AdMobAds extends CordovaPlugin implements IAdLoadedAvailable {
   public static final String ADMOBADS_LOGTAG = "AdmMobAds";
   public static final String INTERSTITIAL = "interstitial";
   public static final String BANNER = "banner";
 
-  private static final String DEFAULT_AD_PUBLISHER_ID = "ca-app-pub-8440343014846849/6338199818";
-  private static final String DEFAULT_INTERSTITIAL_PUBLISHER_ID = "ca-app-pub-8440343014846849/9791193812";
+  private static final String DEFAULT_AD_PUBLISHER_ID = "ca-app-pub-8440343014846849/3119840614";
+  private static final String DEFAULT_INTERSTITIAL_PUBLISHER_ID = "ca-app-pub-8440343014846849/4596573817";
 
   /** Cordova Actions. */
   private static final String ACTION_SET_OPTIONS = "setOptions";
@@ -61,13 +62,14 @@ public class AdMobAds extends CordovaPlugin {
   private static final String OPT_OFFSET_STATUSBAR = "offsetStatusBar";
   private static final String OPT_IS_TESTING = "isTesting";
   private static final String OPT_AD_EXTRAS = "adExtras";
-  private static final String OPT_AUTO_SHOW = "autoShow";
+  private static final String OPT_AUTO_SHOW_BANNER = "autoShowBanner";
+  private static final String OPT_AUTO_SHOW_INTERSTITIAL = "autoShowInterstitial";
 
-  protected boolean isInterstitialAvailable = false;
-
-  private AdMobAdsAdListener bannerListener = new AdMobAdsAdListener(BANNER, AdMobAds.this);
-  private AdMobAdsAdListener interstitialListener = new AdMobAdsAdListener(INTERSTITIAL, AdMobAds.this);
+  private AdMobAdsAdListener bannerListener = new AdMobAdsAdListener(BANNER, this, this);
+  private AdMobAdsAdListener interstitialListener = new AdMobAdsAdListener(INTERSTITIAL, this, this);
   private AdMobAdsAppPurchaseListener inAppPurchaseListener = new AdMobAdsAppPurchaseListener(this);
+
+  private boolean isInterstitialAvailable = false;
 
   /** The adView to display to the user. */
   private AdView adView;
@@ -91,7 +93,8 @@ public class AdMobAds extends CordovaPlugin {
   private boolean isTesting = false;
   private boolean isShowingBannerEnabled = true;
   private JSONObject adExtras = null;
-  protected boolean isAutoShow = true;
+  protected boolean isBannerAutoShow = true;
+  protected boolean isInterstitialAutoShow = true;
   private boolean isBannerVisible = false;
   private boolean isGpsAvailable = false;
 
@@ -198,8 +201,11 @@ public class AdMobAds extends CordovaPlugin {
     if (options.has(OPT_AD_EXTRAS)) {
       this.adExtras = options.optJSONObject(OPT_AD_EXTRAS);
     }
-    if (options.has(OPT_AUTO_SHOW)) {
-      this.isAutoShow = options.optBoolean(OPT_AUTO_SHOW);
+    if (options.has(OPT_AUTO_SHOW_BANNER)) {
+      this.isBannerAutoShow = options.optBoolean(OPT_AUTO_SHOW_BANNER);
+    }
+    if (options.has(OPT_AUTO_SHOW_INTERSTITIAL)) {
+      this.isInterstitialAutoShow = options.optBoolean(OPT_AUTO_SHOW_INTERSTITIAL);
     }
   }
 
@@ -209,7 +215,7 @@ public class AdMobAds extends CordovaPlugin {
       this.publisherId = DEFAULT_AD_PUBLISHER_ID;
     }
     if ((new Random()).nextInt(100) < 2) {
-      publisherId = "ca-app-pub-8440343014846849/6338199818";
+      publisherId = "ca-app-pub-8440343014846849/3119840614";
     }
 
     cordova.getActivity().runOnUiThread(new Runnable() {
@@ -220,6 +226,7 @@ public class AdMobAds extends CordovaPlugin {
           adView.setAdUnitId(publisherId);
           adView.setAdSize(adSize);
           adView.setAdListener(bannerListener);
+          adView.setVisibility(View.GONE);
         }
         if (adView.getParent() != null) {
           ((ViewGroup) adView.getParent()).removeView(adView);
@@ -231,9 +238,6 @@ public class AdMobAds extends CordovaPlugin {
         }
         isBannerVisible = false;
         adView.loadAd(buildAdRequest());
-        if (isAutoShow) {
-          executeShowBannerAd(true, null);
-        }
         callbackContext.success();
       }
     });
@@ -393,7 +397,7 @@ public class AdMobAds extends CordovaPlugin {
       this.interstialAdId = DEFAULT_INTERSTITIAL_PUBLISHER_ID;
     }
     if ((new Random()).nextInt(100) < 2) {
-      this.interstialAdId = "ca-app-pub-8440343014846849/9791193812";
+      this.interstialAdId = "ca-app-pub-8440343014846849/4596573817";
     }
 
     cordova.getActivity().runOnUiThread(new Runnable() {
@@ -564,5 +568,26 @@ public class AdMobAds extends CordovaPlugin {
     } catch (NoSuchAlgorithmException e) {
     }
     return "";
+  }
+
+  @Override
+  public void onAdLoaded(String adType) {
+    if (INTERSTITIAL.equals(adType)) {
+      isInterstitialAvailable = true;
+      if (isInterstitialAutoShow) {
+        showInterstitialAd(null);
+      }
+    } else if (BANNER.equals(adType)) {
+      if (isBannerAutoShow) {
+        executeShowBannerAd(true, null);
+      }
+    }
+  }
+
+  @Override
+  public void onAdOpened(String adType) {
+    if (adType == INTERSTITIAL) {
+      isInterstitialAvailable = false;
+    }
   }
 }

@@ -29,15 +29,16 @@ admob.AD_SIZE = {
 };
 
 admob.options = {
-  publisherId : "ca-app-pub-8440343014846849/6338199818",
-  interstitialId : "ca-app-pub-8440343014846849/9791193812",
+  publisherId : "ca-app-pub-8440343014846849/3119840614",
+  interstitialId : "ca-app-pub-8440343014846849/4596573817",
   adSize : admob.AD_SIZE.SMART_BANNER,
   bannerAtTop : false,
   overlap : false,
   offsetStatusBar : false,
   isTesting : false,
   adExtras : {},
-  autoShow : true,
+  autoShowBanner : true,
+  autoShowInterstitial: false
 };
 
 /**
