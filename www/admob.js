@@ -38,7 +38,7 @@ admob.options = {
   isTesting : false,
   adExtras : {},
   autoShowBanner : true,
-  autoShowInterstitial: false
+  autoShowInterstitial: true
 };
 
 /**
