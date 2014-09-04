@@ -1,12 +1,12 @@
 var argscheck = require('cordova/argscheck'),
     exec = require('cordova/exec');
 
-var admobExport = {};
+var admob = module.exports;
 
 /**
  * This enum represents appfeel-cordova-admob plugin events
  */
-admobExport.events = {
+admob.events = {
   onAdLoaded : "appfeel.cordova.admob.onAdLoaded",
   onAdFailedToLoad : "appfeel.cordova.admob.onAdFailedToLoad",
   onAdOpened : "appfeel.cordova.admob.onAdOpened",
@@ -20,7 +20,7 @@ admobExport.events = {
  * constants as the adSize when calling createBannerView.
  * @const
  */
-admobExport.AD_SIZE = {
+admob.AD_SIZE = {
   BANNER: 'BANNER',
   IAB_MRECT: 'IAB_MRECT',
   IAB_BANNER: 'IAB_BANNER',
@@ -28,10 +28,10 @@ admobExport.AD_SIZE = {
   SMART_BANNER: 'SMART_BANNER'
 };
 
-admobExport.options = {
+admob.options = {
   publisherId : "ca-app-pub-8440343014846849/6338199818",
   interstitialId : "ca-app-pub-8440343014846849/9791193812",
-  adSize : admobExport.AD_SIZE.SMART_BANNER,
+  adSize : admob.AD_SIZE.SMART_BANNER,
   bannerAtTop : false,
   overlap : false,
   offsetStatusBar : false,
@@ -46,14 +46,14 @@ admobExport.options = {
  * @param {function()} successCallback Callback on success
  * @param {function()} failureCallback Callback on fail
  */
-admobExport.setOptions = function (options, successCallback, failureCallback) {
+admob.setOptions = function (options, successCallback, failureCallback) {
   if (typeof options === 'function') {
     failureCallback = successCallback;
     successCallback = options;
     options = undefined;
   }
   
-  options = options || admobExport.DEFAULT_OPTIONS;
+  options = options || admob.DEFAULT_OPTIONS;
   
   if (typeof options === 'object' && typeof options.publisherId === 'string' && options.publisherId.length > 0) {
     cordova.exec(successCallback, failureCallback, 'AdMobAds', 'setOptions', [options]);
@@ -72,7 +72,7 @@ admobExport.setOptions = function (options, successCallback, failureCallback) {
  * @param {function()} successCallback The function to call if the banner was created successfully.
  * @param {function()} failureCallback The function to call if create banner  was unsuccessful.
  */
-admobExport.createBannerView = function (options, successCallback, failureCallback) {
+admob.createBannerView = function (options, successCallback, failureCallback) {
   options = options || {};
   cordova.exec(successCallback, failureCallback, 'AdMobAds', 'createBannerView', [ options ]);
 };
@@ -84,7 +84,7 @@ admobExport.createBannerView = function (options, successCallback, failureCallba
  * @param {function()} successCallback The function to call if the ad was shown successfully.
  * @param {function()} failureCallback The function to call if the ad failed to be shown.
  */
-admobExport.showBannerAd = function (show, successCallback, failureCallback) {
+admob.showBannerAd = function (show, successCallback, failureCallback) {
   if (show === undefined) {
     show = true;
   }
@@ -96,7 +96,7 @@ admobExport.showBannerAd = function (show, successCallback, failureCallback) {
  * @param {function()} successCallback The function to call if the view was destroyed successfully.
  * @param {function()} failureCallback The function to call if failed to destroy view.
  */
-admobExport.destroyBannerView = function (successCallback, failureCallback) {
+admob.destroyBannerView = function (successCallback, failureCallback) {
   cordova.exec(successCallback, failureCallback, 'AdMobAds', 'destroyBannerView', []);
 };
 
@@ -107,7 +107,7 @@ admobExport.destroyBannerView = function (successCallback, failureCallback) {
  * @param {function()} successCallback The function to call if an ad was requested successfully.
  * @param {function()} failureCallback The function to call if an ad failed to be requested.
  */
-admobExport.requestInterstitialAd = function (options, successCallback, failureCallback) {
+admob.requestInterstitialAd = function (options, successCallback, failureCallback) {
   options = options || {};
   cordova.exec(successCallback, failureCallback, 'AdMobAds', 'requestInterstitialAd', [ options ]);
 };
@@ -118,7 +118,7 @@ admobExport.requestInterstitialAd = function (options, successCallback, failureC
  * @param {function()} successCallback The function to call if the ad was shown successfully.
  * @param {function()} failureCallback The function to call if the ad failed to be shown.
  */
-admobExport.showInterstitialAd = function (successCallback, failureCallback) {
+admob.showInterstitialAd = function (successCallback, failureCallback) {
   cordova.exec(successCallback, failureCallback, 'AdMobAds', 'showInterstitialAd', []);
 };
 
@@ -131,7 +131,7 @@ admobExport.showInterstitialAd = function (successCallback, failureCallback) {
  * @param {function()} successCallback The function to call if the ad was shown successfully.
  * @param {function()} failureCallback The function to call if the ad failed to be shown.
  */
-admobExport.recordResolution = function (purchaseId, resolution, successCallback, failureCallback) {
+admob.recordResolution = function (purchaseId, resolution, successCallback, failureCallback) {
   if (purchaseId === undefined || resolution === undefined) {
     if (typeof failureCallback === 'function') {
       failureCallback('purchaseId and resolution should be specified.')
@@ -149,7 +149,7 @@ admobExport.recordResolution = function (purchaseId, resolution, successCallback
  * @param {function()} successCallback      The function to call if the ad was shown successfully.
  * @param {function()} failureCallback      The function to call if the ad failed to be shown.
  */
-admobExport.recordPlayBillingResolution = function (purchaseId, billingResponseCode, successCallback, failureCallback) {
+admob.recordPlayBillingResolution = function (purchaseId, billingResponseCode, successCallback, failureCallback) {
   if (purchaseId === undefined || billingResponseCode === undefined) {
     if (typeof failureCallback === 'function') {
       failureCallback('purchaseId and billingResponseCode should be specified.')
@@ -157,5 +157,3 @@ admobExport.recordPlayBillingResolution = function (purchaseId, billingResponseC
   }
   cordova.exec(successCallback, failureCallback, 'AdMobAds', 'recordResolution', [ purchaseId, billingResponseCode ]);
 };
-
-module.exports = admobExport;
