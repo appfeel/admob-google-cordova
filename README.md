@@ -111,9 +111,9 @@ Call the following code inside onDeviceReady(), because only after device ready 
     }
 ```
 
-See the working example code in [demo under test folder](test/index.html)
 
 ## Donate ##
 You can use this cordova plugin for free. To support this project, donation is welcome.  
 Donation can be accepted in either of following ways:
 * Share 2% Ad traffic. (It's not mandatory. If you are unwilling to share, please fork and remove the donation code.)
++ Donate via [paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=MFQHUTN8U9XD6&lc=ES&item_name=AppFeel&item_number=com%2eadmob%2egoogle&amount=10%2e00&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted)
