@@ -49,7 +49,7 @@
   <platform name="ios">
     <config-file target="config.xml" parent="/*">
       <feature name="AdMobAds">
-       <param name="ios-package" value="AdMobAds" />
+       <param name="ios-package" value="CDVAdMobAds" />
       </feature>
     </config-file>
     
