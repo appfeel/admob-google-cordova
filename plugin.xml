@@ -3,13 +3,13 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
   xmlns:android="http://schemas.android.com/apk/res/android"
   id="com.admob.google"
-  version="1.0.1">
+  version="1.0.2">
 
   <name>admob</name>
   <description>The famous AdMob plugin for PhoneGap and Cordova, supports latest Android (with Google Play Services) and iOS. Easy-to-use API. Actively maintained.</description>
   <author>AppFeel</author>
   <license>MIT</license>
-  <keywords>ad,admob,google,play,services,iad,flurry,monetization,money,appfeel</keywords>
+  <keywords>ad,ads,admob,google,advertising,advertisment,publicity,earn,win,play,services,iad,flurry,monetization,money,appfeel</keywords>
   <repo>https://github.com/appfeel/admob-google-cordova.git</repo>
   <issue>https://github.com/appfeel/admob-google-cordova/issues</issue>
 
@@ -62,12 +62,15 @@
     <header-file src="src/ios/GADAdSize.h" />
     <header-file src="src/ios/GADBannerView.h" />
     <header-file src="src/ios/GADBannerViewDelegate.h" />
+    <header-file src="src/ios/GADInAppPurchase.h" />
+    <header-file src="src/ios/GADInAppPurchaseDelegate.h" />
     <header-file src="src/ios/GADInterstitial.h" />
     <header-file src="src/ios/GADInterstitialDelegate.h" />
+    <header-file src="src/ios/GADModules.h" />
     <header-file src="src/ios/GADRequest.h" />
     <header-file src="src/ios/GADRequestError.h" />
     
-    <!-- Google AdMob 6.5.1 framework -->
+    <!-- Google AdMob 6.11.1 framework -->
     <source-file src="src/ios/libGoogleAdMobAds.a" framework="true" />
     
     <!-- iOS development frameworks need by Google AdMob 6.5.1 framework -->
