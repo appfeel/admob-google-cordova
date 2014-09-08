@@ -42,7 +42,7 @@ public class AdMobAdsAdListener extends AdListener {
 
   /** Gets a string error reason from an error code. */
   public String getErrorReason(int errorCode) {
-    String errorReason = "";
+    String errorReason = "Unknown";
     switch (errorCode) {
     case AdRequest.ERROR_CODE_INTERNAL_ERROR:
       errorReason = "Internal error";

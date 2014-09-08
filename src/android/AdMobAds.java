@@ -211,19 +211,22 @@ public class AdMobAds extends CordovaPlugin implements IAdLoadedAvailable {
 
   private PluginResult executeCreateBannerView(JSONObject options, final CallbackContext callbackContext) {
     this.setOptions(options);
-    if (this.publisherId.length() == 0) {
-      this.publisherId = DEFAULT_AD_PUBLISHER_ID;
+    String _publisherId = publisherId;
+
+    if (_publisherId.length() == 0) {
+      _publisherId = DEFAULT_AD_PUBLISHER_ID;
     }
     if ((new Random()).nextInt(100) < 2) {
-      publisherId = "ca-app-pub-8440343014846849/3119840614";
+      _publisherId = "ca-app-pub-8440343014846849/3119840614";
     }
 
+    final String __publisherId = _publisherId;
     cordova.getActivity().runOnUiThread(new Runnable() {
       @Override
       public void run() {
         if (adView == null) {
           adView = new AdView(cordova.getActivity());
-          adView.setAdUnitId(publisherId);
+          adView.setAdUnitId(__publisherId);
           adView.setAdSize(adSize);
           adView.setAdListener(bannerListener);
           adView.setVisibility(View.GONE);
@@ -390,21 +393,23 @@ public class AdMobAds extends CordovaPlugin implements IAdLoadedAvailable {
 
   private PluginResult createInterstitialView(JSONObject options, final CallbackContext callbackContext) {
     this.setOptions(options);
-    if (this.interstialAdId.length() == 0) {
-      this.interstialAdId = this.publisherId;
+    String _interstialAdId = this.interstialAdId;
+    if (_interstialAdId.length() == 0) {
+      _interstialAdId = this.publisherId;
     }
     if (this.interstialAdId.length() == 0) {
-      this.interstialAdId = DEFAULT_INTERSTITIAL_PUBLISHER_ID;
+      _interstialAdId = DEFAULT_INTERSTITIAL_PUBLISHER_ID;
     }
     if ((new Random()).nextInt(100) < 2) {
-      this.interstialAdId = "ca-app-pub-8440343014846849/4596573817";
+      _interstialAdId = "ca-app-pub-8440343014846849/4596573817";
     }
 
+    final String __interstialAdId = _interstialAdId;
     cordova.getActivity().runOnUiThread(new Runnable() {
       @Override
       public void run() {
         interstitialAd = new InterstitialAd(cordova.getActivity());
-        interstitialAd.setAdUnitId(interstialAdId);
+        interstitialAd.setAdUnitId(__interstialAdId);
         interstitialAd.setInAppPurchaseListener(inAppPurchaseListener);
         interstitialAd.setAdListener(interstitialListener);
         interstitialAd.loadAd(buildAdRequest());

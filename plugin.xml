@@ -53,8 +53,8 @@
       </feature>
     </config-file>
     
-    <header-file src="src/ios/AdMobAds.h" />
-    <source-file src="src/ios/AdMobAds.m" />
+    <header-file src="src/ios/CDVAdMobAds.h" />
+    <source-file src="src/ios/CDVAdMobAds.m" />
     
      <!-- Google AdMob header files -->
     <header-file src="src/ios/GADAdMobExtras.h" />
