@@ -6,7 +6,7 @@
   version="1.0.4">
 
   <name>admob</name>
-  <description>Efficient Google AdMob plugin for PhoneGap and Cordova, Android google-play-services.jar v5.0, iOS SDK v6.11.1. Monetize your app with one javascript line.</description>
+  <description>Google AdMob plugin for PhoneGap and Cordova. Android google-play-services.jar v5.0, iOS SDK v6.11.1. Monetize your app with one javascript line.</description>
   <author>AppFeel</author>
   <license>MIT</license>
   <keywords>ad,ads,admob,google,advertising,advertisment,publicity,earn,win,play,services,iad,flurry,monetization,money,appfeel</keywords>
