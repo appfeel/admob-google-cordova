@@ -6,7 +6,7 @@
   version="1.0.4">
 
   <name>admob</name>
-  <description>Improved Google AdMob plugin for PhoneGap and Cordova, latest Android (with Google Play Services) and iOS support. Easy-to-use API. Actively maintained.</description>
+  <description>Efficient Google AdMob plugin for PhoneGap and Cordova, Android google-play-services.jar v5.0, iOS SDK v6.11.1. Monetize your app with one javascript line.</description>
   <author>AppFeel</author>
   <license>MIT</license>
   <keywords>ad,ads,admob,google,advertising,advertisment,publicity,earn,win,play,services,iad,flurry,monetization,money,appfeel</keywords>
@@ -30,7 +30,7 @@
     </config-file>
     
     <config-file target="AndroidManifest.xml" parent="/manifest/application">
-      <meta-data android:name="com.google.android.gms.version" android:value="4452000" />
+      <meta-data android:name="com.google.android.gms.version" android:value="508900" />
       <activity android:name="com.google.android.gms.ads.AdActivity" android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
     </config-file>
     
