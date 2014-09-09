@@ -6,7 +6,7 @@
   version="1.0.4">
 
   <name>admob</name>
-  <description>The famous AdMob plugin for PhoneGap and Cordova, supports latest Android (with Google Play Services) and iOS. Easy-to-use API. Actively maintained.</description>
+  <description>Improved Google AdMob plugin for PhoneGap and Cordova, latest Android (with Google Play Services) and iOS support. Easy-to-use API. Actively maintained.</description>
   <author>AppFeel</author>
   <license>MIT</license>
   <keywords>ad,ads,admob,google,advertising,advertisment,publicity,earn,win,play,services,iad,flurry,monetization,money,appfeel</keywords>
