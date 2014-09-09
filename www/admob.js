@@ -79,6 +79,11 @@ admob.setOptions = function (options, successCallback, failureCallback) {
  * @param {function()} failureCallback The function to call if create banner  was unsuccessful.
  */
 admob.createBannerView = function (options, successCallback, failureCallback) {
+  if (typeof options === 'function') {
+    failureCallback = successCallback;
+    successCallback = options;
+    options = undefined;
+  }
   options = options || {};
   cordova.exec(successCallback, failureCallback, 'AdMobAds', 'createBannerView', [ options ]);
 };
@@ -92,6 +97,11 @@ admob.createBannerView = function (options, successCallback, failureCallback) {
  */
 admob.showBannerAd = function (show, successCallback, failureCallback) {
   if (show === undefined) {
+    show = true;
+    
+  } else if (typeof show === 'function') {
+    failureCallback = successCallback;
+    successCallback = show;
     show = true;
   }
   cordova.exec(successCallback, failureCallback, 'AdMobAds', 'showBannerAd', [ show ]);
@@ -114,6 +124,11 @@ admob.destroyBannerView = function (successCallback, failureCallback) {
  * @param {function()} failureCallback The function to call if an ad failed to be requested.
  */
 admob.requestInterstitialAd = function (options, successCallback, failureCallback) {
+  if (typeof options === 'function') {
+    failureCallback = successCallback;
+    successCallback = options;
+    options = undefined;
+  }
   options = options || {};
   cordova.exec(successCallback, failureCallback, 'AdMobAds', 'requestInterstitialAd', [ options ]);
 };

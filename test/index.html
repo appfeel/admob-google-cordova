@@ -4,7 +4,8 @@
     <meta charset="utf-8" />
     <meta name="format-detection" content="telephone=no" />
     <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
-    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+    <!--meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" /-->
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=device-dpi" />
     <link rel="stylesheet" type="text/css" href="css/index.css" />
     <meta name="msapplication-tap-highlight" content="no" />
     <title>Hello World</title>
@@ -17,14 +18,12 @@
         <button onclick="admob.destroyBannerView();">Remove Banner Ads</button>
       </p>
       <p>
-        <button onclick="admob.showAd(false);">Hide Banner Ads</button>
-        <button onclick="admob.showAd(true, function (){}, function (e){ alert(JSON.stringify(e)); });">Show Banner Ads</button>
+        <button onclick="admob.showBannerAd(false);">Hide Banner Ads</button>
+        <button onclick="admob.showBannerAd(true, function (){ console.log('showInterstitialAd succeeded'); }, function (e){ alert(JSON.stringify(e)); });">Show Banner Ads</button>
       </p>
       <p>
-          <button onclick="admob.createInterstitialView();">Show Interstitial Ad</button>
-      </p>
-      <p>
-        <button onclick="admob.showInterstitialAd(true, function (){}, function (e){ alert(JSON.stringify(e)); });">Show Interstitial Ad</button>
+        <button onclick="admob.requestInterstitialAd();">Request Interstitial Ad</button>
+        <button onclick="admob.showInterstitialAd(true, function () { console.log('showInterstitialAd succeeded'); }, function (e){ alert(JSON.stringify(e)); });">Show Interstitial Ad</button>
       </p>
       
       <div id="sizeinfo">width * height</div>
