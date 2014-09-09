@@ -30,8 +30,8 @@ Note: ensure you have a proper [AdMob](https://apps.admob.com/admob/signup) acco
     cordova plugin add com.admob.google
 
     // now remove the default www content, copy the demo html file to www
-    rm -r www/*;
-    cp plugins/com.admob.google/test/index.html www/
+    rm -rf www/*;
+    cp plugins/com.admob.google/test/* www/
 
     cordova prepare; cordova run android; cordova run ios;
     // or import into Xcode / eclipse
