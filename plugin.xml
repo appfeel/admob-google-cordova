@@ -3,7 +3,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
   xmlns:android="http://schemas.android.com/apk/res/android"
   id="com.admob.google"
-  version="1.0.3">
+  version="1.0.4">
 
   <name>admob</name>
   <description>The famous AdMob plugin for PhoneGap and Cordova, supports latest Android (with Google Play Services) and iOS. Easy-to-use API. Actively maintained.</description>
