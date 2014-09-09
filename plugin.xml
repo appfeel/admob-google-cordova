@@ -82,7 +82,6 @@
     <framework src="MessageUI.framework" />
     <framework src="StoreKit.framework" />
     <framework src="SystemConfiguration.framework" />
-    <!--framework src="CoreGraphics.framework" /-->    
   </platform>
   
 </plugin>

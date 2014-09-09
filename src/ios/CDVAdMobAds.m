@@ -63,10 +63,10 @@
 		// translate the Smart Banner constants according to the orientation.
 		[[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
 		[[NSNotificationCenter defaultCenter]
-			addObserver:self
-			selector:@selector(deviceOrientationChange:)
-			name:UIDeviceOrientationDidChangeNotification
-			object:nil];
+         addObserver:self
+         selector:@selector(deviceOrientationChange:)
+         name:UIDeviceOrientationDidChangeNotification
+         object:nil];
 	}
     
     isBannerShow = true;
@@ -110,7 +110,7 @@
 
 - (void)createBannerView:(CDVInvokedUrlCommand *)command {
     NSLog(@"createBannerView");
-
+    
     CDVPluginResult *pluginResult;
     NSString *callbackId = command.callbackId;
     NSArray* args = command.arguments;
@@ -133,10 +133,10 @@
 
 - (void)destroyBannerView:(CDVInvokedUrlCommand *)command {
     NSLog(@"destroyBannerView");
-
+    
 	CDVPluginResult *pluginResult;
 	NSString *callbackId = command.callbackId;
-
+    
 	if (self.bannerView) {
         [self.bannerView setDelegate:nil];
 		[self.bannerView removeFromSuperview];
@@ -144,7 +144,7 @@
         
         [self resizeViews];
 	}
-
+    
 	// Call the success callback that was passed in through the javascript.
 	pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
 	[self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
@@ -172,7 +172,7 @@
     } else {
         [self __showBannerAd:show];
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-    
+        
     }
     
 	[self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
@@ -190,7 +190,7 @@
     } else {
         [self __showInterstitial:YES];
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-    
+        
     }
     
     [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
@@ -209,7 +209,11 @@
         [self __setOptions:options];
     }
     
-    if (!self.interstitialView) {
+    if (isInterstitialAvailable) {
+        [self __showInterstitial:true];
+        [self interstitialWillPresentScreen:interstitialView_];
+        
+    } else if (!self.interstitialView) {
         [self __createInterstitial];
         
     } else {
@@ -250,7 +254,7 @@
 - (NSString*) __md5:(NSString *) s {
     const char *cstr = [s UTF8String];
     unsigned char result[16];
-    CC_MD5(cstr, strlen(cstr), result);
+    CC_MD5(cstr, (CC_LONG)strlen(cstr), result);
     
     return [NSString stringWithFormat:
             @"%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X",
@@ -429,6 +433,8 @@
         self.interstitialView.delegate = self;
         
         [self.interstitialView loadRequest:[self __buildAdRequest]];
+        
+        self.isInterstitialAvailable = false;
     }
 }
 
@@ -476,7 +482,7 @@
                 self.bannerView.adSize = kGADAdSizeSmartBannerPortrait;
             }
         }
-
+        
         CGRect bf = self.bannerView.frame;
         UIView* parentView;
         
@@ -546,12 +552,12 @@
 // onAdFailedToLoad
 - (void)adView:(GADBannerView *)view didFailToReceiveAdWithError:(GADRequestError *)error {
 	NSLog(@"%s: Failed to receive ad with error: %@",
-			__PRETTY_FUNCTION__, [error localizedFailureReason]);
+          __PRETTY_FUNCTION__, [error localizedFailureReason]);
     
 	// Since we're passing error back through Cordova, we need to set this up.
 	NSString *jsString =
-		@"cordova.fireDocumentEvent(admob.events.onAdFailedToLoad, "
-		@"{ 'adType' : 'banner', 'error': %ld, 'reason': '%@' });";
+    @"cordova.fireDocumentEvent(admob.events.onAdFailedToLoad, "
+    @"{ 'adType' : 'banner', 'error': %ld, 'reason': '%@' });";
 	[self writeJavascript:[NSString stringWithFormat:jsString,
                            (long)error.code,
                            [self __getErrorReason:error.code]]];
@@ -596,9 +602,10 @@
           __PRETTY_FUNCTION__, [error localizedFailureReason]);
     
     if (self.interstitialView) {
+        self.isInterstitialAvailable = true;
         NSString *jsString =
-            @"cordova.fireDocumentEvent(admob.events.onAdFailedToLoad, "
-            @"{ 'adType' : 'interstitial', 'error': %ld, 'reason': '%@' });";
+        @"cordova.fireDocumentEvent(admob.events.onAdFailedToLoad, "
+        @"{ 'adType' : 'interstitial', 'error': %ld, 'reason': '%@' });";
         [self writeJavascript:[NSString stringWithFormat:jsString,
                                (long)error.code,
                                [self __getErrorReason:error.code]]];
@@ -613,6 +620,7 @@
 // onAdOpened
 - (void)interstitialWillPresentScreen:(GADInterstitial *)interstitial {
     [self writeJavascript:@"cordova.fireDocumentEvent(admob.events.onAdOpened, { 'adType' : 'interstitial' });"];
+    self.isInterstitialAvailable = false;
 }
 
 // Sent just after dismissing an interstitial and it has animated off the
@@ -620,6 +628,7 @@
 // onAdClosed
 - (void)interstitialDidDismissScreen:(GADInterstitial *)interstitial {
    	[self writeJavascript:@"cordova.fireDocumentEvent(admob.events.onAdClosed, { 'adType' : 'banner' });"];
+    self.isInterstitialAvailable = false;
     self.interstitialView = nil;
 }
 
@@ -654,15 +663,15 @@
 - (void)dealloc {
 	[[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
 	[[NSNotificationCenter defaultCenter]
-		removeObserver:self
-		name:UIDeviceOrientationDidChangeNotification
-		object:nil];
-
+     removeObserver:self
+     name:UIDeviceOrientationDidChangeNotification
+     object:nil];
+    
 	bannerView_.delegate = nil;
 	bannerView_ = nil;
     interstitialView_.delegate = nil;
     interstitialView_ = nil;
-
+    
 	self.bannerView = nil;
     self.interstitialView = nil;
 }

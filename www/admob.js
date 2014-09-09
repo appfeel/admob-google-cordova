@@ -28,6 +28,11 @@ admob.AD_SIZE = {
   SMART_BANNER: 'SMART_BANNER'
 };
 
+admob.AD_TYPE = {
+  BANNER: 'banner',
+  INTERSTITIAL: 'interstitial'
+};
+
 admob.options = {
   publisherId : "ca-app-pub-8440343014846849/3119840614",
   interstitialId : "ca-app-pub-8440343014846849/4596573817",
