@@ -2,13 +2,23 @@ admob-google-cordova
 ====================
 
 Monetize your apps with AdMob ads for Cordova Android/iOS.
+With this Cordova AdMob plugin you can show AdMob ads as easy as:
+
+    admob.createBannerView({publisherId: "ca-app-pub-xxx/7078073011"});
+
+Or
+
+    admob.requestInterstitialAd({interstitialAdId: "ca-app-pub-xxx/7078073011", autoShowInterstitial: true});
+
+
 
 ## Platform SDK supported ##
 
 * iOS, using AdMob SDK for iOS, v6.11.1
 * Android, using Google Play Service for Android, v4.4
 
-## How to use? ##
+
+## How to use ##
 To install this plugin, follow the [Command-line Interface Guide](http://cordova.apache.org/docs/en/edge/guide_cli_index.md.html#The%20Command-line%20Interface).
 
     cordova plugin add com.admob.google
@@ -18,6 +28,7 @@ Or,
     cordova plugin add https://github.com/appfeel/admob-google-cordova.git
 
 Note: ensure you have a proper [AdMob](https://apps.admob.com/admob/signup) account and create an Id for your app.
+
 
 ## Quick example with cordova CLI ##
 ```c
@@ -38,7 +49,6 @@ Note: ensure you have a proper [AdMob](https://apps.admob.com/admob/signup) acco
 ```
 
 ## Javascript API ##
-
 APIs:
 ```javascript
 setOptions(options, success, fail);
@@ -121,11 +131,7 @@ Call the following code inside onDeviceReady(), because only after device ready 
     document.addEventListener("deviceready", onDeviceReady, false);
 ```
 
-See the working example code in [demo under test folder](https://github.com/appfeel/admob-google-cordova/tree/master/test/index.html), and here are some screenshots.
-
-iPhone:
-![ScreenShot](demo/banner-iphone.png)
-![ScreenShot](demo/interstitial-iphone.png)
+See the working example code in [demo under test folder](https://github.com/appfeel/admob-google-cordova/tree/master/test/index.html).
 
 ## Donate ##
 You can use this cordova plugin for free. To support this project, donation is welcome.  
@@ -136,4 +142,14 @@ Donation can be accepted in either of following ways:
 
 ## Credits ##
 [floatinghotpot/cordova-plugin-admob](https://github.com/floatinghotpot/cordova-plugin-admob.git)
+
 [aliokan/cordova-plugin-admob](https://github.com/aliokan/cordova-plugin-admob)
+
+## Screenshots ##
+iPhone Banner:
+
+![ScreenShot](demo/banner-iphone.png)
+
+iPhone Interstitial:
+
+![ScreenShot](demo/interstitial-iphone.png)
