@@ -153,3 +153,15 @@ iPhone Banner:
 iPhone Interstitial:
 
 ![ScreenShot](demo/interstitial-iphone.png)
+
+iPad Banner Portrait:
+
+![ScreenShot](demo/banner-ipad.png)
+
+iPad Banner Landscape:
+
+![ScreenShot](demo/banner-landscape-ipad.png)
+
+ipad Interstitial:
+
+![ScreenShot](demo/interstitial-ipad.png)
