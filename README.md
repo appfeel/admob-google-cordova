@@ -146,13 +146,9 @@ Donation can be accepted in either of following ways:
 [aliokan/cordova-plugin-admob](https://github.com/aliokan/cordova-plugin-admob)
 
 ## Screenshots ##
-iPhone Banner:
+iPhone:
 
-![ScreenShot](demo/banner-iphone.png)
-
-iPhone Interstitial:
-
-![ScreenShot](demo/interstitial-iphone.png)
+![ScreenShot](demo/iphone.png)
 
 iPad Banner Portrait:
 
@@ -161,7 +157,3 @@ iPad Banner Portrait:
 iPad Banner Landscape:
 
 ![ScreenShot](demo/banner-landscape-ipad.png)
-
-ipad Interstitial:
-
-![ScreenShot](demo/interstitial-ipad.png)
