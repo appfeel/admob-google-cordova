@@ -27,6 +27,16 @@ Or,
 
     cordova plugin add https://github.com/appfeel/admob-google-cordova.git
 
+In your onDeviceReady callback:
+```javascript
+    
+    function onDeviceReady() {
+      document.removeEventListener('deviceready', onDeviceReady, false);
+      admob.createBannerView({ 'publisherId' : 'ca-app-pub-xxx/7078073011' });
+    }
+    
+    document.addEventListener("deviceready", onDeviceReady, false);
+```
 Note: ensure you have a proper [AdMob](https://apps.admob.com/admob/signup) account and create an Id for your app.
 
 
@@ -61,7 +71,7 @@ requestInterstitialAd(options, success, fail);
 showInterstitialAd();
 ```
 
-## Example code ##
+## Complete example code ##
 Call the following code inside onDeviceReady(), because only after device ready you will have the plugin working.
 ```javascript
 
