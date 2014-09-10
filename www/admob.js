@@ -33,6 +33,13 @@ admob.AD_TYPE = {
   INTERSTITIAL: 'interstitial'
 };
 
+admob.PURCHASE_RESOLUTION = {
+  RESOLUTION_CANCELED: 2,
+  RESOLUTION_FAILURE: 0,
+  RESOLUTION_INVALID_PRODUCT: 3,
+  RESOLUTION_SUCCESS: 1
+};
+
 admob.options = {
   publisherId : "ca-app-pub-8440343014846849/3119840614",
   interstitialId : "ca-app-pub-8440343014846849/4596573817",
