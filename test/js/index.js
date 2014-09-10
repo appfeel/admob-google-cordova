@@ -43,8 +43,6 @@ var app = {
         autoShowInterstitial: false // auto show interstitials ad when loaded
       });
 
-      registerAdEvents();
-
     } else {
       alert('AdMobAds plugin not ready');
     }
