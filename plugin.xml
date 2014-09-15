@@ -30,7 +30,7 @@
     </config-file>
     
     <config-file target="AndroidManifest.xml" parent="/manifest/application">
-      <meta-data android:name="com.google.android.gms.version" android:value="508900" />
+      <meta-data android:name="com.google.android.gms.version" android:value="5089000" />
       <activity android:name="com.google.android.gms.ads.AdActivity" android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
     </config-file>
     
