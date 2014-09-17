@@ -50,7 +50,7 @@ Note: ensure you have a proper [AdMob](https://apps.admob.com/admob/signup) acco
 
 *Note:* All success callbacks are in the form `` 'function () {}' ``, and all failure callbacks are in the form `` 'function (err) {}' `` where `err` is a String explaining the error reason.
 
-###### setOptions(options, success, fail);
+#### setOptions(options, success, fail);
 Set the options to start displaying ads:
 
 * options: setup options (see [options](#options)).
@@ -93,26 +93,26 @@ Available values are (see [Google Docs](https://developers.google.com/mobile-ads
 }
 ```
 
-#### Banners
-###### createBannerView(options, success, fail);
+### Banners
+#### createBannerView(options, success, fail);
 Create a new banner view.
 
 * options: setup options (see [options](#options)).
 * success: success callback.
 * failure: failure callback.
 
-###### showAd(show, success, fail); 
+#### showAd(show, success, fail); 
 Show banner ads.
 
 * show[boolean]: Indicates whether to show or hide banner ads.
 * success: success callback.
 * failure: failure callback.
 
-###### destroyBannerView();
+#### destroyBannerView();
 Hide and destroy banner view.
 
-#### Interstitials
-###### requestInterstitialAd(options, success, fail);
+### Interstitials
+#### requestInterstitialAd(options, success, fail);
 Request an interstitial ad.  
 If `options.autoShowInterstitial` is set to true, the ad will automatically be displayed. Otherwise you should call `showInterstitialAd()` when `admob.events.onAdLoaded` event is called.  
 If you already called `requestInterstitialAd()` but the interstitial was never shown, the following calls to `requestInterstitialAd()` will result in the ad being inmediately available (the same ad as the one in the first call).
@@ -121,15 +121,15 @@ If you already called `requestInterstitialAd()` but the interstitial was never s
 * success: success callback.
 * failure: failure callback.
 
-###### showInterstitialAd(success, fail);
+#### showInterstitialAd(success, fail);
 Show an interstitial ad.  
 This method must be called after `admob.events.onAdLoaded` event is called. If there is no ad available it calls fail callback.
 
 * success: success callback.
 * failure: failure callback.
 
-#### In App Purchase
-###### recordResolution(purchaseId, resolution, success, fail);
+### In App Purchase
+#### recordResolution(purchaseId, resolution, success, fail);
 Records the purchase status and conversion events.
 
 * purchaseId: The id of the purchase (you will get it when `admob.events.onInAppPurchase` event is called).
@@ -141,7 +141,7 @@ Records the purchase status and conversion events.
 * success: success callback.
 * failure: failure callback.
 
-###### recordPlayBillingResolution(purchaseId, billingResponseCode, success, fail);
+#### recordPlayBillingResolution(purchaseId, billingResponseCode, success, fail);
 Records the purchase status and conversion events for a play billing purchase.
 
 * purchaseId: The id of the purchase (you will get it when `admob.events.onInAppPurchase` event is called).
@@ -153,20 +153,20 @@ Records the purchase status and conversion events for a play billing purchase.
 * success: success callback.
 * failure: failure callback.
     
-#### Events
+### Events
 AdMobAds Cordova library will use the same events for Android as for iOS (the iOS ones are mapped to the Android ones). See [Google Docs](https://developers.google.com/mobile-ads-sdk/docs/admob/android/banner#adlistener) for more info.  
 To listen to any of those events you can use:
 
     document.addEventListener(admob.events.onAdLoaded, function (e) { });
     
-###### admob.events.onAdLoaded
+#### admob.events.onAdLoaded
 Called when an ad is received.
 
 * e: JSON object.  
 *Example:* `{ adType : "banner" }`  
   * adType can be `admob.AD_TYPE.BANNER` or `admob.AD_TYPE.INTERSTITIAL`
 
-###### admob.events.onAdFailedToLoad
+#### admob.events.onAdFailedToLoad
 Called when an ad request failed.
 
 * e: JSON object.  
@@ -179,35 +179,34 @@ Called when an ad request failed.
     * AdRequest.ERROR_CODE_NO_FILL
   * reason is an english string with the reason of the error (for logging purposes).
       
-###### admob.events.onAdOpened
+#### admob.events.onAdOpened
 Called when an ad opens an overlay that covers the screen.
 
 * e: JSON object.  
 *Example:* `{ adType : "banner" }`  
   * adType can be `admob.AD_TYPE.BANNER` or `admob.AD_TYPE.INTERSTITIAL`
       
-###### admob.events.onAdClosed
+#### admob.events.onAdClosed
 Called when the user is about to return to the application after clicking on an ad.
 
 * e: JSON object.  
 *Example:* `{ adType : "banner" }`  
   * adType can be `admob.AD_TYPE.BANNER` or `admob.AD_TYPE.INTERSTITIAL`
       
-###### admob.events.onAdLeftApplication
+#### admob.events.onAdLeftApplication
 Called when an ad leaves the application (e.g., to go to the browser).
 
 * e: JSON object.  
 *Example:* `{ adType : "banner" }`  
   * adType can be `admob.AD_TYPE.BANNER` or `admob.AD_TYPE.INTERSTITIAL`
       
-###### admob.events.onInAppPurchaseRequested
+#### admob.events.onInAppPurchaseRequested
 Called when the user clicks the buy button of an in-app purchase ad. You shoud complete the transaction by calling `admob.recordResolution(...)` or `admob.recordPlayBillingResolution(...)`.
 
 * e: JSON object.  
 *Example:* `{ adType : "banner" }`  
   * adType can be `admob.AD_TYPE.BANNER` or `admob.AD_TYPE.INTERSTITIAL`
       
-```
 
 ---
 ## Quick example with cordova CLI ##
