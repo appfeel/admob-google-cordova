@@ -1,8 +1,8 @@
 admob-google-cordova
 ====================
 
-Monetize your apps with AdMob ads for Cordova Android/iOS.
-With this Cordova AdMob plugin you can show AdMob ads as easy as:
+Monetize your apps with AdMob ads using Cordova/Phonegap/XDK for Android/iOS.
+With this Cordova/Phonegap/XDK plugin you can show AdMob ads as easy as:
 
     admob.createBannerView({publisherId: "ca-app-pub-8440343014846849/3119840614"});
 
