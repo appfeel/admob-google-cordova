@@ -2,7 +2,7 @@
 
 - Create a new blank XDK project
 - In the project folder, remove the whole content from www folder
-- Copy the whole content from the example to the www folder in your project
+- Copy the whole content from www folder in this example to the www folder in your project
 - Build the app in the desired platform
 - Run it in a real device or emulator
 
