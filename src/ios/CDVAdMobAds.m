@@ -58,18 +58,18 @@
 #pragma mark Cordova JS bridge
 
 - (CDVPlugin *)initWithWebView:(UIWebView *)theWebView {
-	self = (CDVAdMobAds *)[super initWithWebView:theWebView];
-	if (self) {
-		// These notifications are required for re-placing the ad on orientation
-		// changes. Start listening for notifications here since we need to
-		// translate the Smart Banner constants according to the orientation.
-		[[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-		[[NSNotificationCenter defaultCenter]
+    self = (CDVAdMobAds *)[super initWithWebView:theWebView];
+    if (self) {
+        // These notifications are required for re-placing the ad on orientation
+        // changes. Start listening for notifications here since we need to
+        // translate the Smart Banner constants according to the orientation.
+        [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+        [[NSNotificationCenter defaultCenter]
          addObserver:self
          selector:@selector(deviceOrientationChange:)
          name:UIDeviceOrientationDidChangeNotification
          object:nil];
-	}
+    }
     
     isBannerShow = true;
     publisherId = DEFAULT_AD_PUBLISHER_ID;
@@ -89,7 +89,7 @@
     
     srand((unsigned)time(NULL));
     
-	return self;
+    return self;
 }
 
 - (void) setOptions:(CDVInvokedUrlCommand *)command
@@ -100,7 +100,7 @@
     NSString *callbackId = command.callbackId;
     NSArray* args = command.arguments;
     
-	NSUInteger argc = [args count];
+    NSUInteger argc = [args count];
     if (argc >= 1) {
         NSDictionary* options = [command.arguments objectAtIndex:0 withDefault:[NSNull null]];
         [self __setOptions:options];
@@ -117,7 +117,7 @@
     NSString *callbackId = command.callbackId;
     NSArray* args = command.arguments;
     
-	NSUInteger argc = [args count];
+    NSUInteger argc = [args count];
     if (argc >= 1) {
         NSDictionary* options = [command.arguments objectAtIndex:0 withDefault:[NSNull null]];
         [self __setOptions:options];
@@ -136,20 +136,20 @@
 - (void)destroyBannerView:(CDVInvokedUrlCommand *)command {
     NSLog(@"destroyBannerView");
     
-	CDVPluginResult *pluginResult;
-	NSString *callbackId = command.callbackId;
+    CDVPluginResult *pluginResult;
+    NSString *callbackId = command.callbackId;
     
-	if (self.bannerView) {
+    if (self.bannerView) {
         [self.bannerView setDelegate:nil];
-		[self.bannerView removeFromSuperview];
+        [self.bannerView removeFromSuperview];
         self.bannerView = nil;
         
         [self resizeViews];
-	}
+    }
     
-	// Call the success callback that was passed in through the javascript.
-	pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-	[self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+    // Call the success callback that was passed in through the javascript.
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
 }
 
 - (void)showBannerAd:(CDVInvokedUrlCommand *)command {
@@ -160,8 +160,8 @@
     NSArray* arguments = command.arguments;
     
     BOOL show = YES;
-	NSUInteger argc = [arguments count];
-	if (argc >= 1) {
+    NSUInteger argc = [arguments count];
+    if (argc >= 1) {
         NSString* showValue = [arguments objectAtIndex:0];
         show = showValue ? [showValue boolValue] : YES;
     }
@@ -179,7 +179,7 @@
         }
     }
     
-	[self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
 }
 
 - (void)showInterstitialAd:(CDVInvokedUrlCommand *)command {
@@ -204,10 +204,10 @@
 
 - (void)requestInterstitialAd:(CDVInvokedUrlCommand *)command {
     NSLog(@"requestInterstitialAd");
-	
+    
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];;
-	NSString *callbackId = command.callbackId;
-	NSArray* args = command.arguments;
+    NSString *callbackId = command.callbackId;
+    NSArray* args = command.arguments;
     
     NSUInteger argc = [args count];
     if (argc >= 1) {
@@ -236,34 +236,34 @@
         }
     }
     
-	[self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
 }
 
 - (GADAdSize)__adSizeFromString:(NSString *)string {
-	if ([string isEqualToString:@"BANNER"]) {
-		return kGADAdSizeBanner;
+    if ([string isEqualToString:@"BANNER"]) {
+        return kGADAdSizeBanner;
         
-	} else if ([string isEqualToString:@"IAB_MRECT"]) {
-		return kGADAdSizeMediumRectangle;
+    } else if ([string isEqualToString:@"IAB_MRECT"]) {
+        return kGADAdSizeMediumRectangle;
         
-	} else if ([string isEqualToString:@"IAB_BANNER"]) {
-		return kGADAdSizeFullBanner;
+    } else if ([string isEqualToString:@"IAB_BANNER"]) {
+        return kGADAdSizeFullBanner;
         
-	} else if ([string isEqualToString:@"IAB_LEADERBOARD"]) {
-		return kGADAdSizeLeaderboard;
+    } else if ([string isEqualToString:@"IAB_LEADERBOARD"]) {
+        return kGADAdSizeLeaderboard;
         
-	} else if ([string isEqualToString:@"SMART_BANNER"]) {
+    } else if ([string isEqualToString:@"SMART_BANNER"]) {
         CGRect pr = self.webView.superview.bounds;
         if (pr.size.width > pr.size.height) {
-			return kGADAdSizeSmartBannerLandscape;
-		}
-		else {
-			return kGADAdSizeSmartBannerPortrait;
-		}
+            return kGADAdSizeSmartBannerLandscape;
+        }
+        else {
+            return kGADAdSizeSmartBannerPortrait;
+        }
         
-	} else {
-		return kGADAdSizeInvalid;
-	}
+    } else {
+        return kGADAdSizeInvalid;
+    }
 }
 
 - (NSString*) __md5:(NSString *) s {
@@ -361,7 +361,7 @@
         self.bannerView.delegate = self;
         self.bannerView.rootViewController = self.viewController;
         
-		self.isBannerInitialized = YES;
+        self.isBannerInitialized = YES;
         self.isBannerVisible = NO;
         
         [self resizeViews];
@@ -397,47 +397,47 @@
             return nil;
         }
         
-		// Make the request for a test ad. Put in an identifier for the simulator as
-		// well as any devices you want to receive test ads.
+        // Make the request for a test ad. Put in an identifier for the simulator as
+        // well as any devices you want to receive test ads.
         // @"02b0ce0fda9a1f681188ca40e7fa71e1"
         // @"9a6658d2afbc898171e38c6e8080e20de4e4dc42",
         // @"9A6658D2AFBC898171E38C6E8080E20DE4E4DC42",
         NSString *admobDeviceId = [[self __admobDeviceID] lowercaseString];
-		request.testDevices =
-		[NSArray arrayWithObjects:
+        request.testDevices =
+        [NSArray arrayWithObjects:
          GAD_SIMULATOR_ID,
          admobDeviceId,
          nil];
     }
     
-	if (self.adExtras) {
-		GADAdMobExtras *extras = [[GADAdMobExtras alloc] init];
-		NSMutableDictionary *modifiedExtrasDict =
+    if (self.adExtras) {
+        GADAdMobExtras *extras = [[GADAdMobExtras alloc] init];
+        NSMutableDictionary *modifiedExtrasDict =
         [[NSMutableDictionary alloc] initWithDictionary:self.adExtras];
         
-		[modifiedExtrasDict removeObjectForKey:@"cordova"];
-		[modifiedExtrasDict setValue:@"1" forKey:@"cordova"];
-		extras.additionalParameters = modifiedExtrasDict;
-		[request registerAdNetworkExtras:extras];
-	}
+        [modifiedExtrasDict removeObjectForKey:@"cordova"];
+        [modifiedExtrasDict setValue:@"1" forKey:@"cordova"];
+        extras.additionalParameters = modifiedExtrasDict;
+        [request registerAdNetworkExtras:extras];
+    }
     
     return request;
 }
 
 - (BOOL) __showBannerAd:(BOOL)show {
-	//NSLog(@"Show Ad: %d", show);
-	BOOL succeeded = false;
+    //NSLog(@"Show Ad: %d", show);
+    BOOL succeeded = false;
     
-	if (!self.isBannerInitialized) {
-		succeeded = [self __createBanner];
+    if (!self.isBannerInitialized) {
+        succeeded = [self __createBanner];
         self.isBannerAutoShow = true; // Banner will be shown when loaded
         
-	} else if (show == self.isBannerVisible) { // same state, nothing to do
+    } else if (show == self.isBannerVisible) { // same state, nothing to do
         //NSLog(@"already show: %d", show);
         [self resizeViews];
         succeeded = true;
         
-	} else if (show) {
+    } else if (show) {
         //NSLog(@"show now: %d", show);
         
         UIView* parentView;
@@ -450,18 +450,18 @@
         [parentView addSubview:self.bannerView];
         [parentView bringSubviewToFront:self.bannerView];
         [self resizeViews];
-		
-		self.isBannerVisible = YES;
+        
+        self.isBannerVisible = YES;
         succeeded = true;
         
-	} else {
-		[self.bannerView removeFromSuperview];
+    } else {
+        [self.bannerView removeFromSuperview];
         [self resizeViews];
-		
-		self.isBannerVisible = NO;
+        
+        self.isBannerVisible = NO;
         succeeded = true;
-	}
-	
+    }
+    
     return succeeded;
 }
 
@@ -510,9 +510,9 @@
     NSLog(@"__showInterstitial");
     BOOL succeeded = false;
     
-	if (!self.interstitialView) {
-		succeeded = [self __createInterstitial];
-	} else {
+    if (!self.interstitialView) {
+        succeeded = [self __createInterstitial];
+    } else {
         succeeded = true;
     }
     
@@ -543,7 +543,7 @@
     wf.origin.y = top;
     wf.size.height = pr.size.height - top;
     
-	if (self.bannerView) {
+    if (self.bannerView) {
         
         // Rotate banner if screen has rotated
         if (pr.size.width > pr.size.height) {
@@ -607,7 +607,7 @@
 }
 
 - (void)deviceOrientationChange:(NSNotification *)notification {
-	[self resizeViews];
+    [self resizeViews];
 }
 
 #pragma mark -
@@ -620,45 +620,45 @@
             NSString *jsString =
             @"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdFailedToLoad, "
             @"{ 'adType' : 'banner', 'error': %ld, 'reason': '%@' }); } );";
-            [self writeJavascript:[NSString stringWithFormat:jsString,
-                                   0,
-                                   @"Advertising tracking may be disabled. To get test ads on this device, enable advertising tracking."]];
+            [self.commandDelegate evalJs:[NSString stringWithFormat:jsString,
+                                          0,
+                                          @"Advertising tracking may be disabled. To get test ads on this device, enable advertising tracking."]];
         } else {
-           	[self writeJavascript:@"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdLoaded, { 'adType' : 'banner' }); } );"];
+           	[self.commandDelegate evalJs:@"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdLoaded, { 'adType' : 'banner' }); } );"];
         }
         [self adViewWillPresentScreen:adView];
     } else {
-       	[self writeJavascript:@"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdLoaded, { 'adType' : 'banner' }); } );"];
+       	[self.commandDelegate evalJs:@"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdLoaded, { 'adType' : 'banner' }); } );"];
     }
 }
 
 // onAdFailedToLoad
 - (void)adView:(GADBannerView *)view didFailToReceiveAdWithError:(GADRequestError *)error {
-	NSLog(@"%s: Failed to receive ad with error: %@",
+    NSLog(@"%s: Failed to receive ad with error: %@",
           __PRETTY_FUNCTION__, [error localizedFailureReason]);
     
-	// Since we're passing error back through Cordova, we need to set this up.
-	NSString *jsString =
+    // Since we're passing error back through Cordova, we need to set this up.
+    NSString *jsString =
     @"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdFailedToLoad, "
     @"{ 'adType' : 'banner', 'error': %ld, 'reason': '%@' }); } );";
-	[self writeJavascript:[NSString stringWithFormat:jsString,
-                           (long)error.code,
-                           [self __getErrorReason:error.code]]];
+    [self.commandDelegate evalJs:[NSString stringWithFormat:jsString,
+                                  (long)error.code,
+                                  [self __getErrorReason:error.code]]];
 }
 
 // onAdOpened
 - (void)adViewWillPresentScreen:(GADBannerView *)adView {
-	[self writeJavascript:@"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdOpened, { 'adType' : 'banner' }); } );"];
+    [self.commandDelegate evalJs:@"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdOpened, { 'adType' : 'banner' }); } );"];
 }
 
 // onAdLeftApplication
 - (void)adViewWillLeaveApplication:(GADBannerView *)adView {
-    [self writeJavascript:@"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdLeftApplication, { 'adType' : 'banner' }); } );"];
+    [self.commandDelegate evalJs:@"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdLeftApplication, { 'adType' : 'banner' }); } );"];
 }
 
 // onAdClosed
 - (void)adViewDidDismissScreen:(GADBannerView *)adView {
-	[self writeJavascript:@"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdClosed, { 'adType' : 'banner' }); } );"];
+    [self.commandDelegate evalJs:@"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdClosed, { 'adType' : 'banner' }); } );"];
 }
 
 #pragma mark -
@@ -675,15 +675,15 @@
                 NSString *jsString =
                 @"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdFailedToLoad, "
                 @"{ 'adType' : 'interstitial', 'error': %ld, 'reason': '%@' }); } );";
-                [self writeJavascript:[NSString stringWithFormat:jsString,
-                                       0,
-                                       @"Advertising tracking may be disabled. To get test ads on this device, enable advertising tracking."]];
+                [self.commandDelegate evalJs:[NSString stringWithFormat:jsString,
+                                              0,
+                                              @"Advertising tracking may be disabled. To get test ads on this device, enable advertising tracking."]];
                 
             } else {
-                [self writeJavascript:@"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdLoaded, { 'adType' : 'interstitial' }); } );"];
+                [self.commandDelegate evalJs:@"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdLoaded, { 'adType' : 'interstitial' }); } );"];
             }
         } else {
-            [self writeJavascript:@"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdLoaded, { 'adType' : 'interstitial' }); } );"];
+            [self.commandDelegate evalJs:@"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdLoaded, { 'adType' : 'interstitial' }); } );"];
         }
     }
 }
@@ -700,9 +700,9 @@
         NSString *jsString =
         @"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdFailedToLoad, "
         @"{ 'adType' : 'interstitial', 'error': %ld, 'reason': '%@' }); } );";
-        [self writeJavascript:[NSString stringWithFormat:jsString,
-                               (long)error.code,
-                               [self __getErrorReason:error.code]]];
+        [self.commandDelegate evalJs:[NSString stringWithFormat:jsString,
+                                      (long)error.code,
+                                      [self __getErrorReason:error.code]]];
     }
 }
 
@@ -713,7 +713,7 @@
 // on the interstitial).
 // onAdOpened
 - (void)interstitialWillPresentScreen:(GADInterstitial *)interstitial {
-    [self writeJavascript:@"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdOpened, { 'adType' : 'interstitial' }); } );"];
+    [self.commandDelegate evalJs:@"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdOpened, { 'adType' : 'interstitial' }); } );"];
     self.isInterstitialAvailable = false;
 }
 
@@ -721,7 +721,7 @@
 // screen.
 // onAdClosed
 - (void)interstitialDidDismissScreen:(GADInterstitial *)interstitial {
-   	[self writeJavascript:@"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdClosed, { 'adType' : 'banner' }); } );"];
+   	[self.commandDelegate evalJs:@"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdClosed, { 'adType' : 'banner' }); } );"];
     self.isInterstitialAvailable = false;
     self.interstitialView.delegate = nil;
     self.interstitialView = nil;
@@ -756,18 +756,18 @@
 #pragma mark Cleanup
 
 - (void)dealloc {
-	[[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
-	[[NSNotificationCenter defaultCenter]
+    [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter]
      removeObserver:self
      name:UIDeviceOrientationDidChangeNotification
      object:nil];
     
-	bannerView_.delegate = nil;
-	bannerView_ = nil;
+    bannerView_.delegate = nil;
+    bannerView_ = nil;
     interstitialView_.delegate = nil;
     interstitialView_ = nil;
     
-	self.bannerView = nil;
+    self.bannerView = nil;
     self.interstitialView = nil;
 }
 
