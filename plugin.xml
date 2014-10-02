@@ -3,7 +3,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
   xmlns:android="http://schemas.android.com/apk/res/android"
   id="com.admob.google"
-  version="1.0.4">
+  version="1.0.5">
 
   <name>admob</name>
   <description>Google AdMob plugin for PhoneGap and Cordova. Android google-play-services.jar v5.0, iOS SDK v6.11.1. Monetize your app with one javascript line.</description>
