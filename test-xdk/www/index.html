@@ -1,0 +1,45 @@
+<!DOCTYPE html><!--HTML5 doctype-->
+<html>
+  <head>
+    <title>AdMob Ads Test for Intel XDK</title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0" />
+    <style type="text/css">
+      /* Prevent copy paste for all elements except text fields */
+      * { -webkit-user-select:none; -webkit-tap-highlight-color:rgba(255, 255, 255, 0); }
+      input, textarea { -webkit-user-select:text; }
+      body { background-color:white; color:black }
+    </style>
+
+  </head>
+  <body>
+    <p>XDK Demo for AdMob Plugin</p>
+    
+    <h1>Banner</h1>
+    
+    Standard:
+    <select id="adSize">
+      <option value='SMART_BANNER'>SMART_BANNER</option>
+      <option value='BANNER'>BANNER</option>
+      <option value='IAB_MRECT'>IAB_MEDIUM_RECTANGLE</option>
+      <option value='IAB_BANNER'>IAB_BANNER</option>
+      <option value='IAB_LEADERBOARD'>IAB_LEADERBOARD</option>
+    </select><br/>
+    
+    <input type='checkbox' id='bannerAtTop'/>at top<br/>
+    <input type='checkbox' id='overlap'/>overlap<br/>
+    
+    <button onclick="createSelectedBanner();">create</button><br/>
+    <button onclick="admob.showBannerAd(false);">remove banner</button><br/>
+    
+    <hr/>
+    
+    <h1>Interstitial</h1>
+    <input type='checkbox' id='autoshow' checked/>auto show when ready<br/>
+    <button onclick="prepareInterstitial();">Prepare</button>
+    <button onclick="admob.showInterstitialAd();">Show</button>
+    
+    <script src='cordova.js'></script>
+    <script type="text/javascript" src="js/app.js"></script>
+  </body>
+</html>

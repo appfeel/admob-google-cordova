@@ -1,0 +1,27 @@
+/*
+ * Please see the included README.md file for license terms and conditions.
+ */
+
+body {
+    /* Disable certain interactions on touch devices */
+    /* derived from https://github.com/ftlabs/fastclick/blob/master/examples/input.html */
+    -webkit-touch-callout: none ;
+    -webkit-text-size-adjust: none ; -ms-text-size-adjust: none ;
+    -webkit-user-select: none ; -moz-user-select: none ; -ms-user-select: none ; user-select: none ;
+    -webkit-highlight: none ;
+    -webkit-tap-highlight-color: rgba(0,0,0,0) ;
+    -webkit-tap-highlight-color: transparent ;      /* For some Androids */
+
+    /* margin: 0.5rem ; */
+    background: white ;
+    color: black ;
+}
+
+input, textarea  {
+    /* allow copy-paste */
+    -webkit-user-select: text ; -moz-user-select: text ; -ms-user-select: text ; user-select: text ;
+}
+
+.align-center {
+    text-align: center ;
+}
