@@ -1,6 +1,8 @@
 var app = {
   // global vars
   autoShowInterstitial: false,
+  progressDialog: document.getElementById("progressDialog"),
+  spinner: document.getElementById("spinner"),
   
   // Application Constructor
   initialize: function () {
@@ -71,15 +73,17 @@ var app = {
     app.initAds();
   },
   onAdLoaded: function (e) {
+    app.showProgress(false);
     if (e.adType === admob.AD_TYPE.INTERSTITIAL) {
       if (app.autoShowInterstitial) {
         admob.showInterstitialAd();
       } else {
-        alert("Interstitial is available");
+        alert("Interstitial is available. Click on 'Show Interstitial' to show it.");
       }
     }
   },
   onAdFailedToLoad: function(e) {
+    app.showProgress(false);
     alert("Could not load ad: " + JSON.stringify(e));
   },
   onResize: function () {
@@ -90,31 +94,58 @@ var app = {
   // -----------------------------------
   // App buttons functionality
   // -----------------------------------
-  addBannerAds: function () {
+  startBannerAds: function () {
+    app.showProgress(true);
     admob.createBannerView(function (){}, function (e) {
       alert(JSON.stringify(e));
     });
   },
   removeBannerAds: function () {
+    app.showProgress(false);
     admob.destroyBannerView();
   },
-  showBannerAd: function () {
+  showBannerAds: function () {
+    app.showProgress(false);
     admob.showBannerAd(true, function (){}, function (e) {
       alert(JSON.stringify(e));
     });
   },
-  hideBannerAd: function () {
+  hideBannerAds: function () {
+    app.showProgress(false);
     admob.showBannerAd(false);
   },
   requestInterstitial: function (autoshow) {
+    app.showProgress(true);
     app.autoShowInterstitial = autoshow;
     admob.requestInterstitialAd(function (){}, function (e) {
       alert(JSON.stringify(e));
     });
   },
   showInterstitial: function() {
+    app.showProgress(false);
     admob.showInterstitialAd(function (){}, function (e) {
       alert(JSON.stringify(e));
     });
+  },
+  showProgress: function(show) {
+    if (show) {
+      addClass(app.spinner, "animated");
+      removeClass(app.progressDialog, "hidden");
+    } else {
+      addClass(app.progressDialog, "hidden");
+      removeClass(app.spinner, "animated");
+    }
   }
 };
+
+function removeClass(elem, cls) {
+  var str;
+  do {
+    str = " " + elem.className + " ";
+    elem.className = str.replace(" " + cls + " ", " ").replace(/^\s+|\s+$/g, "");
+  } while (str.match(cls));
+}
+
+function addClass(elem, cls) {
+  elem.className += (" " + cls);
+}

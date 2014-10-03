@@ -3,10 +3,10 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
   xmlns:android="http://schemas.android.com/apk/res/android"
   id="com.admob.google"
-  version="1.0.5">
+  version="1.0.6">
 
   <name>admob</name>
-  <description>Google AdMob plugin for PhoneGap and Cordova. Android google-play-services.jar v5.0, iOS SDK v6.11.1. Monetize your app with one javascript line.</description>
+  <description>Google AdMob plugin for PhoneGap and Cordova. Android google-play-services.jar v5.0, iOS SDK v6.12.0. Monetize your app with one javascript line.</description>
   <author>AppFeel</author>
   <license>MIT</license>
   <keywords>ad,ads,admob,google,advertising,advertisment,publicity,earn,win,play,services,iad,flurry,monetization,money,appfeel</keywords>
@@ -82,6 +82,8 @@
     <framework src="MessageUI.framework" />
     <framework src="StoreKit.framework" />
     <framework src="SystemConfiguration.framework" />
+    <framework src="EventKit.framework" />
+    <framework src="EventKitUI.framework" />
   </platform>
   
 </plugin>

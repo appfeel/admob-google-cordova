@@ -8,25 +8,29 @@
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, target-densitydpi=device-dpi" />
     <link rel="stylesheet" type="text/css" href="css/index.css" />
     <meta name="msapplication-tap-highlight" content="no" />
-    <title>Hello World</title>
+    <title>AdMob Ads Demo</title>
   </head>
   <body onresize="app.onResize()">
     <div id="fullpage" class="app">
       <h1>Demo for AdMobAds Cordova Plugin</h1>
+      <div id="progressDialog" class="progressDialog hidden">
+        <div id="spinner"></div>
+        <span id="message">Loading ads...</span>
+      </div>
       <p>
-        <button onclick="app.addBannerAds()">Add Banner Ads</button>
-        <button onclick="app.removeBannerAds()">Remove Banner Ads</button>
+        <a class="button" onclick="app.startBannerAds()">Start Banner Ads</a>
+        <a class="button" onclick="app.removeBannerAds()">Remove Banner Ads</a>
       </p>
       <p>
-        <button onclick="app.showBannerAds()">Show Banner Ads</button>
-        <button onclick="app.hideBannerAds()">Hide Banner Ads</button>
+        <a class="button" onclick="app.showBannerAds()">Show Banner Ads</a>
+        <a class="button" onclick="app.hideBannerAds()">Hide Banner Ads</a>
       </p>
       <p>
-        <button onclick="app.requestAndShowInterstitial(true)">Request and show Interstitial</button>
+        <a class="button" onclick="app.requestInterstitial(true)">Request and show Interstitial</a>
       </p>
       <p>
-        <button onclick="app.requestInterstitial(false)">Request Interstitial</button>
-        <button onclick="app.showInterstitial()">Show Interstitial</button>
+        <a class="button" onclick="app.requestInterstitial(false)">Request Interstitial</a>
+        <a class="button" onclick="app.showInterstitial()">Show Interstitial</a>
       </p>
       
       

@@ -14,7 +14,7 @@ Or
 ---
 ## Platform SDK supported ##
 
-* iOS, using AdMob SDK for iOS, v6.11.1
+* iOS, using AdMob SDK for iOS, v6.12.0
 * Android, using Google Play Service for Android, v4.4
 
 ---
