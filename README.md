@@ -10,6 +10,14 @@ Or
 
     admob.requestInterstitialAd({interstitialAdId: "ca-app-pub-8440343014846849/4596573817", autoShowInterstitial: true});
 
+---
+## Testimonials ##
+
+* [VisualAnalogScale for Android](https://play.google.com/store/apps/details?id=com.appfeel.visualanalogscale):
+> It was really easy to integrate, thanks.
+
+*Ask to place your testimonial here*
+
 
 ---
 ## Platform SDK supported ##
@@ -295,11 +303,16 @@ Call the following code inside `onDeviceReady()`. (This is because only after de
 See the working example code in the [demo under test folder](https://github.com/appfeel/admob-google-cordova/tree/master/test/index.html).
 
 ---
-## Donate ##
-You can use this cordova plugin for free. To support this project, donation is welcome.  
-Donation can be accepted in either of following ways:
-* Share 2% Ad traffic. (It's not mandatory. If you are unwilling to share, please fork and remove the donation code.)
-+ Donate via [paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=MFQHUTN8U9XD6&lc=ES&item_name=AppFeel&item_number=com%2eadmob%2egoogle&amount=10%2e00&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted)
+## Contributing ##
+You can use this cordova plugin for free. You can contribute to this project in many ways:
+* Testimonials of apps that are using this plugin would be especially helpful (and gives your app free marketing). Open an issue.
+* Reporting issues.
+* Patching and bug fixing, especially when submitted with test code. Open a pull request.
+* Other enhancements.
+
+To support this project, donation is welcome. Donation can be accepted in either of following ways:
+* Share 2% Ad traffic. (It's not mandatory: if you are unwilling to share, please fork and remove the donation code).
+* Donate via [paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=MFQHUTN8U9XD6&lc=ES&item_name=AppFeel&item_number=com%2eadmob%2egoogle&amount=10%2e00&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted)
 
 ---
 ## Screenshots ##
