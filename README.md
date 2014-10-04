@@ -14,6 +14,7 @@ Or
 ## Testimonials ##
 
 * [VisualAnalogScale for Android](https://play.google.com/store/apps/details?id=com.appfeel.visualanalogscale):
+
 > It was really easy to integrate, thanks.
 
 *Ask to place your testimonial here*
