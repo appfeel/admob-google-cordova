@@ -2,35 +2,13 @@ var onDeviceReady = function() {
   //hide splash screen
   alert("cordova ready");
   testAdMob_main();
-  
-  var weinreIp = 'http://192.168.1.13';
-  var weinrePort = '9199';
-  var weinreTargetApp = "c3Sf1RzCWE8SZKnGTs8w2gTxVYJBGbAEgIsJBNoji0g";
-  //loadWeinre(weinreIp, weinrePort, weinreTargetApp);
 };
 document.addEventListener("deviceready", onDeviceReady, false);
 
 var onXDKReady = function () {
-  alert("intel.xdk ready");
   intel.xdk.device.hideSplashScreen();
 };
 document.addEventListener("intel.xdk.device.ready", onXDKReady, false);
-
-/**
- * Loads Weinre to weinreIp, weinrePort and weinreTargetApp
- * @param {String} weinreIp        ip to connect to weire server
- * @param {Number} weinrePort      port where weinre is running
- * @param {String} weinreTargetApp app id
- */
-function loadWeinre(weinreIp, weinrePort, weinreTargetApp) {
-  var weinre = document.createElement('script');
-  var weinreUrl = weinreIp + ":" + weinrePort;
-  weinreUrl += "/target/target-script-min.js#";
-  weinreUrl += weinreTargetApp;
-
-  weinre.setAttribute('src', weinreUrl);
-  document.head.appendChild(weinre);
-}
 
 var admobid = {
   banner: 'ca-app-pub-8440343014846849/3119840614',
@@ -43,14 +21,14 @@ function testAdMob_main() {
     return;
   }
   
-  initAd();
+  initAds();
   admob.createBanner(function () {
   }, function (data) {
     alert(JSON.stringify(data));
   });
 }
 
-function initAd() {
+function initAds() {
   var defaultOptions = admob.options;
   
   defaultOptions.publisherId = admobid.banner;
