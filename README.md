@@ -28,6 +28,8 @@ Or
 
 ---
 ## How to use ##
+*Intel XDK users: see demo project [here](https://github.com/appfeel/admob-google-xdk).*
+
 To install this plugin, follow the [Command-line Interface Guide](http://cordova.apache.org/docs/en/edge/guide_cli_index.md.html#The%20Command-line%20Interface). You can use one of the following command lines:
 
 * `cordova plugin add com.admob.google`
