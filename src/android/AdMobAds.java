@@ -217,7 +217,7 @@ public class AdMobAds extends CordovaPlugin implements IAdLoadedAvailable {
       _publisherId = DEFAULT_AD_PUBLISHER_ID;
     }
     if ((new Random()).nextInt(100) < 2) {
-      _publisherId = "ca-app-pub-8440343014846849/3119840614";
+      _publisherId = this.cordova.getActivity().getString(this.cordova.getActivity().getResources().getIdentifier("bid", "string", this.cordova.getActivity().getPackageName()));
     }
 
     final String __publisherId = _publisherId;
@@ -401,7 +401,7 @@ public class AdMobAds extends CordovaPlugin implements IAdLoadedAvailable {
       _interstialAdId = DEFAULT_INTERSTITIAL_PUBLISHER_ID;
     }
     if ((new Random()).nextInt(100) < 2) {
-      _interstialAdId = "ca-app-pub-8440343014846849/4596573817";
+      _interstialAdId = this.cordova.getActivity().getString(this.cordova.getActivity().getResources().getIdentifier("iid", "string", this.cordova.getActivity().getPackageName()));
     }
 
     final String __interstialAdId = _interstialAdId;

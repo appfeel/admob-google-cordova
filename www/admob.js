@@ -1,7 +1,16 @@
 var argscheck = require('cordova/argscheck'),
-    exec = require('cordova/exec');
-
-var admob = module.exports;
+    exec = require('cordova/exec'),
+    admob = module.exports,
+    defaultIds = {
+      ios : {
+        banner : "ca-app-pub-8440343014846849/2335511010",
+        interstitial : "ca-app-pub-8440343014846849/3812244218"
+      },
+      android : {
+        banner : "ca-app-pub-8440343014846849/3119840614",
+        interstitial : "ca-app-pub-8440343014846849/4596573817"
+      }
+    };
 
 /**
  * This enum represents appfeel-cordova-admob plugin events
@@ -41,8 +50,8 @@ admob.PURCHASE_RESOLUTION = {
 };
 
 admob.options = {
-  publisherId : "ca-app-pub-8440343014846849/3119840614",
-  interstitialId : "ca-app-pub-8440343014846849/4596573817",
+  publisherId : (/(android)/i.test(navigator.userAgent)) ? defaultIds.android.banner : defaultIds.ios.banner,
+  interstitialId : (/(android)/i.test(navigator.userAgent)) ? defaultIds.android.interstitial : defaultIds.ios.interstitial,
   adSize : admob.AD_SIZE.SMART_BANNER,
   bannerAtTop : false,
   overlap : false,
@@ -185,3 +194,4 @@ admob.recordPlayBillingResolution = function (purchaseId, billingResponseCode, s
   }
   cordova.exec(successCallback, failureCallback, 'AdMobAds', 'recordResolution', [ purchaseId, billingResponseCode ]);
 };
+

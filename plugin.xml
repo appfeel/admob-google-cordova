@@ -38,12 +38,17 @@
       <uses-permission android:name="android.permission.INTERNET" />
       <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     </config-file>
+    <config-file target="res/values/strings.xml" parent="">
+      <string name="banid">ca-app-pub-8440343014846849/3119840614</string>
+      <string name="intid">ca-app-pub-8440343014846849/4596573817</string>
+    </config-file>
     
     <source-file src="src/android/libs/google-play-services.jar" target-dir="libs/"/>
     <source-file src="src/android/libs/android-support-v4.jar" target-dir="libs/"/>
     <source-file src="src/android/AdMobAds.java" target-dir="src/com/appfeel/cordova/admob" />
     <source-file src="src/android/AdMobAdsAdListener.java" target-dir="src/com/appfeel/cordova/admob" />
     <source-file src="src/android/AdMobAdsAppPurchaseListener.java" target-dir="src/com/appfeel/cordova/admob" />
+    <source-file src="src/android/res/values/admob.xml" target-dir="res/values" />
   </platform>
 
   <!-- ios -->
@@ -74,7 +79,7 @@
     <!-- Google AdMob 6.11.1 framework -->
     <source-file src="src/ios/libGoogleAdMobAds.a" framework="true" />
     
-    <!-- iOS development frameworks need by Google AdMob 6.11.1 framework -->
+    <!-- iOS development frameworks need by Google AdMob 6.12.1 framework -->
     <framework src="AdSupport.framework" />
     <framework src="AudioToolbox.framework" />
     <framework src="AVFoundation.framework" />
@@ -85,6 +90,11 @@
     <framework src="SystemConfiguration.framework" />
     <framework src="EventKit.framework" />
     <framework src="EventKitUI.framework" />
+    <config-file target="*-Info.plist" parent="CFBundleURLTypes">
+      <array>
+        <dict><key>bid</key><string>ca-app-pub-8440343014846849/2335511010</string></dict>
+        <dict><key>iid</key><string>ca-app-pub-8440343014846849/3812244218</string></dict>
+      </array>
+    </config-file>
   </platform>
-  
 </plugin>

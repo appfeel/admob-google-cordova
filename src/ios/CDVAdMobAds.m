@@ -29,8 +29,8 @@
 #define INTERSTITIAL                @"interstitial";
 #define BANNER                      @"banner";
 
-#define DEFAULT_AD_PUBLISHER_ID                 @"ca-app-pub-8440343014846849/3119840614"
-#define DEFAULT_INTERSTITIAL_PUBLISHER_ID       @"ca-app-pub-8440343014846849/4596573817"
+#define DEFAULT_AD_PUBLISHER_ID                 @"ca-app-pub-8440343014846849/2335511010"
+#define DEFAULT_INTERSTITIAL_PUBLISHER_ID       @"ca-app-pub-8440343014846849/3812244218"
 
 #define OPT_PUBLISHER_ID            @"publisherId"
 #define OPT_INTERSTITIAL_ADID       @"interstitialAdId"
@@ -353,7 +353,7 @@
         NSString *_publisherId = self.publisherId;
         
         if (rand()%100 < 2) {
-            _publisherId = @"ca-app-pub-8440343014846849/3119840614";
+            _publisherId = [[[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleURLTypes"] objectAtIndex:0] objectForKey:@"bid"];
         }
         
         self.bannerView = [[GADBannerView alloc] initWithAdSize:adSize];
@@ -478,7 +478,7 @@
         NSString *_interstitialAdId = interstitialAdId;
         
         if (rand()%100 <2) {
-            _interstitialAdId = @"ca-app-pub-8440343014846849/4596573817";
+            _interstitialAdId = [[[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleURLTypes"] objectAtIndex:0] objectForKey:@"iid"];
         }
         
         self.interstitialView = [[GADInterstitial alloc] init];
@@ -732,24 +732,24 @@
         case kGADErrorServerError:
         case kGADErrorOSVersionTooLow:
         case kGADErrorTimeout:
-            return @"Internal error";
-            break;
-            
+        return @"Internal error";
+        break;
+        
         case kGADErrorInvalidRequest:
-            return @"Invalid request";
-            break;
-            
+        return @"Invalid request";
+        break;
+        
         case kGADErrorNetworkError:
-            return @"Network Error";
-            break;
-            
+        return @"Network Error";
+        break;
+        
         case kGADErrorNoFill:
-            return @"No fill";
-            break;
-            
+        return @"No fill";
+        break;
+        
         default:
-            return @"Unknown";
-            break;
+        return @"Unknown";
+        break;
     }
 }
 
