@@ -3,7 +3,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
   xmlns:android="http://schemas.android.com/apk/res/android"
   id="com.admob.google"
-  version="1.0.6">
+  version="1.0.7">
 
   <name>admob</name>
   <description>Google AdMob plugin for Cordova, Phonegap and Intel XDK. Android google-play-services.jar v5.0, iOS SDK v6.12.0. Monetize your app with one javascript line.</description>
@@ -30,7 +30,6 @@
     </config-file>
     
     <config-file target="AndroidManifest.xml" parent="/manifest/application">
-      <meta-data android:name="com.google.android.gms.version" android:value="5089000" />
       <activity android:name="com.google.android.gms.ads.AdActivity" android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" android:theme="@android:style/Theme.Translucent" />
     </config-file>
     
@@ -38,13 +37,15 @@
       <uses-permission android:name="android.permission.INTERNET" />
       <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     </config-file>
-    <config-file target="res/values/strings.xml" parent="">
+    <config-file target="res/values/strings.xml" parent="/*">
       <string name="banid">ca-app-pub-8440343014846849/3119840614</string>
       <string name="intid">ca-app-pub-8440343014846849/4596573817</string>
     </config-file>
     
-    <source-file src="src/android/libs/google-play-services.jar" target-dir="libs/"/>
-    <source-file src="src/android/libs/android-support-v4.jar" target-dir="libs/"/>
+    <dependency id="android.support.v4" url="https://github.com/miqmago/cordova-plugin-android-support-v4" commit="c94d12c11dd6a6722321f49d39a1eeaa237bc3a5"/>
+      
+    <dependency id="com.google.playservices" url="https://github.com/MobileChromeApps/google-play-services" commit="efca392eab83df93085136e0cd7d86450fd58609"/>
+    
     <source-file src="src/android/AdMobAds.java" target-dir="src/com/appfeel/cordova/admob" />
     <source-file src="src/android/AdMobAdsAdListener.java" target-dir="src/com/appfeel/cordova/admob" />
     <source-file src="src/android/AdMobAdsAppPurchaseListener.java" target-dir="src/com/appfeel/cordova/admob" />
