@@ -3,7 +3,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
   xmlns:android="http://schemas.android.com/apk/res/android"
   id="com.admob.google"
-  version="1.0.7">
+  version="1.0.8">
 
   <name>admob</name>
   <description>Google AdMob plugin for Cordova, Phonegap and Intel XDK. Android google-play-services.jar v5.0, iOS SDK v6.12.0. Monetize your app with one javascript line.</description>
@@ -42,9 +42,9 @@
       <string name="intid">ca-app-pub-8440343014846849/4596573817</string>
     </config-file>
     
-    <dependency id="android.support.v4" url="https://github.com/miqmago/cordova-plugin-android-support-v4" commit="c94d12c11dd6a6722321f49d39a1eeaa237bc3a5"/>
-      
-    <dependency id="com.google.playservices" url="https://github.com/MobileChromeApps/google-play-services" commit="efca392eab83df93085136e0cd7d86450fd58609"/>
+    <dependency id="android.support.v4" url="https://github.com/appfeel/cordova-plugin-android-support-v4" commit="2bdbde63c3c0bba9c279971cfb566080c2951567"/>
+    
+    <dependency id="com.google.playservices" url="https://github.com/appfeel/google-play-services" commit="6082c9d011067d473246bc30c81ed8aff9afd3ca"/>
     
     <source-file src="src/android/AdMobAds.java" target-dir="src/com/appfeel/cordova/admob" />
     <source-file src="src/android/AdMobAdsAdListener.java" target-dir="src/com/appfeel/cordova/admob" />

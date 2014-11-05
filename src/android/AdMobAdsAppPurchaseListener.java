@@ -18,12 +18,17 @@ public class AdMobAdsAppPurchaseListener implements InAppPurchaseListener {
   }
 
   @Override
-  synchronized public void onInAppPurchaseRequested(InAppPurchase inAppPurchase) {
-    Log.d(AdMobAds.ADMOBADS_LOGTAG, "AdMobAdsAppPurchaseListener.onInAppPurchaseRequested: In app purchase. SKU: " + inAppPurchase.getProductId());
-    purchases.put(purchaseId, inAppPurchase);
-    String event = String.format("javascript:cordova.fireDocumentEvent(admob.events.onInAppPurchaseRequested, { 'purchaseId': %d, 'productId': '%s' });", purchaseId, inAppPurchase.getProductId());
-    admobAds.webView.loadUrl(event);
-    purchaseId++;
+  synchronized public void onInAppPurchaseRequested(final InAppPurchase inAppPurchase) {
+    admobAds.cordova.getActivity().runOnUiThread(new Runnable() {
+      @Override
+      public void run() {
+        Log.d(AdMobAds.ADMOBADS_LOGTAG, "AdMobAdsAppPurchaseListener.onInAppPurchaseRequested: In app purchase. SKU: " + inAppPurchase.getProductId());
+        purchases.put(purchaseId, inAppPurchase);
+        String event = String.format("javascript:cordova.fireDocumentEvent(admob.events.onInAppPurchaseRequested, { 'purchaseId': %d, 'productId': '%s' });", purchaseId, inAppPurchase.getProductId());
+        admobAds.webView.loadUrl(event);
+        purchaseId++;
+      }
+    });
   }
 
   public InAppPurchase getPurchase(int purchaseId) {
