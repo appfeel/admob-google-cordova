@@ -16,9 +16,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -241,14 +243,14 @@ public class AdMobAds extends CordovaPlugin implements IAdLoadedAvailable, IConn
       @Override
       public void run() {
         isBannerRequested = true;
-        createBannerView(_pid, bannerListener);
+        createBannerView(_pid, bannerListener, _pid.equals(tappxId), false);
         callbackContext.success();
       }
     });
     return null;
   }
 
-  private void createBannerView(String _pid, AdMobAdsAdListener adListener) {
+  private void createBannerView(String _pid, AdMobAdsAdListener adListener, boolean isTappx, boolean isBackFill) {
     if (adView != null && !adView.getAdUnitId().equals(_pid)) {
       if (adView.getParent() != null) {
         ((ViewGroup) adView.getParent()).removeView(adView);
@@ -258,7 +260,28 @@ public class AdMobAds extends CordovaPlugin implements IAdLoadedAvailable, IConn
     }
     if (adView == null) {
       adView = new AdView(cordova.getActivity());
-      adView.setAdSize(adSize);
+      if (isTappx) {
+        if (adSize == AdSize.BANNER) { // 320x50
+          adView.setAdSize(adSize);
+        } else if (adSize == AdSize.MEDIUM_RECTANGLE) { // 300x250
+          _pid = getPublisherId(isBackFill, false);
+          adView.setAdSize(adSize);
+        } else if (adSize == AdSize.FULL_BANNER) { // 468x60
+          adView.setAdSize(AdSize.BANNER);
+        } else if (adSize == AdSize.LEADERBOARD) { // 728x90
+          adView.setAdSize(AdSize.BANNER);
+        } else if (adSize == AdSize.SMART_BANNER) { // Screen width x 32|50|90
+          DisplayMetrics metrics = DisplayInfo(AdMobAds.this.cordova.getActivity());
+          if (metrics.widthPixels >= 768) {
+            adView.setAdSize(new AdSize(768, 90));
+          } else {
+            adView.setAdSize(AdSize.BANNER);
+          }
+        }
+
+      } else {
+        adView.setAdSize(adSize);
+      }
       adView.setAdUnitId(_pid);
       adView.setAdListener(adListener);
       adView.setVisibility(View.GONE);
@@ -595,7 +618,7 @@ public class AdMobAds extends CordovaPlugin implements IAdLoadedAvailable, IConn
     } else if ("SMART_BANNER".equals(size)) {
       return AdSize.SMART_BANNER;
     } else {
-      return null;
+      return AdSize.SMART_BANNER;
     }
   }
 
@@ -619,6 +642,10 @@ public class AdMobAds extends CordovaPlugin implements IAdLoadedAvailable, IConn
   }
 
   private String getPublisherId(boolean isBackFill) {
+    return getPublisherId(isBackFill, hasTappx);
+  }
+
+  private String getPublisherId(boolean isBackFill, boolean hasTappx) {
     String _publisherId = publisherId;
 
     if (!isBackFill && hasTappx && (new Random()).nextInt(100) <= (int) (tappxShare * 100)) {
@@ -667,7 +694,7 @@ public class AdMobAds extends CordovaPlugin implements IAdLoadedAvailable, IConn
       cordova.getActivity().runOnUiThread(new Runnable() {
         @Override
         public void run() {
-          createBannerView(_pid, backFillBannerListener);
+          createBannerView(_pid, backFillBannerListener, _pid.equals(tappxId), true);
         }
       });
 
@@ -731,7 +758,7 @@ public class AdMobAds extends CordovaPlugin implements IAdLoadedAvailable, IConn
           __pid = DEFAULT_AD_PUBLISHER_ID;
         }
         final String _pid = __pid;
-        createBannerView(_pid, bannerListener);
+        createBannerView(_pid, bannerListener, _pid.equals(tappxId), false);
       }
 
       if (isInterstitialRequested) {
@@ -772,6 +799,28 @@ public class AdMobAds extends CordovaPlugin implements IAdLoadedAvailable, IConn
         }
       }
     }
+  }
 
+  public static DisplayMetrics DisplayInfo(Context p_context) {
+    DisplayMetrics metrics = null;
+    try {
+      metrics = new DisplayMetrics();
+      ((android.view.WindowManager) p_context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(metrics);
+      //p_activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+    } catch (Exception e) {
+    }
+    return metrics;
+  }
+
+  public static double DeviceInches(Context p_context) {
+    double default_value = 4.0f;
+    if (p_context == null)
+      return default_value;
+    try {
+      DisplayMetrics metrics = DisplayInfo(p_context);
+      return Math.sqrt(Math.pow(metrics.widthPixels / metrics.xdpi, 2.0) + Math.pow(metrics.heightPixels / metrics.ydpi, 2.0));
+    } catch (Exception e) {
+      return default_value;
+    }
   }
 }

@@ -41,7 +41,7 @@
 
 - (void) __reachabilityChanged:(NSNotification*)aNote;
 - (void) __setOptions:(NSDictionary*) options;
-- (BOOL) __createBanner:(NSString *)_pid withAdListener:(CDVAdMobAdsAdListener *)adListener;
+- (BOOL) __createBanner:(NSString *)_pid withAdListener:(CDVAdMobAdsAdListener *)adListener isTappx:(BOOL)isTappx andIsBackFill:(BOOL)isBackFill;
 - (BOOL) __showBannerAd:(BOOL)show;
 - (BOOL) __createInterstitial:(NSString *)_iid withAdListener:(CDVAdMobAdsAdListener *)adListener;
 - (BOOL) __showInterstitial:(BOOL)show;
@@ -49,6 +49,7 @@
 - (NSString*) __md5: (NSString*) s;
 - (NSString *) __admobDeviceID;
 - (NSString *) __getPublisherId:(BOOL)isBackFill;
+- (NSString *) __getPublisherId:(BOOL)isBackFill andIsTappx:(BOOL)isTappx;
 - (NSString *) __getInterstitialId:(BOOL)isBackFill;
 
 - (void)resizeViews;
@@ -176,8 +177,8 @@
                         [self resizeViews];
                     });
                 }*/
-                
-                [self __createBanner:_pid withAdListener:backFillAdsListener];
+
+                [self __createBanner:_pid withAdListener:backFillAdsListener isTappx:[_pid isEqualToString:tappxId] andIsBackFill:false];
             }];
         }
         
@@ -234,7 +235,7 @@
         NSString *_pid = (publisherId.length == 0 ? DEFAULT_AD_PUBLISHER_ID : (rand()%100 > 2 ? [self __getPublisherId:false] : DEFAULT_AD_PUBLISHER_ID) );
         //_pid = [[[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleURLTypes"] objectAtIndex:0] objectForKey:@"bid"];
         
-        if (![self __createBanner:_pid withAdListener:adsListener]) {
+        if (![self __createBanner:_pid withAdListener:adsListener  isTappx:[_pid isEqualToString:tappxId] andIsBackFill:false]) {
             pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Advertising tracking may be disabled. To get test ads on this device, enable advertising tracking."];
         }
         
@@ -390,7 +391,7 @@
             });
         }
         
-        [self __createBanner:_pid withAdListener:backFillAdsListener];
+        [self __createBanner:_pid withAdListener:backFillAdsListener isTappx:[_pid isEqualToString:tappxId] andIsBackFill:true];
     }];
 }
 
@@ -456,6 +457,10 @@
 }
 
 - (NSString *) __getPublisherId:(BOOL)isBackFill {
+    return [self __getPublisherId:isBackFill andIsTappx:hasTappx];
+}
+
+- (NSString *) __getPublisherId:(BOOL)isBackFill andIsTappx:(BOOL)isTappx {
     NSString *_publisherId = publisherId;
     
     if (!isBackFill && hasTappx && rand()%100 <= (tappxShare * 100)) {
@@ -562,12 +567,46 @@
     }
 }
 
-- (BOOL) __createBanner:(NSString *)_pid withAdListener:(CDVAdMobAdsAdListener *)adListener {
+- (BOOL) __createBanner:(NSString *)_pid withAdListener:(CDVAdMobAdsAdListener *)adListener isTappx:(BOOL)isTappx andIsBackFill:(BOOL)isBackFill {
     BOOL succeeded = false;
-
+    __block NSString *__pid = _pid;
+    
+    if (self.bannerView && ![self.bannerView.adUnitID isEqualToString:_pid]) {
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [self.bannerView removeFromSuperview];
+            self.bannerView = nil;
+            // [self resizeViews];
+        });
+    }
+    
     if (!self.bannerView) {
         dispatch_sync(dispatch_get_main_queue(), ^{
-            self.bannerView = [[GADBannerView alloc] initWithAdSize:adSize];
+            if (isTappx) {
+                if (CGSizeEqualToSize(adSize.size, kGADAdSizeBanner.size)) {
+                    self.bannerView = [[GADBannerView alloc] initWithAdSize:adSize];
+                    
+                } else if (CGSizeEqualToSize(adSize.size, kGADAdSizeMediumRectangle.size)) {
+                    __pid = [self __getPublisherId:isBackFill andIsTappx:false];
+                    self.bannerView = [[GADBannerView alloc] initWithAdSize:adSize];
+                    
+                } else if (CGSizeEqualToSize(adSize.size, kGADAdSizeFullBanner.size)) {
+                    self.bannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner];
+                    
+                } else if (CGSizeEqualToSize(adSize.size, kGADAdSizeLeaderboard.size)) {
+                    self.bannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner];
+                    
+                } else if (CGSizeEqualToSize(adSize.size, kGADAdSizeSmartBannerLandscape.size) || CGSizeEqualToSize(adSize.size, kGADAdSizeSmartBannerPortrait.size)) {
+                    CGRect pr = self.webView.superview.bounds;
+                    if (pr.size.width >= 768.0) {
+                        self.bannerView = [[GADBannerView alloc] initWithAdSize:GADAdSizeFromCGSize(CGSizeMake(768, 90))];
+                    } else {
+                        self.bannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner];
+                    }
+                }
+            } else {
+                self.bannerView = [[GADBannerView alloc] initWithAdSize:adSize];
+            }
+            
         });
         self.bannerView.rootViewController = self.viewController;
         
@@ -577,7 +616,7 @@
         [self resizeViews];
     }
     
-    self.bannerView.adUnitID = _pid;
+    self.bannerView.adUnitID = __pid;
     self.bannerView.delegate = adListener;
     
     GADRequest *request = [self __buildAdRequest];
@@ -644,7 +683,7 @@
     if (!self.isBannerInitialized) {
         NSString *_pid = (publisherId.length == 0 ? DEFAULT_AD_PUBLISHER_ID : (rand()%100 > 2 ? [self __getPublisherId:false] : DEFAULT_AD_PUBLISHER_ID) );
 
-        succeeded = [self __createBanner:_pid withAdListener:adsListener];
+        succeeded = [self __createBanner:_pid withAdListener:adsListener  isTappx:[_pid isEqualToString:tappxId] andIsBackFill:false];
         self.isBannerAutoShow = true; // Banner will be shown when loaded
         
     } else if (show == self.isBannerVisible) { // same state, nothing to do

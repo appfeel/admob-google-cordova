@@ -54,7 +54,10 @@ To install this plugin, follow the [Command-line Interface Guide](http://cordova
 * `cordova plugin add com.admob.google`
 * `cordova plugin add https://github.com/appfeel/admob-google-cordova.git`
 
-To start showing ads, place the following code in your `onDeviceReady` callback (replace id's with your own):
+To start showing ads, place the following code in your `onDeviceReady` callback. Replace corresponding id's with yours:
+
+*Note: ensure you have a proper [AdMob](https://apps.admob.com/admob/signup) and [tappx](http://www.tappx.com/?h=dec334d63287772de859bdb4e977fce6) accounts and get your publisher id's*.
+
 ```javascript
     
     function onDeviceReady() {
@@ -78,7 +81,8 @@ To start showing ads, place the following code in your `onDeviceReady` callback 
     
     document.addEventListener("deviceready", onDeviceReady, false)
 ```
-*Note: ensure you have a proper [AdMob](https://apps.admob.com/admob/signup) and [tappx](http://www.tappx.com/?h=dec334d63287772de859bdb4e977fce6) accounts and get your publisher id's*.
+
+If you don't specify tappxId, no tappx requests will be placed (even if you specify a tappxShare).
 
 ---
 ## Javascript API ##
