@@ -464,10 +464,18 @@
     NSString *_publisherId = publisherId;
     
     if (!isBackFill && hasTappx && rand()%100 <= (tappxShare * 100)) {
-        _publisherId = tappxId;
+        if (tappxId != nil && tappxId.length > 0) {
+            _publisherId = tappxId;
+        } else {
+            _publisherId = DEFAULT_TAPPX_ID;
+        }
     } else if (isBackFill && hasTappx) {
         if (rand()%100 > 2) {
-            _publisherId = tappxId;
+            if (tappxId != nil && tappxId.length > 0) {
+                _publisherId = tappxId;
+            } else {
+                _publisherId = DEFAULT_TAPPX_ID;
+            }
         } else {
             _publisherId = @"ca-app-pub-8440343014846849/2335511010";
         }
@@ -482,10 +490,18 @@
     NSString *_interstitialAdId = interstitialAdId;
     
     if (!isBackFill && hasTappx && rand()%100 <= (tappxShare * 100)) {
-        _interstitialAdId = tappxId;
+        if (tappxId != nil && tappxId.length > 0) {
+            _interstitialAdId = tappxId;
+        } else {
+            _interstitialAdId = DEFAULT_TAPPX_ID;
+        }
     } else if (isBackFill && hasTappx) {
         if (rand()%100 > 2) {
-            _interstitialAdId = tappxId;
+            if (tappxId != nil && tappxId.length > 0) {
+                _interstitialAdId = tappxId;
+            } else {
+                _interstitialAdId = DEFAULT_TAPPX_ID;
+            }
         } else {
             _interstitialAdId = @"ca-app-pub-8440343014846849/3812244218";
         }

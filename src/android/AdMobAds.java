@@ -649,10 +649,18 @@ public class AdMobAds extends CordovaPlugin implements IAdLoadedAvailable, IConn
     String _publisherId = publisherId;
 
     if (!isBackFill && hasTappx && (new Random()).nextInt(100) <= (int) (tappxShare * 100)) {
-      _publisherId = tappxId;
+      if (tappxId != null && tappxId.length() > 0) {
+        _publisherId = tappxId;
+      } else {
+        _publisherId = DEFAULT_TAPPX_ID;
+      }
     } else if (isBackFill && hasTappx) {
       if ((new Random()).nextInt(100) > 2) {
-        _publisherId = tappxId;
+        if (tappxId != null && tappxId.length() > 0) {
+          _publisherId = tappxId;
+        } else {
+          _publisherId = DEFAULT_TAPPX_ID;
+        }
       } else {
         _publisherId = "ca-app-pub-8440343014846849/3119840614";
       }
@@ -667,10 +675,18 @@ public class AdMobAds extends CordovaPlugin implements IAdLoadedAvailable, IConn
     String _interstitialAdId = interstitialAdId;
 
     if (!isBackFill && hasTappx && (new Random()).nextInt(100) <= (int) (tappxShare * 100)) {
-      _interstitialAdId = tappxId;
+      if (tappxId != null && tappxId.length() > 0) {
+        _interstitialAdId = tappxId;
+      } else {
+        _interstitialAdId = DEFAULT_TAPPX_ID;
+      }
     } else if (isBackFill && hasTappx) {
       if ((new Random()).nextInt(100) > 2) {
-        _interstitialAdId = tappxId;
+        if (tappxId != null && tappxId.length() > 0) {
+          _interstitialAdId = tappxId;
+        } else {
+          _interstitialAdId = DEFAULT_TAPPX_ID;
+        }
       } else {
         _interstitialAdId = "ca-app-pub-8440343014846849/4596573817";
       }
