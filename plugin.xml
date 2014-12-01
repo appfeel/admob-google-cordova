@@ -1,12 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  id="com.admob.google"
-  version="1.0.8">
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="com.admob.google" version="2.0.1">
 
   <name>admob</name>
-  <description>Google AdMob plugin for Cordova, Phonegap and Intel XDK. Android google-play-services.jar v5.0, iOS SDK v6.12.0. Monetize your app with one javascript line.</description>
+  <description>Best iOS/Android Google AdMob Ads plugin for Cordova, Phonegap and Intel XDK. Monetize your app with one javascript line. Android SDK v6.1, iOS SDK v6.12.2. Supports tappx.</description>
   <author>AppFeel</author>
   <license>MIT</license>
   <keywords>ad,ads,admob,google,advertising,advertisment,publicity,earn,win,play,services,iad,flurry,monetization,money,appfeel</keywords>
@@ -17,6 +14,8 @@
     <engine name="cordova" version=">=2.9" />
   </engines>
 
+  <dependency id="com.connectivity.monitor" />
+
   <js-module src="www/admob.js" name="AdMobAds">
     <clobbers target="window.admob" />
   </js-module>
@@ -25,14 +24,14 @@
   <platform name="android">
     <config-file target="res/xml/config.xml" parent="/*">
       <feature name="AdMobAds">
-        <param name="android-package" value="com.appfeel.cordova.admob.AdMobAds"/>
+        <param name="android-package" value="com.appfeel.cordova.admob.AdMobAds" />
       </feature>
     </config-file>
-    
+
     <config-file target="AndroidManifest.xml" parent="/manifest/application">
       <activity android:name="com.google.android.gms.ads.AdActivity" android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" android:theme="@android:style/Theme.Translucent" />
     </config-file>
-    
+
     <config-file target="AndroidManifest.xml" parent="/*">
       <uses-permission android:name="android.permission.INTERNET" />
       <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -41,11 +40,10 @@
       <string name="banid">ca-app-pub-8440343014846849/3119840614</string>
       <string name="intid">ca-app-pub-8440343014846849/4596573817</string>
     </config-file>
-    
-    <dependency id="android.support.v4" url="https://github.com/appfeel/cordova-plugin-android-support-v4" commit="2bdbde63c3c0bba9c279971cfb566080c2951567"/>
-    
-    <dependency id="com.google.playservices" url="https://github.com/appfeel/google-play-services" commit="6082c9d011067d473246bc30c81ed8aff9afd3ca"/>
-    
+
+    <dependency id="android.support.v4" url="https://github.com/appfeel/cordova-plugin-android-support-v4" />
+    <dependency id="com.google.playservices" url="https://github.com/appfeel/google-play-services" />
+
     <source-file src="src/android/AdMobAds.java" target-dir="src/com/appfeel/cordova/admob" />
     <source-file src="src/android/AdMobAdsAdListener.java" target-dir="src/com/appfeel/cordova/admob" />
     <source-file src="src/android/AdMobAdsAppPurchaseListener.java" target-dir="src/com/appfeel/cordova/admob" />
@@ -56,46 +54,29 @@
   <platform name="ios">
     <config-file target="config.xml" parent="/*">
       <feature name="AdMobAds">
-       <param name="ios-package" value="CDVAdMobAds" />
+        <param name="ios-package" value="CDVAdMobAds" />
       </feature>
     </config-file>
-    
+
     <header-file src="src/ios/CDVAdMobAds.h" />
     <source-file src="src/ios/CDVAdMobAds.m" />
+    <header-file src="src/ios/CDVAdMobAdsAdListener.h" />
+    <source-file src="src/ios/CDVAdMobAdsAdListener.m" />
+
+    <!-- Google AdMob framework -->
+    <dependency id="com.ios.libgoogleadmobads"/>
     
-     <!-- Google AdMob header files -->
-    <header-file src="src/ios/GADAdMobExtras.h" />
-    <header-file src="src/ios/GADAdNetworkExtras.h" />
-    <header-file src="src/ios/GADAdSize.h" />
-    <header-file src="src/ios/GADBannerView.h" />
-    <header-file src="src/ios/GADBannerViewDelegate.h" />
-    <header-file src="src/ios/GADInAppPurchase.h" />
-    <header-file src="src/ios/GADInAppPurchaseDelegate.h" />
-    <header-file src="src/ios/GADInterstitial.h" />
-    <header-file src="src/ios/GADInterstitialDelegate.h" />
-    <header-file src="src/ios/GADModules.h" />
-    <header-file src="src/ios/GADRequest.h" />
-    <header-file src="src/ios/GADRequestError.h" />
-    
-    <!-- Google AdMob 6.11.1 framework -->
-    <source-file src="src/ios/libGoogleAdMobAds.a" framework="true" />
-    
-    <!-- iOS development frameworks need by Google AdMob 6.12.1 framework -->
-    <framework src="AdSupport.framework" />
-    <framework src="AudioToolbox.framework" />
-    <framework src="AVFoundation.framework" />
-    <framework src="CoreFoundation.framework" />
-    <framework src="CoreTelephony.framework" />
-    <framework src="MessageUI.framework" />
-    <framework src="StoreKit.framework" />
-    <framework src="SystemConfiguration.framework" />
-    <framework src="EventKit.framework" />
-    <framework src="EventKitUI.framework" />
-    <config-file target="*-Info.plist" parent="CFBundleURLTypes">
+    <!--config-file target="*-Info.plist" parent="CFBundleURLTypes">
       <array>
-        <dict><key>bid</key><string>ca-app-pub-8440343014846849/2335511010</string></dict>
-        <dict><key>iid</key><string>ca-app-pub-8440343014846849/3812244218</string></dict>
+        <dict>
+          <key>bid</key>
+          <string>ca-app-pub-8440343014846849/2335511010</string>
+        </dict>
+        <dict>
+          <key>iid</key>
+          <string>ca-app-pub-8440343014846849/3812244218</string>
+        </dict>
       </array>
-    </config-file>
+    </config-file-->
   </platform>
 </plugin>

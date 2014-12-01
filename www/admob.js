@@ -1,5 +1,4 @@
-var argscheck = require('cordova/argscheck'),
-    exec = require('cordova/exec'),
+var exec = require('cordova/exec'),
     admob = module.exports,
     defaultIds = {
       ios : {

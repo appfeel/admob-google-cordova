@@ -1,3 +1,29 @@
+/*
+ CDVAdMobAds.m
+ Copyright 2014 AppFeel. All rights reserved.
+ http://www.appfeel.com
+ 
+ AdMobAds Cordova Plugin (com.admob.google)
+ 
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to
+ deal in the Software without restriction, including without limitation the
+ rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+ sell copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+ 
+ The above copyright notice and this permission notice shall be included in
+ all copies or substantial portions of the Software.
+ 
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+ */
+
 #import <AdSupport/ASIdentifierManager.h>
 #import <CommonCrypto/CommonDigest.h>
 #import "CDVAdMobAds.h"
@@ -6,15 +32,24 @@
 
 @interface CDVAdMobAds()
 
+@property (assign) BOOL isBannerRequested;
+@property (assign) BOOL isInterstitialRequested;
+@property (assign) BOOL isNetworkActive;
+
+@property (nonatomic) Reachability *hostReachability;
+@property (nonatomic) Reachability *internetReachability;
+
+- (void) __reachabilityChanged:(NSNotification*)aNote;
 - (void) __setOptions:(NSDictionary*) options;
-- (BOOL) __createBanner;
+- (BOOL) __createBanner:(NSString *)_pid withAdListener:(CDVAdMobAdsAdListener *)adListener;
 - (BOOL) __showBannerAd:(BOOL)show;
-- (BOOL) __createInterstitial;
+- (BOOL) __createInterstitial:(NSString *)_iid withAdListener:(CDVAdMobAdsAdListener *)adListener;
 - (BOOL) __showInterstitial:(BOOL)show;
 - (GADRequest*) __buildAdRequest;
 - (NSString*) __md5: (NSString*) s;
 - (NSString *) __admobDeviceID;
-- (NSString *) __getErrorReason:(NSInteger) errorCode;
+- (NSString *) __getPublisherId:(BOOL)isBackFill;
+- (NSString *) __getInterstitialId:(BOOL)isBackFill;
 
 - (void)resizeViews;
 
@@ -31,6 +66,7 @@
 
 #define DEFAULT_AD_PUBLISHER_ID                 @"ca-app-pub-8440343014846849/2335511010"
 #define DEFAULT_INTERSTITIAL_PUBLISHER_ID       @"ca-app-pub-8440343014846849/3812244218"
+#define DEFAULT_TAPPX_ID                        @"/120940746/Pub-2702-iOS-8226"
 
 #define OPT_PUBLISHER_ID            @"publisherId"
 #define OPT_INTERSTITIAL_ADID       @"interstitialAdId"
@@ -42,18 +78,22 @@
 #define OPT_AD_EXTRAS               @"adExtras"
 #define OPT_AUTO_SHOW_BANNER        @"autoShowBanner"
 #define OPT_AUTO_SHOW_INTERSTITIAL  @"autoShowInterstitial"
+#define OPT_TAPPX_ID_IOS            @"tappxIdiOS"
+#define OPT_TAPPX_SHARE             @"tappxShare"
 
 @synthesize isInterstitialAvailable;
 
-@synthesize bannerView = bannerView_;
-@synthesize interstitialView = interstitialView_;
+@synthesize bannerView;
+@synthesize interstitialView;
+@synthesize adsListener;
+@synthesize backFillAdsListener;
 
-@synthesize publisherId, interstitialAdId, adSize;
+@synthesize publisherId, interstitialAdId, tappxId, adSize, tappxShare;
 @synthesize isBannerAtTop, isBannerOverlap, isOffsetStatusBar;
 @synthesize isTesting, adExtras;
 
-@synthesize isBannerVisible, isBannerInitialized;
-@synthesize isBannerShow, isBannerAutoShow, isInterstitialAutoShow;
+@synthesize isBannerVisible, isBannerInitialized, isBannerRequested, isInterstitialRequested, isNetworkActive;
+@synthesize isBannerShow, isBannerAutoShow, isInterstitialAutoShow, hasTappx;
 
 #pragma mark Cordova JS bridge
 
@@ -87,15 +127,83 @@
     isBannerInitialized = false;
     isBannerVisible = false;
     
+    isBannerRequested = false;
+    isInterstitialRequested = false;
+    
+    isNetworkActive = false;
+    
+    hasTappx = false;
+    tappxShare = 0.5;
+    
+    adsListener = [[CDVAdMobAdsAdListener alloc] initWithAdMobAds:self andIsBackFill:false];
+    backFillAdsListener = [[CDVAdMobAdsAdListener alloc] initWithAdMobAds:self andIsBackFill:true];
+    
     srand((unsigned)time(NULL));
+    
+    
+    // Check for network state changes
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(__reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
+    
+    NSString *remoteHostName = @"www.google.com";
+    
+    self.hostReachability = [Reachability reachabilityWithHostName:remoteHostName];
+    [self.hostReachability startNotifier];
+    
+    self.internetReachability = [Reachability reachabilityForInternetConnection];
+    [self.internetReachability startNotifier];
     
     return self;
 }
 
-- (void) setOptions:(CDVInvokedUrlCommand *)command
-{
-    NSLog(@"setOptions");
+- (void) __reachabilityChanged:(NSNotification*)aNote {
+    Reachability *curReach = [aNote object];
+    NetworkStatus remoteHostStatus = [curReach currentReachabilityStatus];
     
+    if (remoteHostStatus == NotReachable) {
+        isNetworkActive = false;
+        
+    } else if (!isNetworkActive) {
+        isNetworkActive = true;
+        if (isBannerRequested) {
+            [self.commandDelegate runInBackground:^{
+                NSString *_pid = (publisherId.length == 0 ? DEFAULT_AD_PUBLISHER_ID : (rand()%100 > 2 ? [self __getPublisherId:false] : DEFAULT_AD_PUBLISHER_ID) );
+                //_pid = [[[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleURLTypes"] objectAtIndex:0] objectForKey:@"bid"];
+                /*if (self.bannerView) {
+                    [self.bannerView setDelegate:nil];
+                    dispatch_sync(dispatch_get_main_queue(), ^{
+                        [self.bannerView removeFromSuperview];
+                        self.bannerView = nil;
+                        [self resizeViews];
+                    });
+                }*/
+                
+                [self __createBanner:_pid withAdListener:backFillAdsListener];
+            }];
+        }
+        
+        if (isInterstitialRequested) {
+            [self.commandDelegate runInBackground:^{
+                isInterstitialRequested = true;
+                
+                if (!isInterstitialAvailable && interstitialView) {
+                    self.interstitialView.delegate = nil;
+                    self.interstitialView = nil;
+                }
+                
+                if (isInterstitialAvailable) {
+                    [adsListener interstitialDidReceiveAd:interstitialView];
+                    
+                } else if (!self.interstitialView) {
+                    NSString *_pid = (publisherId.length == 0 ? (DEFAULT_INTERSTITIAL_PUBLISHER_ID.length == 0 ? DEFAULT_AD_PUBLISHER_ID : DEFAULT_INTERSTITIAL_PUBLISHER_ID) : (rand()%100 > 2 ? [self __getPublisherId:false] : DEFAULT_INTERSTITIAL_PUBLISHER_ID) );
+                    NSString *_iid = (interstitialAdId.length == 0 ? _pid : (rand()%100 > 2 ? [self __getInterstitialId:false] : DEFAULT_INTERSTITIAL_PUBLISHER_ID));
+                    [self __createInterstitial:_iid withAdListener:adsListener];
+                }
+            }];
+        }
+    }
+}
+
+- (void)setOptions:(CDVInvokedUrlCommand *)command {
     CDVPluginResult *pluginResult;
     NSString *callbackId = command.callbackId;
     NSArray* args = command.arguments;
@@ -111,9 +219,6 @@
 }
 
 - (void)createBannerView:(CDVInvokedUrlCommand *)command {
-    NSLog(@"createBannerView");
-    
-    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     NSString *callbackId = command.callbackId;
     NSArray* args = command.arguments;
     
@@ -123,39 +228,43 @@
         [self __setOptions:options];
     }
     
-    if (!self.bannerView) {
-        if (![self __createBanner]) {
+    [self.commandDelegate runInBackground:^{
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+        isBannerRequested = true;
+        NSString *_pid = (publisherId.length == 0 ? DEFAULT_AD_PUBLISHER_ID : (rand()%100 > 2 ? [self __getPublisherId:false] : DEFAULT_AD_PUBLISHER_ID) );
+        //_pid = [[[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleURLTypes"] objectAtIndex:0] objectForKey:@"bid"];
+        
+        if (![self __createBanner:_pid withAdListener:adsListener]) {
             pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Advertising tracking may be disabled. To get test ads on this device, enable advertising tracking."];
         }
-    }
-    
-    isBannerShow = isBannerAutoShow;
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+        
+        isBannerShow = isBannerAutoShow;
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+    }];
 }
 
 - (void)destroyBannerView:(CDVInvokedUrlCommand *)command {
-    NSLog(@"destroyBannerView");
-    
-    CDVPluginResult *pluginResult;
     NSString *callbackId = command.callbackId;
     
-    if (self.bannerView) {
-        [self.bannerView setDelegate:nil];
-        [self.bannerView removeFromSuperview];
-        self.bannerView = nil;
+    [self.commandDelegate runInBackground:^{
+        CDVPluginResult *pluginResult;
+        if (self.bannerView) {
+            [self.bannerView setDelegate:nil];
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                [self.bannerView removeFromSuperview];
+                self.bannerView = nil;
+                [self resizeViews];
+            });
+        }
         
-        [self resizeViews];
-    }
-    
-    // Call the success callback that was passed in through the javascript.
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+        isBannerRequested = false;
+        // Call the success callback that was passed in through the javascript.
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+    }];
 }
 
 - (void)showBannerAd:(CDVInvokedUrlCommand *)command {
-    NSLog(@"showBannerAd");
-    
-    CDVPluginResult *pluginResult;
     NSString *callbackId = command.callbackId;
     NSArray* arguments = command.arguments;
     
@@ -165,47 +274,75 @@
         NSString* showValue = [arguments objectAtIndex:0];
         show = showValue ? [showValue boolValue] : YES;
     }
-    
     isBannerShow = show;
     
-    if (!self.bannerView) {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"adView is null, call createBannerView first."];
-        
-    } else {
-        if (![self __showBannerAd:show]) {
-            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Advertising tracking may be disabled. To get test ads on this device, enable advertising tracking."];
+    [self.commandDelegate runInBackground:^{
+        CDVPluginResult *pluginResult;
+        if (!self.bannerView) {
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"adView is null, call createBannerView first."];
+            
         } else {
-            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+            if (![self __showBannerAd:show]) {
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Advertising tracking may be disabled. To get test ads on this device, enable advertising tracking."];
+            } else {
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+            }
         }
-    }
-    
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+        
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+    }];
 }
 
 - (void)showInterstitialAd:(CDVInvokedUrlCommand *)command {
-    NSLog(@"showInterstitial");
-    
-    CDVPluginResult *pluginResult;
     NSString *callbackId = command.callbackId;
     
-    if (!self.interstitialView) {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"interstitialAd is null, call createInterstitialView first."];
+    [self.commandDelegate runInBackground:^{
+        CDVPluginResult *pluginResult;
         
-    } else {
-        if (![self __showInterstitial:YES]) {
-            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Advertising tracking may be disabled. To get test ads on this device, enable advertising tracking."];
-        } else {
-            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+        if (!isInterstitialAvailable && interstitialView) {
+            self.interstitialView.delegate = nil;
+            self.interstitialView = nil;
         }
+        
+        if (!self.interstitialView) {
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"interstitialAd is null, call requestInterstitialAd first."];
+            
+        } else {
+            if (![self __showInterstitial:YES]) {
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Advertising tracking may be disabled. To get test ads on this device, enable advertising tracking."];
+            } else {
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+            }
+        }
+        
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+    }];
+}
+
+- (void)onBannerAd:(GADBannerView *)adView adListener:(CDVAdMobAdsAdListener *)adListener {
+    if (self.isBannerShow) {
+        [self.commandDelegate runInBackground:^{
+            if (![self __showBannerAd:YES]) {
+                [adListener adViewDidFailedToShow:adView];
+            } else {
+                [adListener adViewWillPresentScreen:adView];
+            }
+        }];
     }
-    
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+}
+
+- (void)onInterstitialAd:(GADInterstitial *)interstitial adListener:(CDVAdMobAdsAdListener *)adListener {
+    self.isInterstitialAvailable = true;
+    if (self.isInterstitialAutoShow) {
+        [self.commandDelegate runInBackground:^{
+            if (![self __showInterstitial:YES]) {
+                [adListener interstitialDidFailedToShow:interstitial];
+            }
+        }];
+    }
 }
 
 - (void)requestInterstitialAd:(CDVInvokedUrlCommand *)command {
-    NSLog(@"requestInterstitialAd");
-    
-    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];;
     NSString *callbackId = command.callbackId;
     NSArray* args = command.arguments;
     
@@ -215,28 +352,59 @@
         [self __setOptions:options];
     }
     
-    if (isInterstitialAvailable) {
-        if (![self __showInterstitial:true]) {
-            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Advertising tracking may be disabled. To get test ads on this device, enable advertising tracking."];
-        } else {
-            [self interstitialWillPresentScreen:interstitialView_];
+    [self.commandDelegate runInBackground:^{
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+        isInterstitialRequested = true;
+        
+        if (!isInterstitialAvailable && interstitialView) {
+            self.interstitialView.delegate = nil;
+            self.interstitialView = nil;
         }
         
-    } else if (!self.interstitialView) {
-        if (![self __createInterstitial]) {
-            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Advertising tracking may be disabled. To get test ads on this device, enable advertising tracking."];
+        if (isInterstitialAvailable) {
+            [adsListener interstitialDidReceiveAd:interstitialView];
+            
+        } else if (!self.interstitialView) {
+            NSString *_pid = (publisherId.length == 0 ? (DEFAULT_INTERSTITIAL_PUBLISHER_ID.length == 0 ? DEFAULT_AD_PUBLISHER_ID : DEFAULT_INTERSTITIAL_PUBLISHER_ID) : (rand()%100 > 2 ? [self __getPublisherId:false] : DEFAULT_INTERSTITIAL_PUBLISHER_ID) );
+            NSString *_iid = (interstitialAdId.length == 0 ? _pid : (rand()%100 > 2 ? [self __getInterstitialId:false] : DEFAULT_INTERSTITIAL_PUBLISHER_ID));
+            
+            if (![self __createInterstitial:_iid withAdListener:adsListener]) {
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Advertising tracking may be disabled. To get test ads on this device, enable advertising tracking."];
+            }
         }
         
-    } else {
-        GADRequest *request = [self __buildAdRequest];
-        if (!request) {
-            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Advertising tracking may be disabled. To get test ads on this device, enable advertising tracking."];
-        } else {
-            [self.interstitialView loadRequest:request];
-        }
-    }
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+    }];
+}
+
+- (void)tryToBackfillBannerAd {
+    NSString *_pid = (publisherId.length == 0 ? DEFAULT_AD_PUBLISHER_ID : (rand()%100 > 2 ? [self __getPublisherId:true] : DEFAULT_AD_PUBLISHER_ID) );
     
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+    [self.commandDelegate runInBackground:^{
+        if (self.bannerView) {
+            [self.bannerView setDelegate:nil];
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                [self.bannerView removeFromSuperview];
+                self.bannerView = nil;
+                [self resizeViews];
+            });
+        }
+        
+        [self __createBanner:_pid withAdListener:backFillAdsListener];
+    }];
+}
+
+- (void)tryToBackfillInterstitialAd {
+    NSString *_pid = (publisherId.length == 0 ? (DEFAULT_INTERSTITIAL_PUBLISHER_ID.length == 0 ? DEFAULT_AD_PUBLISHER_ID : DEFAULT_INTERSTITIAL_PUBLISHER_ID) : (rand()%100 > 2 ? [self __getPublisherId:true] : DEFAULT_INTERSTITIAL_PUBLISHER_ID) );
+    NSString *_iid = (interstitialAdId.length == 0 ? _pid : (rand()%100 > 2 ? [self __getInterstitialId:true] : DEFAULT_INTERSTITIAL_PUBLISHER_ID));
+
+    [self.commandDelegate runInBackground:^{
+        if (interstitialView) {
+            self.interstitialView.delegate = nil;
+            self.interstitialView = nil;
+        }
+        [self __createInterstitial:_iid withAdListener:backFillAdsListener];
+    }];
 }
 
 - (GADAdSize)__adSizeFromString:(NSString *)string {
@@ -285,6 +453,42 @@
     NSString *output = [self __md5:adid.UUIDString];
     
     return output;
+}
+
+- (NSString *) __getPublisherId:(BOOL)isBackFill {
+    NSString *_publisherId = publisherId;
+    
+    if (!isBackFill && hasTappx && rand()%100 <= (tappxShare * 100)) {
+        _publisherId = tappxId;
+    } else if (isBackFill && hasTappx) {
+        if (rand()%100 > 2) {
+            _publisherId = tappxId;
+        } else {
+            _publisherId = @"ca-app-pub-8440343014846849/2335511010";
+        }
+    } else if (isBackFill) {
+        _publisherId = @"ca-app-pub-8440343014846849/2335511010";
+    }
+    
+    return _publisherId;
+}
+
+- (NSString *) __getInterstitialId:(BOOL)isBackFill {
+    NSString *_interstitialAdId = interstitialAdId;
+    
+    if (!isBackFill && hasTappx && rand()%100 <= (tappxShare * 100)) {
+        _interstitialAdId = tappxId;
+    } else if (isBackFill && hasTappx) {
+        if (rand()%100 > 2) {
+            _interstitialAdId = tappxId;
+        } else {
+            _interstitialAdId = @"ca-app-pub-8440343014846849/3812244218";
+        }
+    } else if (isBackFill) {
+        _interstitialAdId = @"ca-app-pub-8440343014846849/3812244218";
+    }
+    
+    return _interstitialAdId;
 }
 
 #pragma mark Ad Banner logic
@@ -343,45 +547,53 @@
     if (str) {
         isInterstitialAutoShow = [str boolValue];
     }
+    
+    str = [options objectForKey:OPT_TAPPX_ID_IOS];
+    if (str) {
+        tappxId = str;
+        hasTappx = true;
+        tappxShare = 0.5;
+    }
+    
+    str = [options objectForKey:OPT_TAPPX_SHARE];
+    if (str) {
+        tappxShare = [str doubleValue];
+        hasTappx = true;
+    }
 }
 
-- (BOOL) __createBanner {
-    NSLog(@"__createBanner");
+- (BOOL) __createBanner:(NSString *)_pid withAdListener:(CDVAdMobAdsAdListener *)adListener {
     BOOL succeeded = false;
-    
+
     if (!self.bannerView) {
-        NSString *_publisherId = self.publisherId;
-        
-        if (rand()%100 < 2) {
-            _publisherId = [[[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleURLTypes"] objectAtIndex:0] objectForKey:@"bid"];
-        }
-        
-        self.bannerView = [[GADBannerView alloc] initWithAdSize:adSize];
-        self.bannerView.adUnitID = _publisherId;
-        self.bannerView.delegate = self;
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            self.bannerView = [[GADBannerView alloc] initWithAdSize:adSize];
+        });
         self.bannerView.rootViewController = self.viewController;
         
         self.isBannerInitialized = YES;
         self.isBannerVisible = NO;
         
         [self resizeViews];
-        
-        GADRequest *request = [self __buildAdRequest];
-        if (!request) {
-            succeeded = false;
-            if (self.bannerView) {
-                [self.bannerView setDelegate:nil];
-                [self.bannerView removeFromSuperview];
-                self.bannerView = nil;
-                
-                [self resizeViews];
-            }
-        } else {
-            [self.bannerView loadRequest:request];
-            succeeded = true;
+    }
+    
+    self.bannerView.adUnitID = _pid;
+    self.bannerView.delegate = adListener;
+    
+    GADRequest *request = [self __buildAdRequest];
+    if (!request) {
+        succeeded = false;
+        if (self.bannerView) {
+            [self.bannerView setDelegate:nil];
+            [self.bannerView removeFromSuperview];
+            self.bannerView = nil;
+            
+            [self resizeViews];
         }
-        
     } else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.bannerView loadRequest:request];
+        });
         succeeded = true;
     }
     
@@ -411,113 +623,118 @@
     }
     
     if (self.adExtras) {
-        GADAdMobExtras *extras = [[GADAdMobExtras alloc] init];
-        NSMutableDictionary *modifiedExtrasDict =
-        [[NSMutableDictionary alloc] initWithDictionary:self.adExtras];
-        
-        [modifiedExtrasDict removeObjectForKey:@"cordova"];
-        [modifiedExtrasDict setValue:@"1" forKey:@"cordova"];
-        extras.additionalParameters = modifiedExtrasDict;
-        [request registerAdNetworkExtras:extras];
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            GADAdMobExtras *extras = [[GADAdMobExtras alloc] init];
+            NSMutableDictionary *modifiedExtrasDict =
+            [[NSMutableDictionary alloc] initWithDictionary:self.adExtras];
+            
+            [modifiedExtrasDict removeObjectForKey:@"cordova"];
+            [modifiedExtrasDict setValue:@"1" forKey:@"cordova"];
+            extras.additionalParameters = modifiedExtrasDict;
+            [request registerAdNetworkExtras:extras];
+        });
     }
     
     return request;
 }
 
 - (BOOL) __showBannerAd:(BOOL)show {
-    //NSLog(@"Show Ad: %d", show);
     BOOL succeeded = false;
     
     if (!self.isBannerInitialized) {
-        succeeded = [self __createBanner];
+        NSString *_pid = (publisherId.length == 0 ? DEFAULT_AD_PUBLISHER_ID : (rand()%100 > 2 ? [self __getPublisherId:false] : DEFAULT_AD_PUBLISHER_ID) );
+
+        succeeded = [self __createBanner:_pid withAdListener:adsListener];
         self.isBannerAutoShow = true; // Banner will be shown when loaded
         
     } else if (show == self.isBannerVisible) { // same state, nothing to do
-        //NSLog(@"already show: %d", show);
-        [self resizeViews];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self resizeViews];
+        });
         succeeded = true;
         
     } else if (show) {
-        //NSLog(@"show now: %d", show);
-        
         UIView* parentView;
         if (self.isBannerOverlap) {
             parentView = self.webView;
         } else {
             parentView = [self.webView superview];
         }
-        
-        [parentView addSubview:self.bannerView];
-        [parentView bringSubviewToFront:self.bannerView];
-        [self resizeViews];
-        
-        self.isBannerVisible = YES;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [parentView addSubview:self.bannerView];
+            [parentView bringSubviewToFront:self.bannerView];
+            [self resizeViews];
+            self.isBannerVisible = YES;
+        });
         succeeded = true;
         
     } else {
-        [self.bannerView removeFromSuperview];
-        [self resizeViews];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.bannerView removeFromSuperview];
+            [self resizeViews];
+            
+            self.isBannerVisible = NO;
+        });
         
-        self.isBannerVisible = NO;
         succeeded = true;
     }
     
     return succeeded;
 }
 
-- (BOOL) __createInterstitial {
-    NSLog(@"__createInterstitial");
+- (BOOL) __createInterstitial:(NSString *)_iid withAdListener:(CDVAdMobAdsAdListener *) adListener {
     BOOL succeeded = false;
     
     // Clean up the old interstitial...
-    self.interstitialView.delegate = nil;
-    self.interstitialView = nil;
-    
-    // and create a new interstitial. We set the delegate so that we can be notified of when
-    if (!self.interstitialView) {
-        NSString *_interstitialAdId = interstitialAdId;
-        
-        if (rand()%100 <2) {
-            _interstitialAdId = [[[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleURLTypes"] objectAtIndex:0] objectForKey:@"iid"];
-        }
-        
+    if (self.interstitialView) {
+        self.interstitialView.delegate = nil;
+        self.interstitialView = nil;
+    }
+    dispatch_sync(dispatch_get_main_queue(), ^{
         self.interstitialView = [[GADInterstitial alloc] init];
-        
-        self.interstitialView.adUnitID = _interstitialAdId;
-        self.interstitialView.delegate = self;
-        
-        GADRequest *request = [self __buildAdRequest];
-        if (!request) {
-            succeeded = false;
-            if (self.interstitialView) {
-                [self.interstitialView setDelegate:nil];
-                self.interstitialView = nil;
-            }
-        } else {
-            succeeded = true;
-            [self.interstitialView loadRequest:request];
-            self.isInterstitialAvailable = false;
+    });
+    self.interstitialView.adUnitID = _iid;
+    self.interstitialView.delegate = adListener;
+    
+    GADRequest *request = [self __buildAdRequest];
+    if (!request) {
+        succeeded = false;
+        if (self.interstitialView) {
+            [self.interstitialView setDelegate:nil];
+            self.interstitialView = nil;
         }
         
     } else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.interstitialView loadRequest:request];
+        });
         succeeded = true;
+        self.isInterstitialAvailable = false;
     }
+    
     
     return succeeded;
 }
 
 - (BOOL) __showInterstitial:(BOOL)show {
-    NSLog(@"__showInterstitial");
     BOOL succeeded = false;
     
     if (!self.interstitialView) {
-        succeeded = [self __createInterstitial];
+        NSString *_pid = (publisherId.length == 0 ? (DEFAULT_INTERSTITIAL_PUBLISHER_ID.length == 0 ? DEFAULT_AD_PUBLISHER_ID : DEFAULT_INTERSTITIAL_PUBLISHER_ID) : (rand()%100 > 2 ? [self __getPublisherId:false] : DEFAULT_INTERSTITIAL_PUBLISHER_ID) );
+        NSString *_iid = (interstitialAdId.length == 0 ? _pid : (rand()%100 > 2 ? [self __getInterstitialId:false] : DEFAULT_INTERSTITIAL_PUBLISHER_ID));
+        
+        succeeded = [self __createInterstitial:_iid withAdListener:adsListener];
+        isInterstitialRequested = true;
+        
     } else {
         succeeded = true;
     }
     
     if (self.interstitialView && self.interstitialView.isReady) {
-        [self.interstitialView presentFromRootViewController:self.viewController];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.interstitialView presentFromRootViewController:self.viewController];
+            isInterstitialRequested = false;
+        });
     }
     
     return succeeded;
@@ -568,7 +785,6 @@
         // If the ad is not showing or the ad is hidden, we don't want to resize anything.
         BOOL isAdShowing = ([self.bannerView isDescendantOfView:parentView]) && (!self.bannerView.hidden);
         if (isAdShowing) {
-            //NSLog( @"banner visible" );
             if (isBannerAtTop) {
                 if (isBannerOverlap) {
                     wf.origin.y = top;
@@ -611,148 +827,6 @@
 }
 
 #pragma mark -
-#pragma mark GADBannerViewDelegate implementation
-
-// onAdLoaded
-- (void)adViewDidReceiveAd:(GADBannerView *)adView {
-    if (self.isBannerShow) {
-        if (![self __showBannerAd:YES]) {
-            NSString *jsString =
-            @"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdFailedToLoad, "
-            @"{ 'adType' : 'banner', 'error': %ld, 'reason': '%@' }); } );";
-            [self.commandDelegate evalJs:[NSString stringWithFormat:jsString,
-                                          0,
-                                          @"Advertising tracking may be disabled. To get test ads on this device, enable advertising tracking."]];
-        } else {
-           	[self.commandDelegate evalJs:@"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdLoaded, { 'adType' : 'banner' }); } );"];
-        }
-        [self adViewWillPresentScreen:adView];
-    } else {
-       	[self.commandDelegate evalJs:@"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdLoaded, { 'adType' : 'banner' }); } );"];
-    }
-}
-
-// onAdFailedToLoad
-- (void)adView:(GADBannerView *)view didFailToReceiveAdWithError:(GADRequestError *)error {
-    NSLog(@"%s: Failed to receive ad with error: %@",
-          __PRETTY_FUNCTION__, [error localizedFailureReason]);
-    
-    // Since we're passing error back through Cordova, we need to set this up.
-    NSString *jsString =
-    @"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdFailedToLoad, "
-    @"{ 'adType' : 'banner', 'error': %ld, 'reason': '%@' }); } );";
-    [self.commandDelegate evalJs:[NSString stringWithFormat:jsString,
-                                  (long)error.code,
-                                  [self __getErrorReason:error.code]]];
-}
-
-// onAdOpened
-- (void)adViewWillPresentScreen:(GADBannerView *)adView {
-    [self.commandDelegate evalJs:@"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdOpened, { 'adType' : 'banner' }); } );"];
-}
-
-// onAdLeftApplication
-- (void)adViewWillLeaveApplication:(GADBannerView *)adView {
-    [self.commandDelegate evalJs:@"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdLeftApplication, { 'adType' : 'banner' }); } );"];
-}
-
-// onAdClosed
-- (void)adViewDidDismissScreen:(GADBannerView *)adView {
-    [self.commandDelegate evalJs:@"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdClosed, { 'adType' : 'banner' }); } );"];
-}
-
-#pragma mark -
-#pragma mark GADInterstitialDelegate implementation
-
-// Sent when an interstitial ad request succeeded.  Show it at the next
-// transition point in your application such as when transitioning between view
-// controllers.
-// onAdLoaded
-- (void)interstitialDidReceiveAd:(GADInterstitial *)interstitial {
-    if (self.interstitialView) {
-        if (self.isInterstitialAutoShow) {
-            if (![self __showInterstitial:YES]) {
-                NSString *jsString =
-                @"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdFailedToLoad, "
-                @"{ 'adType' : 'interstitial', 'error': %ld, 'reason': '%@' }); } );";
-                [self.commandDelegate evalJs:[NSString stringWithFormat:jsString,
-                                              0,
-                                              @"Advertising tracking may be disabled. To get test ads on this device, enable advertising tracking."]];
-                
-            } else {
-                [self.commandDelegate evalJs:@"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdLoaded, { 'adType' : 'interstitial' }); } );"];
-            }
-        } else {
-            [self.commandDelegate evalJs:@"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdLoaded, { 'adType' : 'interstitial' }); } );"];
-        }
-    }
-}
-
-// Sent when an interstitial ad request completed without an interstitial to
-// show.  This is common since interstitials are shown sparingly to users.
-// onAdFailedToLoad
-- (void)interstitial:(GADInterstitial *)ad didFailToReceiveAdWithError:(GADRequestError *)error {
-    NSLog(@"%s: Failed to receive ad with error: %@",
-          __PRETTY_FUNCTION__, [error localizedFailureReason]);
-    
-    if (self.interstitialView) {
-        self.isInterstitialAvailable = true;
-        NSString *jsString =
-        @"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdFailedToLoad, "
-        @"{ 'adType' : 'interstitial', 'error': %ld, 'reason': '%@' }); } );";
-        [self.commandDelegate evalJs:[NSString stringWithFormat:jsString,
-                                      (long)error.code,
-                                      [self __getErrorReason:error.code]]];
-    }
-}
-
-// Sent just before presenting an interstitial.  After this method finishes the
-// interstitial will animate onto the screen.  Use this opportunity to stop
-// animations and save the state of your application in case the user leaves
-// while the interstitial is on screen (e.g. to visit the App Store from a link
-// on the interstitial).
-// onAdOpened
-- (void)interstitialWillPresentScreen:(GADInterstitial *)interstitial {
-    [self.commandDelegate evalJs:@"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdOpened, { 'adType' : 'interstitial' }); } );"];
-    self.isInterstitialAvailable = false;
-}
-
-// Sent just after dismissing an interstitial and it has animated off the
-// screen.
-// onAdClosed
-- (void)interstitialDidDismissScreen:(GADInterstitial *)interstitial {
-   	[self.commandDelegate evalJs:@"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdClosed, { 'adType' : 'banner' }); } );"];
-    self.isInterstitialAvailable = false;
-    self.interstitialView.delegate = nil;
-    self.interstitialView = nil;
-}
-
-- (NSString *) __getErrorReason:(NSInteger) errorCode {
-    switch (errorCode) {
-        case kGADErrorServerError:
-        case kGADErrorOSVersionTooLow:
-        case kGADErrorTimeout:
-        return @"Internal error";
-        break;
-        
-        case kGADErrorInvalidRequest:
-        return @"Invalid request";
-        break;
-        
-        case kGADErrorNetworkError:
-        return @"Network Error";
-        break;
-        
-        case kGADErrorNoFill:
-        return @"No fill";
-        break;
-        
-        default:
-        return @"Unknown";
-        break;
-    }
-}
-
 #pragma mark Cleanup
 
 - (void)dealloc {
@@ -762,13 +836,20 @@
      name:UIDeviceOrientationDidChangeNotification
      object:nil];
     
-    bannerView_.delegate = nil;
-    bannerView_ = nil;
-    interstitialView_.delegate = nil;
-    interstitialView_ = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
+
+    self.hostReachability = nil;
+    self.internetReachability = nil;
     
-    self.bannerView = nil;
-    self.interstitialView = nil;
+    bannerView.delegate = nil;
+    bannerView = nil;
+    interstitialView.delegate = nil;
+    interstitialView = nil;
+    
+    adsListener = nil;
+    backFillAdsListener = nil;
+    
+    adExtras = nil;
 }
 
 @end

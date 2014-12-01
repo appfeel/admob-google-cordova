@@ -1,7 +1,7 @@
-admob-google-cordova
+Cordova AdMob plugin
 ====================
 
-Monetize your apps with AdMob ads using Cordova/Phonegap/XDK for Android/iOS.
+Monetize your Cordova/Phonegap/XDK apps with AdMob ads, **using latest Google AdMob SDK**.
 With this Cordova/Phonegap/XDK plugin you can show AdMob ads as easy as:
 
     admob.createBannerView({publisherId: "ca-app-pub-8440343014846849/3119840614"});
@@ -10,20 +10,35 @@ Or
 
     admob.requestInterstitialAd({interstitialAdId: "ca-app-pub-8440343014846849/4596573817", autoShowInterstitial: true});
 
+## New Features ##
+
+#### Nov-2014: ####
+* **Connectivity detection**: When a new connection to WiFi or 3G/GPRS is detected, the ads are automatically shown if you asked to show them before and there was no connection.
+
+* **[Integration with tappx](http://www.tappx.com/?h=dec334d63287772de859bdb4e977fce6)**: the developers community that exchanges advertisement to promote their apps. You can advertise your app for **FREE**. You can decide how much inventory you divert to Tappx.
+
+* **Back-filling**: your lost inventary is delivered to [tappx (you must have a free account)](http://www.tappx.com/?h=dec334d63287772de859bdb4e977fce6).
+
+#### Oct-2014: ####
+* **Google Libraries externalitzation**: The libraries are fetched from external repository, to help it keeping updated.
+
+* **Intel XDK**: Added support to Intel XDK platform and uploaded examples on how to integrate it.
+
 ---
 ## Testimonials ##
 
-* [VisualAnalogScale for Android](https://play.google.com/store/apps/details?id=com.appfeel.visualanalogscale):
+* [Visual Scale Android](https://play.google.com/store/apps/details?id=com.appfeel.visualanalogscale), [Visual Scale iOS](https://itunes.apple.com/app/id940214847?mt=8), a free app to help doctors and physiotherapists in their daily work:
 
 > It was really easy to integrate, thanks.
 
-*Ask to place your testimonial here*
+<br><br>
+**[Place your testimonial here](https://github.com/appfeel/admob-google-cordova/issues)**
 
 
 ---
 ## Platform SDK supported ##
 
-* iOS, using AdMob SDK for iOS, v6.12.0
+* iOS, using AdMob SDK for iOS, v6.12.2
 * Android, using Google Play Service for Android, v4.4
 
 ---
@@ -32,14 +47,14 @@ Or
 - [Cordova/PhoneGap](https://github.com/appfeel/admob-google-demo)
 
 ---
-## How to use ##
+## Quick start ##
 
 To install this plugin, follow the [Command-line Interface Guide](http://cordova.apache.org/docs/en/edge/guide_cli_index.md.html#The%20Command-line%20Interface). You can use one of the following command lines:
 
 * `cordova plugin add com.admob.google`
 * `cordova plugin add https://github.com/appfeel/admob-google-cordova.git`
 
-To start showing ads, place the following code in your onDeviceReady callback. In order to attach an event listener, use `document.addEventListener("deviceready", onDeviceReady, false)`.
+To start showing ads, place the following code in your `onDeviceReady` callback (replace id's with your own):
 ```javascript
     
     function onDeviceReady() {
@@ -47,8 +62,11 @@ To start showing ads, place the following code in your onDeviceReady callback. I
       
       // Set AdMobAds options:
       admob.setOptions({
-        publisherId:          "ca-app-pub-8440343014846849/3119840614",
-        interstitialAdId:     "ca-app-pub-8440343014846849/4596573817"
+        publisherId:          "ca-app-pub-8440343014846849/3119840614",  // Required
+        interstitialAdId:     "ca-app-pub-8440343014846849/4596573817",  // Optional
+        tappxIdiOs:           "/120940746/Pub-2702-iOS-8226",            // Optional
+        tappxIdAndroid:       "/120940746/Pub-2700-Android-8171",        // Optional
+        tappxShare:           0.5                                        // Optional
       });
       
       // Start showing banners (atomatic when autoShowBanner is set to true)
@@ -57,13 +75,15 @@ To start showing ads, place the following code in your onDeviceReady callback. I
       // Request interstitial (will present automatically when autoShowInterstitial is set to true)
       admob.requestIntertitial();
     }
+    
+    document.addEventListener("deviceready", onDeviceReady, false)
 ```
-Note: ensure you have a proper [AdMob](https://apps.admob.com/admob/signup) account and create an Id for your app.
+*Note: ensure you have a proper [AdMob](https://apps.admob.com/admob/signup) and [tappx](http://www.tappx.com/?h=dec334d63287772de859bdb4e977fce6) accounts and get your publisher id's*.
 
 ---
 ## Javascript API ##
 
-*Note:* All success callbacks are in the form `` 'function () {}' ``, and all failure callbacks are in the form `` 'function (err) {}' `` where `err` is a String explaining the error reason.
+*Note:* All success callbacks are in the form `'function () {}'`, and all failure callbacks are in the form `'function (err) {}'` where `err` is a String explaining the error reason.
 
 #### setOptions(options, success, fail);
 Set the options to start displaying ads:
@@ -75,28 +95,34 @@ Set the options to start displaying ads:
 #### Options
 A JSON object whith the following fields:
 
-* **publisherId**: (Required) Your publisher id code from your AdMob account.
-* interstitialAdId: (Optional) Your interstitial id code from your AdMob account. Defaults to `publisherId`.
-* bannerAtTop: (Optional) Indicates whether to put banner ads at top when set to true or at bottom when set to false. Default `false`.
-* adSize: (Optional) Indicates the size of banner ads.  
+* ***publisherId***: (Required) Your publisher id code from your AdMob account. [You can get it from AdMob](https://apps.admob.com/admob/signup).
+* **interstitialAdId**: (Optional) Your interstitial id code from your AdMob account. Defaults to `publisherId`.
+* **tappxIdiOS**: (Optional) Your tappx id for iOS apps. **[You can get it from tappx](http://www.tappx.com/?h=dec334d63287772de859bdb4e977fce6)**. It is also used to backfill your lost inventory (when there are no Admob ads available).
+* **tappxIdAndroid**: (Optional) Your tappx id for Android apps. **[You can get it from tappx](http://www.tappx.com/?h=dec334d63287772de859bdb4e977fce6)**. It is also used to backfill your lost inventory (when there are no Admob ads available).
+* **tappxShare**: (Optional) If any of tappxId is present, it tells the percentage of traffic diverted to tappx. Defaults to 50% (0.5).
+* **bannerAtTop**: (Optional) Indicates whether to put banner ads at top when set to true or at bottom when set to false. Default `false`.
+* **adSize**: (Optional) Indicates the size of banner ads.  
 Available values are (see [Google Docs](https://developers.google.com/mobile-ads-sdk/docs/admob/android/banner#size) for more info):
   * admob.AD_SIZE.BANNER: 320x50. Standard Banner (Phones and Tablets).
   * admob.AD_SIZE.IAB_MRECT: 300x250. IAB Medium Rectangle (Phones and Tablets).
   * admob.AD_SIZE.IAB_BANNER: 468x60. IAB Full-Size Banner (Tablets).
   * admob.AD_SIZE.IAB_LEADERBOARD: 728x90. IAB Leaderboard (Tablets).
   * admob.AD_SIZE.SMART_BANNER: ([See table](https://developers.google.com/mobile-ads-sdk/docs/admob/android/banner#smart)) Smart Banner (Phones and Tablets).
-* overlap: (Optional) Allow banner overlap webview. Default `false`.
-* offsetStatusBar: (Optional) Set to true to avoid ios7 status bar overlap. Default `false`.
-* isTesting: (Optional) Set to true for receiving test ads (do not test with real ads as your account will be banned). Default `false`.
-* adExtras: (Options) A JSON object with additional {key: value} pairs (see [Google Docs](https://developers.google.com/mobile-ads-sdk/docs/admob/android/banner#color) for more info).
-* autoShowBanner: (Optional) Auto show banners ad when available (`admob.events.onAdLoaded` event is called). Default `true`.
-* autoShowInterstitial: (Optional) Auto show interstitials ad when available (`admob.events.onAdLoaded` event is called). Default `false`.
+* **overlap**: (Optional) Allow banner overlap webview. Default `false`.
+* **offsetStatusBar**: (Optional) Set to true to avoid ios7 status bar overlap. Default `false`.
+* **isTesting**: (Optional) Set to true for receiving test ads (do not test with real ads as your account will be banned). Default `false`.
+* **adExtras**: (Options) A JSON object with additional {key: value} pairs (see [Google Docs](https://developers.google.com/mobile-ads-sdk/docs/admob/android/banner#color) for more info).
+* **autoShowBanner**: (Optional) Auto show banners ad when available (`admob.events.onAdLoaded` event is called). Default `true`.
+* **autoShowInterstitial**: (Optional) Auto show interstitials ad when available (`admob.events.onAdLoaded` event is called). Default `false`.
 
-*Example (those are also the default options):*
+*Example (those are also the default options, except for tappxId's which are empty by default):*
 ```javascript
 {
   publisherId:          "ca-app-pub-8440343014846849/3119840614",
   interstitialAdId:     "ca-app-pub-8440343014846849/4596573817",
+  tappxIdiOs:           "/120940746/Pub-2702-iOS-8226",
+  tappxIdAndroid:       "/120940746/Pub-2700-Android-8171",
+  tappxShare:           0.5,
   adSize:               admob.AD_SIZE.SMART_BANNER,
   bannerAtTop:          false,
   overlap:              false,
@@ -196,6 +222,7 @@ Called when an ad request failed.
       
 #### admob.events.onAdOpened
 Called when an ad opens an overlay that covers the screen.
+Please note that `onPause` event is raised when an interstitial is shown.
 
 * e: JSON object.  
 *Example:* `{ adType : "banner" }`  
@@ -203,6 +230,7 @@ Called when an ad opens an overlay that covers the screen.
       
 #### admob.events.onAdClosed
 Called when the user is about to return to the application after clicking on an ad.
+Please note that `onResume` event is raised when an interstitial is closed.
 
 * e: JSON object.  
 *Example:* `{ adType : "banner" }`  
@@ -244,7 +272,8 @@ Called when the user clicks the buy button of an in-app purchase ad. You shoud c
 
 ---
 ## Complete example code ##
-Call the following code inside `onDeviceReady()`. (This is because only after device ready you will have the plugin working).
+Note that the admob ads are configured inside `onDeviceReady()`. This is because only after device ready the AdMob Cordova plugin will be working.
+
 ```javascript
 
     function initAds() {
@@ -263,8 +292,11 @@ Call the following code inside `onDeviceReady()`. (This is because only after de
         var admobid = (/(android)/i.test(navigator.userAgent)) ? adPublisherIds.android : adPublisherIds.ios;
             
         admob.setOptions({
-          publisherId: admobid.banner,
-          interstitialAdId: admobid.interstitial
+          publisherId:      admobid.banner,
+          interstitialAdId: admobid.interstitial,
+          tappxIdiOs:       "/120940746/Pub-2702-iOS-8226",
+          tappxIdAndroid:   "/120940746/Pub-2700-Android-8171",
+          tappxShare:       0.5
         });
 
         registerAdEvents();
@@ -310,14 +342,14 @@ Call the following code inside `onDeviceReady()`. (This is because only after de
 ---
 ## Contributing ##
 You can use this cordova plugin for free. You can contribute to this project in many ways:
-* Testimonials of apps that are using this plugin would be especially helpful (and gives your app free marketing). Open an issue.
-* Reporting issues.
-* Patching and bug fixing, especially when submitted with test code. Open a pull request.
+
+* Testimonials of apps that are using this plugin gives your app free marketing and will be especially helpful. [Open an issue](https://github.com/appfeel/admob-google-cordova/issues).
+* Register to [tappx](http://www.tappx.com/?h=dec334d63287772de859bdb4e977fce6) by using this link: http://www.tappx.com/?h=dec334d63287772de859bdb4e977fce6. It is our Guess-Link and for each affiliate we will get 50k tappix (free exchange ads).
+* [Reporting issues](https://github.com/appfeel/admob-google-cordova/issues).
+* Patching and bug fixing, especially when submitted with test code. [Open a pull request](https://github.com/appfeel/admob-google-cordova/pulls).
 * Other enhancements.
 
-To support this project, donation is welcome. Donation can be accepted in either of following ways:
-* Share 2% Ad traffic. (It's not mandatory: if you are unwilling to share, please fork and remove the donation code).
-* Donate via [paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=MFQHUTN8U9XD6&lc=ES&item_name=AppFeel&item_number=com%2eadmob%2egoogle&amount=10%2e00&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted)
+You can also support this project by sharing 2% Ad traffic (it's not mandatory: if you are unwilling to share, please fork and remove the donation code) and by donations via [paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=MFQHUTN8U9XD6&lc=ES&item_name=AppFeel&item_number=com%2eadmob%2egoogle&amount=10%2e00&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted)
 
 ---
 ## Screenshots ##
@@ -348,6 +380,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 ```
 ---
 ## Credits ##
-[floatinghotpot/cordova-plugin-admob](https://github.com/floatinghotpot/cordova-plugin-admob.git)
 
-[aliokan/cordova-plugin-admob](https://github.com/aliokan/cordova-plugin-admob)
+* [appFeel](http://www.appfeel.com)
+* floatinghotpot/cordova-plugin-admob
+* aliokan/cordova-plugin-admob

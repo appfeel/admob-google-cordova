@@ -10,7 +10,7 @@ import com.google.android.gms.ads.AdRequest;
 public class AdMobAdsAdListener extends AdListener {
   private String adType = "";
   private AdMobAds admobAds;
-  private IAdLoadedAvailable iAdLoadedAvailable;
+  private boolean isBackFill = false;
 
   public interface IAdLoadedAvailable {
     void onAdLoaded(String adType);
@@ -18,15 +18,15 @@ public class AdMobAdsAdListener extends AdListener {
     void onAdOpened(String adType);
   }
 
-  public AdMobAdsAdListener(String adType, AdMobAds admobAds, IAdLoadedAvailable iAdLoadedAvailable) {
+  public AdMobAdsAdListener(String adType, AdMobAds admobAds, boolean isBackFill) {
     this.adType = adType;
     this.admobAds = admobAds;
-    this.iAdLoadedAvailable = iAdLoadedAvailable;
+    this.isBackFill = isBackFill;
   }
 
   @Override
   public void onAdLoaded() {
-    iAdLoadedAvailable.onAdLoaded(adType);
+    admobAds.onAdLoaded(adType);
     admobAds.cordova.getActivity().runOnUiThread(new Runnable() {
       @Override
       public void run() {
@@ -39,16 +39,20 @@ public class AdMobAdsAdListener extends AdListener {
 
   @Override
   public void onAdFailedToLoad(int errorCode) {
-    final int code = errorCode;
-    admobAds.cordova.getActivity().runOnUiThread(new Runnable() {
-      @Override
-      public void run() {
-        String reason = getErrorReason(code);
-        Log.d(AdMobAds.ADMOBADS_LOGTAG, adType + ": fail to load ad (" + reason + ")");
-        String event = String.format("javascript:cordova.fireDocumentEvent(admob.events.onAdFailedToLoad, { 'adType': '%s', 'error': %d, 'reason': '%s' });", adType, code, reason);
-        admobAds.webView.loadUrl(event);
-      }
-    });
+    if (this.isBackFill) {
+      final int code = errorCode;
+      admobAds.cordova.getActivity().runOnUiThread(new Runnable() {
+        @Override
+        public void run() {
+          String reason = getErrorReason(code);
+          Log.d(AdMobAds.ADMOBADS_LOGTAG, adType + ": fail to load ad (" + reason + ")");
+          String event = String.format("javascript:cordova.fireDocumentEvent(admob.events.onAdFailedToLoad, { 'adType': '%s', 'error': %d, 'reason': '%s' });", adType, code, reason);
+          admobAds.webView.loadUrl(event);
+        }
+      });
+    } else {
+      admobAds.tryBackfill(adType);
+    }
   }
 
   /** Gets a string error reason from an error code. */
@@ -73,7 +77,7 @@ public class AdMobAdsAdListener extends AdListener {
 
   @Override
   public void onAdOpened() {
-    iAdLoadedAvailable.onAdOpened(adType);
+    admobAds.onAdOpened(adType);
     admobAds.cordova.getActivity().runOnUiThread(new Runnable() {
       @Override
       public void run() {
