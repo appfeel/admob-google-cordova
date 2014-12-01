@@ -3,7 +3,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="com.admob.google" version="2.0.1">
 
   <name>admob</name>
-  <description>Best iOS/Android Google AdMob Ads plugin for Cordova, Phonegap and Intel XDK. Monetize your app with one javascript line. Android SDK v6.1, iOS SDK v6.12.2. Supports tappx.</description>
+  <description>Phonegap, Cordova, XDK iOS/Android Google AdMob Ads plugin. Monetize your app with one javascript line. Android SDK v6.1, iOS SDK v6.12.2. Supports tappx.</description>
   <author>AppFeel</author>
   <license>MIT</license>
   <keywords>ad,ads,admob,google,advertising,advertisment,publicity,earn,win,play,services,iad,flurry,monetization,money,appfeel</keywords>
