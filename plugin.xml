@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<!--plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="com.admob.admobads" version="2.0.1">
-
-  <description>Phonegap, Cordova, XDK AdMob plugin. Monetize your app with one javascript line. Android SDK v6.1, iOS SDK v6.12.2. Tappx support.</description-->
-
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="com.admob.google" version="2.0.1">
 
   <description>Google AdMob Ads plugin for Cordova, Phonegap and Intel XDK. Monetize your app with one javascript line. Android SDK v6.1, iOS SDK v6.12.2. With support for tappx.</description>
