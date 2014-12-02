@@ -8,7 +8,7 @@
 
   <description>Google AdMob Ads plugin for Cordova, Phonegap and Intel XDK. Monetize your app with one javascript line. Android SDK v6.1, iOS SDK v6.12.2. With support for tappx.</description>
 
-  <name>admob</name>
+  <name>AdMob Google Ads + Tappx</name>
   <author>AppFeel</author>
   <license>MIT</license>
   <keywords>ad,ads,admob,google,advertising,advertisment,publicity,earn,win,play,services,iad,flurry,monetization,money,appfeel</keywords>

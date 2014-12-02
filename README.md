@@ -17,7 +17,7 @@ Or
 
 * **[Integration with tappx](http://www.tappx.com/?h=dec334d63287772de859bdb4e977fce6)**: the developers community that exchanges advertisement to promote their apps. You can advertise your app for **FREE**. You can decide how much inventory you divert to Tappx.
 
-* **Back-filling**: your lost inventary is delivered to [tappx (you must have a free account)](http://www.tappx.com/?h=dec334d63287772de859bdb4e977fce6).
+* **Back-filling**: your lost inventory is delivered to [tappx (you must have a free account)](http://www.tappx.com/?h=dec334d63287772de859bdb4e977fce6).
 
 #### Oct-2014: ####
 * **Google Libraries externalitzation**: The libraries are fetched from external repository, to help it keeping updated.
