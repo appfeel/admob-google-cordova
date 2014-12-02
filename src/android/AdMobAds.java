@@ -54,8 +54,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.RelativeLayout;
 
-import com.appfeel.connectivity.Connectivity;
-import com.appfeel.connectivity.Connectivity.IConnectivityChange;
+import com.appfeel.cordova.connectivity.Connectivity;
+import com.appfeel.cordova.connectivity.Connectivity.IConnectivityChange;
 import com.appfeel.cordova.admob.AdMobAdsAdListener.IAdLoadedAvailable;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
