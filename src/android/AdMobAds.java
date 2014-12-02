@@ -1,5 +1,5 @@
 /*
- CDVAdMobAds.h
+ AdMobAds.java
  Copyright 2014 AppFeel. All rights reserved.
  http://www.appfeel.com
  
