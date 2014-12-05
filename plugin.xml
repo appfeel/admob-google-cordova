@@ -43,7 +43,7 @@
     </config-file>
 
     <dependency id="android.support.v4" url="https://github.com/appfeel/cordova-plugin-android-support-v4" />
-    <dependency id="com.google.playservices" url="https://github.com/appfeel/google-play-services" />
+    <dependency id="com.google.playservices" />
 
     <source-file src="src/android/AdMobAds.java" target-dir="src/com/appfeel/cordova/admob" />
     <source-file src="src/android/AdMobAdsAdListener.java" target-dir="src/com/appfeel/cordova/admob" />
