@@ -515,7 +515,9 @@
 #pragma mark Ad Banner logic
 
 - (void) __setOptions:(NSDictionary*) options {
-    if ((NSNull *)options == [NSNull null]) return;
+    if ((NSNull *)options == [NSNull null]) {
+        return;
+    }
     
     NSString* str = nil;
     
