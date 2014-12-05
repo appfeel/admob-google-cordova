@@ -386,5 +386,3 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 ## Credits ##
 
 * [appFeel](http://www.appfeel.com)
-* floatinghotpot/cordova-plugin-admob
-* aliokan/cordova-plugin-admob
