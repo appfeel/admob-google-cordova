@@ -25,7 +25,7 @@ Or
 * **Intel XDK**: Added support to Intel XDK platform and uploaded examples on how to integrate it.
 
 ---
-## Testimonials ##
+## Testimonials ##
 
 * [Visual Scale Android](https://play.google.com/store/apps/details?id=com.appfeel.visualanalogscale), [Visual Scale iOS](https://itunes.apple.com/app/id940214847?mt=8), a free app to help doctors and physiotherapists in their daily work:
 

@@ -124,7 +124,7 @@ admob.createBannerView = function (options, successCallback, failureCallback) {
     successCallback = options;
     options = undefined;
   }
-  options = options || {};
+  options = options || {};
   cordova.exec(successCallback, failureCallback, 'AdMobAds', 'createBannerView', [ options ]);
 };
 
@@ -169,7 +169,7 @@ admob.requestInterstitialAd = function (options, successCallback, failureCallbac
     successCallback = options;
     options = undefined;
   }
-  options = options || {};
+  options = options || {};
   cordova.exec(successCallback, failureCallback, 'AdMobAds', 'requestInterstitialAd', [ options ]);
 };
 
