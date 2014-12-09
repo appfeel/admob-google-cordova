@@ -71,6 +71,8 @@
 @property (assign) BOOL isBannerShow;
 @property (assign) BOOL isBannerAutoShow;
 @property (assign) BOOL isInterstitialAutoShow;
+@property (assign) BOOL isGo2TappxInInterstitialBackfill;
+@property (assign) BOOL isGo2TappxInBannerBackfill;
 @property (assign) BOOL hasTappx;
 @property (assign) double tappxShare;
 

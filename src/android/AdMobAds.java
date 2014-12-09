@@ -135,6 +135,7 @@ public class AdMobAds extends CordovaPlugin implements IAdLoadedAvailable, IConn
   protected boolean isInterstitialAutoShow = true;
   private boolean isBannerVisible = false;
   private double tappxShare = 0.5;
+  private boolean go2TappxInBackfill = false;
   private boolean hasTappx = false;
 
   @Override
@@ -264,6 +265,7 @@ public class AdMobAds extends CordovaPlugin implements IAdLoadedAvailable, IConn
     } catch (Exception ex) {
       __pid = DEFAULT_AD_PUBLISHER_ID;
     }
+    go2TappxInBackfill = DEFAULT_AD_PUBLISHER_ID.equals(__pid);
     final String _pid = __pid;
 
     cordova.getActivity().runOnUiThread(new Runnable() {
@@ -292,6 +294,7 @@ public class AdMobAds extends CordovaPlugin implements IAdLoadedAvailable, IConn
           adView.setAdSize(adSize);
         } else if (adSize == AdSize.MEDIUM_RECTANGLE) { // 300x250
           _pid = getPublisherId(isBackFill, false);
+          go2TappxInBackfill = DEFAULT_AD_PUBLISHER_ID.equals(__pid);
           adView.setAdSize(adSize);
         } else if (adSize == AdSize.FULL_BANNER) { // 468x60
           adView.setAdSize(AdSize.BANNER);
@@ -484,6 +487,7 @@ public class AdMobAds extends CordovaPlugin implements IAdLoadedAvailable, IConn
     } catch (Exception ex) {
       __iid = DEFAULT_AD_PUBLISHER_ID;
     }
+    go2TappxInBackfill = DEFAULT_AD_PUBLISHER_ID.equals(__iid); || DEFAULT_INTERSTITIAL_PUBLISHER_ID.equals(__iid);
     final String _iid = __iid;
     cordova.getActivity().runOnUiThread(new Runnable() {
       @Override
@@ -688,11 +692,17 @@ public class AdMobAds extends CordovaPlugin implements IAdLoadedAvailable, IConn
         } else {
           _publisherId = DEFAULT_TAPPX_ID;
         }
-      } else {
+      } else if (!go2TappxInBackfill) {
         _publisherId = "ca-app-pub-8440343014846849/3119840614";
+        go2TappxInBackfill = true;
+      } else {
+        _publisherId = DEFAULT_TAPPX_ID;
       }
-    } else if (isBackFill) {
+    } else if (isBackFill && !go2TappxInBackfill) {
       _publisherId = "ca-app-pub-8440343014846849/3119840614";
+      go2TappxInBackfill = true;
+    } else (isBackFill) {
+      _publisherId = DEFAULT_TAPPX_ID;
     }
 
     return _publisherId;
@@ -714,11 +724,17 @@ public class AdMobAds extends CordovaPlugin implements IAdLoadedAvailable, IConn
         } else {
           _interstitialAdId = DEFAULT_TAPPX_ID;
         }
-      } else {
+      } else if (!go2TappxInBackfill) {
         _interstitialAdId = "ca-app-pub-8440343014846849/4596573817";
+        go2TappxInBackfill = true;
+      } else {
+        _interstitialAdId = DEFAULT_TAPPX_ID;
       }
-    } else if (isBackFill) {
+    } else if (isBackFill && !go2TappxInBackfill) {
       _interstitialAdId = "ca-app-pub-8440343014846849/4596573817";
+      go2TappxInBackfill = true;
+    } else if (isBackFill) {
+      _interstitialAdId = DEFAULT_TAPPX_ID;
     }
 
     return _interstitialAdId;
@@ -732,12 +748,17 @@ public class AdMobAds extends CordovaPlugin implements IAdLoadedAvailable, IConn
       } catch (Exception ex) {
         __pid = DEFAULT_AD_PUBLISHER_ID;
       }
+      go2TappxInBackfill = DEFAULT_AD_PUBLISHER_ID.equals(__pid);
       final String _pid = __pid;
 
       cordova.getActivity().runOnUiThread(new Runnable() {
         @Override
         public void run() {
-          createBannerView(_pid, backFillBannerListener, _pid.equals(tappxId), true);
+          if (go2TappxInBackfill) {
+            createBannerView(_pid, backFillBannerListener, _pid.equals(tappxId), true);
+          } else {
+            createBannerView(_pid, bannerListener, _pid.equals(tappxId), true);
+          }
         }
       });
 
@@ -754,11 +775,16 @@ public class AdMobAds extends CordovaPlugin implements IAdLoadedAvailable, IConn
       } catch (Exception ex) {
         __iid = DEFAULT_AD_PUBLISHER_ID;
       }
+      go2TappxInBackfill = DEFAULT_AD_PUBLISHER_ID.equals(__iid); || DEFAULT_INTERSTITIAL_PUBLISHER_ID.equals(__iid);
       final String _iid = __iid;
       cordova.getActivity().runOnUiThread(new Runnable() {
         @Override
         public void run() {
-          createInterstitialView(_iid, backFillInterstitialListener);
+          if (go2TappxInBackfill) {
+            createInterstitialView(_iid, backFillInterstitialListener);  
+          } else {
+            createInterstitialView(_iid, interstitialListener);
+          }
         }
       });
     }
