@@ -1,3 +1,5 @@
+Made in Barcelona with Love and Code
+
 Cordova AdMob plugin
 ====================
 
