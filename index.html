@@ -1,0 +1,664 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="google-site-verification" content="PJADUif8IEIJEewcv9O5Wl7nJYhkLvGze6tYK-IKNRs" />
+  <meta name="description" content="Phonegap and Cordova Admob plugin. Monetize your mobile app with one javascript line. Supports Tappx and auto-detects internet connection changes."/>
+  <title>Admob Plugin for Cordova and Phonegap</title>
+
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/pygment_trac.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+  <div class="wrapper">
+    <header>
+      <h1 class="header">Phonegap Cordova Admob</h1>
+      <p class="header">Cordova, Phonegap and Intel XDK AdMob ads plugin</p>
+
+      <ul>
+        <li class="download"><a class="buttons" href="https://github.com/appfeel/admob-google-cordova/zipball/master">Download ZIP</a>
+        </li>
+        <li class="download"><a class="buttons" href="https://github.com/appfeel/admob-google-cordova/tarball/master">Download TAR</a>
+        </li>
+        <li><a class="buttons github" href="https://github.com/appfeel/admob-google-cordova">View On GitHub</a>
+        </li>
+      </ul>
+
+      <p class="header">Maintained by <a class="header name" href="https://github.com/appfeel">appfeel</a>
+      </p>
+
+
+    </header>
+    <section>
+      <p class="small"><a class="normal" href="http://www.appfeel.com">Made in Barcelona with <span class="love">Love</span> and <span class="code">Code</span></a></p>
+      <h1>
+<a id="cordova-admob-plugin" class="anchor" href="#cordova-admob-plugin" aria-hidden="true"><span class="octicon octicon-link"></span></a>Cordova AdMob plugin</h1>
+
+      <p>Monetize your Cordova/Phonegap/XDK apps with AdMob ads, <strong>using latest Google AdMob SDK</strong>. With this Cordova/Phonegap/XDK plugin you can show AdMob ads as easy as:</p>
+
+      <pre><code>admob.createBannerView({publisherId: "ca-app-pub-8440343014846849/3119840614"});
+</code></pre>
+
+      <p>Or</p>
+
+      <pre><code>admob.requestInterstitialAd({interstitialAdId: "ca-app-pub-8440343014846849/4596573817", autoShowInterstitial: true});
+</code></pre>
+
+      <h2>
+<a id="new-features" class="anchor" href="#new-features" aria-hidden="true"><span class="octicon octicon-link"></span></a>New Features</h2>
+
+      <h4>
+<a id="nov-2014" class="anchor" href="#nov-2014" aria-hidden="true"><span class="octicon octicon-link"></span></a>Nov-2014:</h4>
+
+      <ul>
+        <li>
+          <p><strong>Connectivity detection</strong>: When a new connection to WiFi or 3G/GPRS is detected, the ads are automatically shown if you asked to show them before and there was no connection.</p>
+        </li>
+        <li>
+          <p><strong><a href="http://www.tappx.com/?h=dec334d63287772de859bdb4e977fce6">Integration with tappx</a></strong>: the developers community that exchanges advertisement to promote their apps. You can advertise your app for <strong>FREE</strong>. You can decide how much inventory you divert to Tappx.</p>
+        </li>
+        <li>
+          <p><strong>Back-filling</strong>: your lost inventory is delivered to <a href="http://www.tappx.com/?h=dec334d63287772de859bdb4e977fce6">tappx (you must have a free account)</a>.</p>
+        </li>
+      </ul>
+
+      <h4>
+<a id="oct-2014" class="anchor" href="#oct-2014" aria-hidden="true"><span class="octicon octicon-link"></span></a>Oct-2014:</h4>
+
+      <ul>
+        <li>
+          <p><strong>Google Libraries externalitzation</strong>: The libraries are fetched from external repository, to help it keeping updated.</p>
+        </li>
+        <li>
+          <p><strong>Intel XDK</strong>: Added support to Intel XDK platform and uploaded examples on how to integrate it.</p>
+        </li>
+      </ul>
+
+      <hr>
+
+      <h2>
+<a id="testimonials" class="anchor" href="#testimonials" aria-hidden="true"><span class="octicon octicon-link"></span></a>Testimonials</h2>
+
+      <ul>
+        <li>
+          <a href="https://play.google.com/store/apps/details?id=com.appfeel.visualanalogscale">Visual Scale Android</a>, <a href="https://itunes.apple.com/app/id940214847?mt=8">Visual Scale iOS</a>, a free app to help doctors and physiotherapists in their daily work:</li>
+      </ul>
+
+      <blockquote>
+        <p>It was really easy to integrate, thanks.</p>
+      </blockquote>
+
+      <p>
+        <br>
+        <br>
+        <strong><a href="https://github.com/appfeel/admob-google-cordova/issues">Place your testimonial here</a></strong>
+      </p>
+
+      <hr>
+
+      <h2>
+<a id="platform-sdk-supported" class="anchor" href="#platform-sdk-supported" aria-hidden="true"><span class="octicon octicon-link"></span></a>Platform SDK supported</h2>
+
+      <ul>
+        <li>iOS, using AdMob SDK for iOS, v6.12.2</li>
+        <li>Android, using Google Play Service for Android, v6.1</li>
+      </ul>
+
+      <hr>
+
+      <h2>
+<a id="demo-projects" class="anchor" href="#demo-projects" aria-hidden="true"><span class="octicon octicon-link"></span></a>Demo projects:</h2>
+
+      <ul>
+        <li><a href="https://github.com/appfeel/admob-google-xdk">Intel XDK</a>
+        </li>
+        <li><a href="https://github.com/appfeel/admob-google-demo">Cordova/PhoneGap</a>
+        </li>
+      </ul>
+
+      <hr>
+
+      <h2>
+<a id="quick-start" class="anchor" href="#quick-start" aria-hidden="true"><span class="octicon octicon-link"></span></a>Quick start</h2>
+
+      <p>To install this plugin, follow the <a href="http://cordova.apache.org/docs/en/edge/guide_cli_index.md.html#The%20Command-line%20Interface">Command-line Interface Guide</a>. You can use one of the following command lines:</p>
+
+      <ul>
+        <li><code>cordova plugin add com.admob.google</code>
+        </li>
+        <li><code>cordova plugin add https://github.com/appfeel/admob-google-cordova.git</code>
+        </li>
+      </ul>
+
+      <p>To start showing ads, place the following code in your <code>onDeviceReady</code> callback. Replace corresponding id's with yours:</p>
+
+      <p><em>Note: ensure you have a proper <a href="https://apps.admob.com/admob/signup">AdMob</a> and <a href="http://www.tappx.com/?h=dec334d63287772de859bdb4e977fce6">tappx</a> accounts and get your publisher id's</em>.</p>
+
+      <div class="highlight highlight-javascript"><pre>
+    <span class="pl-st">function</span> <span class="pl-en">onDeviceReady</span>() {
+      <span class="pl-s3">document</span>.removeEventListener(<span class="pl-s1"><span class="pl-pds">'</span>deviceready<span class="pl-pds">'</span></span>, onDeviceReady, <span class="pl-c1">false</span>);
+
+      <span class="pl-c">// Set AdMobAds options:</span>
+      admob.setOptions({
+        publisherId<span class="pl-k">:</span>          <span class="pl-s1"><span class="pl-pds">"</span>ca-app-pub-8440343014846849/3119840614<span class="pl-pds">"</span></span>,  <span class="pl-c">// Required</span>
+        interstitialAdId<span class="pl-k">:</span>     <span class="pl-s1"><span class="pl-pds">"</span>ca-app-pub-8440343014846849/4596573817<span class="pl-pds">"</span></span>,  <span class="pl-c">// Optional</span>
+        tappxIdiOs<span class="pl-k">:</span>           <span class="pl-s1"><span class="pl-pds">"</span>/120940746/Pub-2702-iOS-8226<span class="pl-pds">"</span></span>,            <span class="pl-c">// Optional</span>
+        tappxIdAndroid<span class="pl-k">:</span>       <span class="pl-s1"><span class="pl-pds">"</span>/120940746/Pub-2700-Android-8171<span class="pl-pds">"</span></span>,        <span class="pl-c">// Optional</span>
+        tappxShare<span class="pl-k">:</span>           <span class="pl-c1">0.5</span>                                        <span class="pl-c">// Optional</span>
+      });
+
+      <span class="pl-c">// Start showing banners (atomatic when autoShowBanner is set to true)</span>
+      admob.createBannerView();
+
+      <span class="pl-c">// Request interstitial (will present automatically when autoShowInterstitial is set to true)</span>
+      admob.requestIntertitial();
+    }
+
+    <span class="pl-s3">document</span>.addEventListener(<span class="pl-s1"><span class="pl-pds">"</span>deviceready<span class="pl-pds">"</span></span>, onDeviceReady, <span class="pl-c1">false</span>)</pre>
+      </div>
+
+      <p>If you don't specify tappxId, no tappx requests will be placed (even if you specify a tappxShare).</p>
+
+      <hr>
+
+      <h2>
+<a id="javascript-api" class="anchor" href="#javascript-api" aria-hidden="true"><span class="octicon octicon-link"></span></a>Javascript API</h2>
+
+      <p><em>Note:</em> All success callbacks are in the form <code>'function () {}'</code>, and all failure callbacks are in the form <code>'function (err) {}'</code> where <code>err</code> is a String explaining the error reason.</p>
+
+      <h4>
+<a id="setoptionsoptions-success-fail" class="anchor" href="#setoptionsoptions-success-fail" aria-hidden="true"><span class="octicon octicon-link"></span></a>setOptions(options, success, fail);</h4>
+
+      <p>Set the options to start displaying ads:</p>
+
+      <ul>
+        <li>options: setup options (see <a href="#options">options</a>).</li>
+        <li>success: success callback.</li>
+        <li>failure: failure callback.</li>
+      </ul>
+
+      <h4>
+<a id="options" class="anchor" href="#options" aria-hidden="true"><span class="octicon octicon-link"></span></a>Options</h4>
+
+      <p>A JSON object whith the following fields:</p>
+
+      <ul>
+        <li>
+          <strong><em>publisherId</em></strong>: (Required) Your publisher id code from your AdMob account. <a href="https://apps.admob.com/admob/signup">You can get it from AdMob</a>.</li>
+        <li>
+          <strong>interstitialAdId</strong>: (Optional) Your interstitial id code from your AdMob account. Defaults to <code>publisherId</code>.</li>
+        <li>
+          <strong>tappxIdiOS</strong>: (Optional) Your tappx id for iOS apps. <strong><a href="http://www.tappx.com/?h=dec334d63287772de859bdb4e977fce6">You can get it from tappx</a></strong>. It is also used to backfill your lost inventory (when there are no Admob ads available).</li>
+        <li>
+          <strong>tappxIdAndroid</strong>: (Optional) Your tappx id for Android apps. <strong><a href="http://www.tappx.com/?h=dec334d63287772de859bdb4e977fce6">You can get it from tappx</a></strong>. It is also used to backfill your lost inventory (when there are no Admob ads available).</li>
+        <li>
+          <strong>tappxShare</strong>: (Optional) If any of tappxId is present, it tells the percentage of traffic diverted to tappx. Defaults to 50% (0.5).</li>
+        <li>
+          <strong>bannerAtTop</strong>: (Optional) Indicates whether to put banner ads at top when set to true or at bottom when set to false. Default <code>false</code>.</li>
+        <li>
+          <strong>adSize</strong>: (Optional) Indicates the size of banner ads.
+          <br>Available values are (see <a href="https://developers.google.com/mobile-ads-sdk/docs/admob/android/banner#size">Google Docs</a> for more info):
+
+          <ul>
+            <li>admob.AD_SIZE.BANNER: 320x50. Standard Banner (Phones and Tablets).</li>
+            <li>admob.AD_SIZE.IAB_MRECT: 300x250. IAB Medium Rectangle (Phones and Tablets).</li>
+            <li>admob.AD_SIZE.IAB_BANNER: 468x60. IAB Full-Size Banner (Tablets).</li>
+            <li>admob.AD_SIZE.IAB_LEADERBOARD: 728x90. IAB Leaderboard (Tablets).</li>
+            <li>admob.AD_SIZE.SMART_BANNER: (<a href="https://developers.google.com/mobile-ads-sdk/docs/admob/android/banner#smart">See table</a>) Smart Banner (Phones and Tablets).</li>
+          </ul>
+        </li>
+        <li>
+          <strong>overlap</strong>: (Optional) Allow banner overlap webview. Default <code>false</code>.</li>
+        <li>
+          <strong>offsetStatusBar</strong>: (Optional) Set to true to avoid ios7 status bar overlap. Default <code>false</code>.</li>
+        <li>
+          <strong>isTesting</strong>: (Optional) Set to true for receiving test ads (do not test with real ads as your account will be banned). Default <code>false</code>.</li>
+        <li>
+          <strong>adExtras</strong>: (Options) A JSON object with additional {key: value} pairs (see <a href="https://developers.google.com/mobile-ads-sdk/docs/admob/android/banner#color">Google Docs</a> for more info).</li>
+        <li>
+          <strong>autoShowBanner</strong>: (Optional) Auto show banners ad when available (<code>admob.events.onAdLoaded</code> event is called). Default <code>true</code>.</li>
+        <li>
+          <strong>autoShowInterstitial</strong>: (Optional) Auto show interstitials ad when available (<code>admob.events.onAdLoaded</code> event is called). Default <code>false</code>.</li>
+      </ul>
+
+      <p><em>Example (those are also the default options, except for tappxId's which are empty by default):</em>
+      </p>
+
+      <div class="highlight highlight-javascript"><pre>{
+  publisherId<span class="pl-k">:</span>          <span class="pl-s1"><span class="pl-pds">"</span>ca-app-pub-8440343014846849/3119840614<span class="pl-pds">"</span></span>,
+  interstitialAdId<span class="pl-k">:</span>     <span class="pl-s1"><span class="pl-pds">"</span>ca-app-pub-8440343014846849/4596573817<span class="pl-pds">"</span></span>,
+  tappxIdiOs<span class="pl-k">:</span>           <span class="pl-s1"><span class="pl-pds">"</span>/120940746/Pub-2702-iOS-8226<span class="pl-pds">"</span></span>,
+  tappxIdAndroid<span class="pl-k">:</span>       <span class="pl-s1"><span class="pl-pds">"</span>/120940746/Pub-2700-Android-8171<span class="pl-pds">"</span></span>,
+  tappxShare<span class="pl-k">:</span>           <span class="pl-c1">0.5</span>,
+  adSize<span class="pl-k">:</span>               admob.AD_SIZE.SMART_BANNER,
+  bannerAtTop<span class="pl-k">:</span>          <span class="pl-c1">false</span>,
+  overlap<span class="pl-k">:</span>              <span class="pl-c1">false</span>,
+  offsetStatusBar<span class="pl-k">:</span>      <span class="pl-c1">false</span>,
+  isTesting<span class="pl-k">:</span>            <span class="pl-c1">false</span>,
+  adExtras <span class="pl-k">:</span>            {},
+  autoShowBanner<span class="pl-k">:</span>       <span class="pl-c1">true</span>,
+  autoShowInterstitial<span class="pl-k">:</span> <span class="pl-c1">true</span>
+}</pre>
+      </div>
+
+      <h3>
+<a id="banners" class="anchor" href="#banners" aria-hidden="true"><span class="octicon octicon-link"></span></a>Banners</h3>
+
+      <h4>
+<a id="createbannerviewoptions-success-fail" class="anchor" href="#createbannerviewoptions-success-fail" aria-hidden="true"><span class="octicon octicon-link"></span></a>createBannerView(options, success, fail);</h4>
+
+      <p>Create a new banner view.</p>
+
+      <ul>
+        <li>options: setup options (see <a href="#options">options</a>).</li>
+        <li>success: success callback.</li>
+        <li>failure: failure callback.</li>
+      </ul>
+
+      <h4>
+<a id="showadshow-success-fail" class="anchor" href="#showadshow-success-fail" aria-hidden="true"><span class="octicon octicon-link"></span></a>showAd(show, success, fail);</h4>
+
+      <p>Show banner ads.</p>
+
+      <ul>
+        <li>show[boolean]: Indicates whether to show or hide banner ads.</li>
+        <li>success: success callback.</li>
+        <li>failure: failure callback.</li>
+      </ul>
+
+      <h4>
+<a id="destroybannerview" class="anchor" href="#destroybannerview" aria-hidden="true"><span class="octicon octicon-link"></span></a>destroyBannerView();</h4>
+
+      <p>Hide and destroy banner view.</p>
+
+      <h3>
+<a id="interstitials" class="anchor" href="#interstitials" aria-hidden="true"><span class="octicon octicon-link"></span></a>Interstitials</h3>
+
+      <h4>
+<a id="requestinterstitialadoptions-success-fail" class="anchor" href="#requestinterstitialadoptions-success-fail" aria-hidden="true"><span class="octicon octicon-link"></span></a>requestInterstitialAd(options, success, fail);</h4>
+
+      <p>Request an interstitial ad.
+        <br>If <code>options.autoShowInterstitial</code> is set to true, the ad will automatically be displayed. Otherwise you should call <code>showInterstitialAd()</code> when <code>admob.events.onAdLoaded</code> event is called.
+        <br>If you already called <code>requestInterstitialAd()</code> but the interstitial was never shown, the following calls to <code>requestInterstitialAd()</code> will result in the ad being inmediately available (the same ad as the one in the first call).</p>
+
+      <ul>
+        <li>options: setup options (see <a href="#options">options</a>).</li>
+        <li>success: success callback.</li>
+        <li>failure: failure callback.</li>
+      </ul>
+
+      <h4>
+<a id="showinterstitialadsuccess-fail" class="anchor" href="#showinterstitialadsuccess-fail" aria-hidden="true"><span class="octicon octicon-link"></span></a>showInterstitialAd(success, fail);</h4>
+
+      <p>Show an interstitial ad.
+        <br>This method must be called after <code>admob.events.onAdLoaded</code> event is called. If there is no ad available it calls fail callback.</p>
+
+      <ul>
+        <li>success: success callback.</li>
+        <li>failure: failure callback.</li>
+      </ul>
+
+      <h3>
+<a id="in-app-purchase" class="anchor" href="#in-app-purchase" aria-hidden="true"><span class="octicon octicon-link"></span></a>In App Purchase</h3>
+
+      <h4>
+<a id="recordresolutionpurchaseid-resolution-success-fail" class="anchor" href="#recordresolutionpurchaseid-resolution-success-fail" aria-hidden="true"><span class="octicon octicon-link"></span></a>recordResolution(purchaseId, resolution, success, fail);</h4>
+
+      <p>Records the purchase status and conversion events.</p>
+
+      <ul>
+        <li>purchaseId: The id of the purchase (you will get it when <code>admob.events.onInAppPurchase</code> event is called).</li>
+        <li>resolution: The result of a purchase. The value can be:
+
+          <ul>
+            <li>admob.PURCHASE_RESOLUTION.RESOLUTION_CANCELED: A resolution indicating the purchase was canceled.</li>
+            <li>admob.PURCHASE_RESOLUTION.RESOLUTION_FAILURE: A resolution indicating the purchase failed.</li>
+            <li>admob.PURCHASE_RESOLUTION.RESOLUTION_INVALID_PRODUCT: A resolution indicating the product is invalid.</li>
+            <li>admob.PURCHASE_RESOLUTION.RESOLUTION_SUCCESS: A resolution indicating the purchase was successful.</li>
+          </ul>
+        </li>
+        <li>success: success callback.</li>
+        <li>failure: failure callback.</li>
+      </ul>
+
+      <h4>
+<a id="recordplaybillingresolutionpurchaseid-billingresponsecode-success-fail" class="anchor" href="#recordplaybillingresolutionpurchaseid-billingresponsecode-success-fail" aria-hidden="true"><span class="octicon octicon-link"></span></a>recordPlayBillingResolution(purchaseId, billingResponseCode, success, fail);</h4>
+
+      <p>Records the purchase status and conversion events for a play billing purchase.</p>
+
+      <ul>
+        <li>purchaseId: The id of the purchase (you will get it when <code>admob.events.onInAppPurchase</code> event is called).</li>
+        <li>billingResponseCode: The result of a play billing purchase. The value can be any billing response code from:
+
+          <ul>
+            <li>admob.PURCHASE_RESOLUTION.RESOLUTION_CANCELED: A resolution indicating the purchase was canceled.</li>
+            <li>admob.PURCHASE_RESOLUTION.RESOLUTION_FAILURE: A resolution indicating the purchase failed.</li>
+            <li>admob.PURCHASE_RESOLUTION.RESOLUTION_INVALID_PRODUCT: A resolution indicating the product is invalid.</li>
+            <li>admob.PURCHASE_RESOLUTION.RESOLUTION_SUCCESS: A resolution indicating the purchase was successful.</li>
+          </ul>
+        </li>
+        <li>success: success callback.</li>
+        <li>failure: failure callback.</li>
+      </ul>
+
+      <h3>
+<a id="events" class="anchor" href="#events" aria-hidden="true"><span class="octicon octicon-link"></span></a>Events</h3>
+
+      <p>AdMobAds Cordova library will use the same events for Android as for iOS (the iOS ones are mapped to the Android ones). See <a href="https://developers.google.com/mobile-ads-sdk/docs/admob/android/banner#adlistener">Google Docs</a> for more info.
+        <br>To listen to any of those events you can use:</p>
+
+      <pre><code>document.addEventListener(admob.events.onAdLoaded, function (e) { });
+</code></pre>
+
+      <h4>
+<a id="admobeventsonadloaded" class="anchor" href="#admobeventsonadloaded" aria-hidden="true"><span class="octicon octicon-link"></span></a>admob.events.onAdLoaded</h4>
+
+      <p>Called when an ad is received.</p>
+
+      <ul>
+        <li>e: JSON object.
+          <br>
+          <em>Example:</em>  <code>{ adType : "banner" }</code>
+          <br>
+
+          <ul>
+            <li>adType can be <code>admob.AD_TYPE.BANNER</code> or <code>admob.AD_TYPE.INTERSTITIAL</code>
+            </li>
+          </ul>
+        </li>
+      </ul>
+
+      <h4>
+<a id="admobeventsonadfailedtoload" class="anchor" href="#admobeventsonadfailedtoload" aria-hidden="true"><span class="octicon octicon-link"></span></a>admob.events.onAdFailedToLoad</h4>
+
+      <p>Called when an ad request failed.</p>
+
+      <ul>
+        <li>e: JSON object.
+          <br>
+          <em>Example:</em>  <code>{ adType : "[string]", error : [integer], reason : "[string]" }</code>
+
+          <ul>
+            <li>adType can be admob.AD_TYPE.BANNER or admob.AD_TYPE.INTERSTITIAL</li>
+            <li>error is the error code and is usually one of the following:
+
+              <ul>
+                <li>AdRequest.ERROR_CODE_INTERNAL_ERROR</li>
+                <li>AdRequest.ERROR_CODE_INVALID_REQUEST</li>
+                <li>AdRequest.ERROR_CODE_NETWORK_ERROR</li>
+                <li>AdRequest.ERROR_CODE_NO_FILL</li>
+              </ul>
+            </li>
+            <li>reason is an english string with the reason of the error (for logging purposes).</li>
+          </ul>
+        </li>
+      </ul>
+
+      <h4>
+<a id="admobeventsonadopened" class="anchor" href="#admobeventsonadopened" aria-hidden="true"><span class="octicon octicon-link"></span></a>admob.events.onAdOpened</h4>
+
+      <p>Called when an ad opens an overlay that covers the screen. Please note that <code>onPause</code> event is raised when an interstitial is shown.</p>
+
+      <ul>
+        <li>e: JSON object.
+          <br>
+          <em>Example:</em>  <code>{ adType : "banner" }</code>
+          <br>
+
+          <ul>
+            <li>adType can be <code>admob.AD_TYPE.BANNER</code> or <code>admob.AD_TYPE.INTERSTITIAL</code>
+            </li>
+          </ul>
+        </li>
+      </ul>
+
+      <h4>
+<a id="admobeventsonadclosed" class="anchor" href="#admobeventsonadclosed" aria-hidden="true"><span class="octicon octicon-link"></span></a>admob.events.onAdClosed</h4>
+
+      <p>Called when the user is about to return to the application after clicking on an ad. Please note that <code>onResume</code> event is raised when an interstitial is closed.</p>
+
+      <ul>
+        <li>e: JSON object.
+          <br>
+          <em>Example:</em>  <code>{ adType : "banner" }</code>
+          <br>
+
+          <ul>
+            <li>adType can be <code>admob.AD_TYPE.BANNER</code> or <code>admob.AD_TYPE.INTERSTITIAL</code>
+            </li>
+          </ul>
+        </li>
+      </ul>
+
+      <h4>
+<a id="admobeventsonadleftapplication" class="anchor" href="#admobeventsonadleftapplication" aria-hidden="true"><span class="octicon octicon-link"></span></a>admob.events.onAdLeftApplication</h4>
+
+      <p>Called when an ad leaves the application (e.g., to go to the browser).</p>
+
+      <ul>
+        <li>e: JSON object.
+          <br>
+          <em>Example:</em>  <code>{ adType : "banner" }</code>
+          <br>
+
+          <ul>
+            <li>adType can be <code>admob.AD_TYPE.BANNER</code> or <code>admob.AD_TYPE.INTERSTITIAL</code>
+            </li>
+          </ul>
+        </li>
+      </ul>
+
+      <h4>
+<a id="admobeventsoninapppurchaserequested" class="anchor" href="#admobeventsoninapppurchaserequested" aria-hidden="true"><span class="octicon octicon-link"></span></a>admob.events.onInAppPurchaseRequested</h4>
+
+      <p>Called when the user clicks the buy button of an in-app purchase ad. You shoud complete the transaction by calling <code>admob.recordResolution(...)</code> or <code>admob.recordPlayBillingResolution(...)</code>.</p>
+
+      <ul>
+        <li>e: JSON object.
+          <br>
+          <em>Example:</em>  <code>{ adType : "banner" }</code>
+          <br>
+
+          <ul>
+            <li>adType can be <code>admob.AD_TYPE.BANNER</code> or <code>admob.AD_TYPE.INTERSTITIAL</code>
+            </li>
+          </ul>
+        </li>
+      </ul>
+
+      <hr>
+
+      <h2>
+<a id="quick-example-with-cordova-cli" class="anchor" href="#quick-example-with-cordova-cli" aria-hidden="true"><span class="octicon octicon-link"></span></a>Quick example with cordova CLI</h2>
+
+      <div class="highlight highlight-c"><pre>    cordova create &lt;project_folder&gt; com.&lt;company_name&gt;.&lt;app_name&gt; &lt;AppName&gt;
+    cd &lt;project_folder&gt;
+    cordova platform add android
+    cordova platform add ios
+
+    <span class="pl-c">// cordova will handle dependency automatically</span>
+    cordova plugin add com.admob.google
+
+    <span class="pl-c">// now remove the default www content, copy the demo html file to www</span>
+    rm -rf www<span class="pl-c">/*;</span>
+<span class="pl-c">    cp plugins/com.admob.google/test/* www/</span>
+<span class="pl-c"></span>
+<span class="pl-c">    cordova prepare; cordova run android; cordova run ios;</span>
+<span class="pl-c">    // or import into Xcode / eclipse</span></pre>
+      </div>
+
+      <hr>
+
+      <h2>
+<a id="complete-example-code" class="anchor" href="#complete-example-code" aria-hidden="true"><span class="octicon octicon-link"></span></a>Complete example code</h2>
+
+      <p>Note that the admob ads are configured inside <code>onDeviceReady()</code>. This is because only after device ready the AdMob Cordova plugin will be working.</p>
+
+      <div class="highlight highlight-javascript"><pre>
+    <span class="pl-st">function</span> <span class="pl-en">initAds</span>() {
+      <span class="pl-k">if</span> (admob) {
+        <span class="pl-s">var</span> adPublisherIds <span class="pl-k">=</span> {
+          ios <span class="pl-k">:</span> {
+            banner <span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">"</span>ca-app-pub-8440343014846849/3119840614<span class="pl-pds">"</span></span>,
+            interstitial <span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">"</span>ca-app-pub-8440343014846849/4596573817<span class="pl-pds">"</span></span>
+          },
+          android <span class="pl-k">:</span> {
+            banner <span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">"</span>ca-app-pub-8440343014846849/3119840614<span class="pl-pds">"</span></span>,
+            interstitial <span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">"</span>ca-app-pub-8440343014846849/4596573817<span class="pl-pds">"</span></span>
+          }
+        };
+
+        <span class="pl-s">var</span> admobid <span class="pl-k">=</span> (<span class="pl-sr"><span class="pl-pds">/</span>(android)<span class="pl-pds">/</span>i</span>.<span class="pl-s3">test</span>(<span class="pl-s3">navigator</span>.<span class="pl-sc">userAgent</span>)) <span class="pl-k">?</span> adPublisherIds.android <span class="pl-k">:</span> adPublisherIds.ios;
+
+        admob.setOptions({
+          publisherId<span class="pl-k">:</span>      admobid.banner,
+          interstitialAdId<span class="pl-k">:</span> admobid.interstitial,
+          tappxIdiOs<span class="pl-k">:</span>       <span class="pl-s1"><span class="pl-pds">"</span>/120940746/Pub-2702-iOS-8226<span class="pl-pds">"</span></span>,
+          tappxIdAndroid<span class="pl-k">:</span>   <span class="pl-s1"><span class="pl-pds">"</span>/120940746/Pub-2700-Android-8171<span class="pl-pds">"</span></span>,
+          tappxShare<span class="pl-k">:</span>       <span class="pl-c1">0.5</span>
+        });
+
+        registerAdEvents();
+
+      } <span class="pl-k">else</span> {
+        <span class="pl-s3">alert</span>(<span class="pl-s1"><span class="pl-pds">'</span>AdMobAds plugin not ready<span class="pl-pds">'</span></span>);
+      }
+    }
+
+    <span class="pl-st">function</span> <span class="pl-en">onAdLoaded</span>(<span class="pl-vpf">e</span>) {
+      <span class="pl-k">if</span> (e.adType <span class="pl-k">===</span> admob.AD_TYPE.INTERSTITIAL) {
+        admob.showInterstitialAd();
+        showNextInterstitial <span class="pl-k">=</span> <span class="pl-s3">setTimeout</span>(<span class="pl-st">function</span>() {
+          admob.requestInterstitialAd();
+        }, <span class="pl-c1">2</span> <span class="pl-k">*</span> <span class="pl-c1">60</span> <span class="pl-k">*</span> <span class="pl-c1">1000</span>); <span class="pl-c">// 2 minutes</span>
+      }
+    }
+
+    <span class="pl-c">// optional, in case respond to events</span>
+    <span class="pl-st">function</span> <span class="pl-en">registerAdEvents</span>() {
+      <span class="pl-s3">document</span>.addEventListener(admob.events.onAdLoaded, onAdLoaded);
+      <span class="pl-s3">document</span>.addEventListener(admob.events.onAdFailedToLoad, <span class="pl-st">function</span> (<span class="pl-vpf">e</span>) {});
+      <span class="pl-s3">document</span>.addEventListener(admob.events.onAdOpened, <span class="pl-st">function</span> (<span class="pl-vpf">e</span>) {});
+      <span class="pl-s3">document</span>.addEventListener(admob.events.onAdClosed, <span class="pl-st">function</span> (<span class="pl-vpf">e</span>) {});
+      <span class="pl-s3">document</span>.addEventListener(admob.events.onAdLeftApplication, <span class="pl-st">function</span> (<span class="pl-vpf">e</span>) {});
+      <span class="pl-s3">document</span>.addEventListener(admob.events.onInAppPurchaseRequested, <span class="pl-st">function</span> (<span class="pl-vpf">e</span>) {});
+    }
+
+    <span class="pl-st">function</span> <span class="pl-en">onDeviceReady</span>() {
+      <span class="pl-s3">document</span>.removeEventListener(<span class="pl-s1"><span class="pl-pds">'</span>deviceready<span class="pl-pds">'</span></span>, onDeviceReady, <span class="pl-c1">false</span>);
+      initAds();
+
+      <span class="pl-c">// display a banner at startup</span>
+      admob.createBannerView();
+
+      <span class="pl-c">// request an interstitial</span>
+      admob.requestInterstitialAd();
+    }
+
+    <span class="pl-s3">document</span>.addEventListener(<span class="pl-s1"><span class="pl-pds">"</span>deviceready<span class="pl-pds">"</span></span>, onDeviceReady, <span class="pl-c1">false</span>);</pre>
+      </div>
+
+      <hr>
+
+      <h2>
+<a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contributing</h2>
+
+      <p>You can use this cordova plugin for free. You can contribute to this project in many ways:</p>
+
+      <ul>
+        <li>Testimonials of apps that are using this plugin gives your app free marketing and will be especially helpful. <a href="https://github.com/appfeel/admob-google-cordova/issues">Open an issue</a>.</li>
+        <li>Register to <a href="http://www.tappx.com/?h=dec334d63287772de859bdb4e977fce6">tappx</a> by using this link: <br/><a href="http://www.tappx.com/?h=dec334d63287772de859bdb4e977fce6">http://www.tappx.com/?h=dec334d63287772de859bdb4e977fce6</a>
+          <br/>It is our Guess-Link and for each affiliate we will get 50k tappix (free exchange ads).</li>
+        <li>
+          <a href="https://github.com/appfeel/admob-google-cordova/issues">Reporting issues</a>.</li>
+        <li>Patching and bug fixing, especially when submitted with test code. <a href="https://github.com/appfeel/admob-google-cordova/pulls">Open a pull request</a>.</li>
+        <li>Other enhancements.</li>
+      </ul>
+
+      <p>You can also support this project by sharing 2% Ad traffic (it's not mandatory: if you are unwilling to share, please fork and remove the donation code) and by donations via <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&amp;business=MFQHUTN8U9XD6&amp;lc=ES&amp;item_name=AppFeel&amp;item_number=com%2eadmob%2egoogle&amp;amount=10%2e00&amp;currency_code=EUR&amp;bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted">paypal</a>
+      </p>
+
+      <hr>
+
+      <h2>
+<a id="screenshots" class="anchor" href="#screenshots" aria-hidden="true"><span class="octicon octicon-link"></span></a>Screenshots</h2>
+
+      <p>iPhone:</p>
+
+      <p>
+        <img src="https://github.com/appfeel/admob-google-cordova/tree/master/demo/iphone.png" alt="ScreenShot">
+      </p>
+
+      <p>iPad Banner Portrait:</p>
+
+      <p>
+        <img src="https://github.com/appfeel/admob-google-cordova/tree/master/demo/banner-ipad.png" alt="ScreenShot">
+      </p>
+
+      <p>iPad Banner Landscape:</p>
+
+      <p>
+        <img src="https://github.com/appfeel/admob-google-cordova/tree/master/demo/banner-landscape-ipad.png" alt="ScreenShot">
+      </p>
+
+      <hr>
+
+      <h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
+
+      <code><p>The MIT License</p>
+
+        <p>Copyright (c) 2014 AppFeel</p>
+
+        <p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
+
+      <p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+</code>
+
+      <hr>
+
+      <h2>
+<a id="credits" class="anchor" href="#credits" aria-hidden="true"><span class="octicon octicon-link"></span></a>Credits</h2>
+
+      <ul>
+        <li><a href="http://www.appfeel.com">appFeel</a>
+        </li>
+      </ul>
+    </section>
+    <footer>
+      <p><small>Created by <a href="http://www.appfeel.com">the appFeel mobile web server apps developers</a> using the Dinky theme</small>
+      </p>
+    </footer>
+  </div>
+  <script src="js/scale.fix.js"></script>
+  <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+  <script>
+    (function (i, s, o, g, r, a, m) {
+      i['GoogleAnalyticsObject'] = r;
+      i[r] = i[r] || function () {
+        (i[r].q = i[r].q || []).push(arguments)
+      }, i[r].l = 1 * new Date();
+      a = s.createElement(o),
+      m = s.getElementsByTagName(o)[0];
+      a.async = 1;
+      a.src = g;
+      m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-57615001-1', 'auto');
+    ga('require', 'displayfeatures');
+    ga('send', 'pageview');
+  </script>
+</body>
+
+</html>
+
