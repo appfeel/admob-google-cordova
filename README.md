@@ -44,7 +44,8 @@ Or
 ---
 ## Demo projects: ##
 - [Intel XDK](https://github.com/appfeel/admob-google-xdk)
-- [Cordova/PhoneGap](https://github.com/appfeel/admob-google-demo)
+- [Cordova/PhoneGap CLI](https://github.com/appfeel/admob-google-demo)
+- [PhoneGap Build](https://github.com/appfeel/admob-phonegap-build-demo)
 
 ---
 ## Quick start ##
@@ -53,6 +54,13 @@ To install this plugin, follow the [Command-line Interface Guide](http://cordova
 
 * `cordova plugin add com.admob.google`
 * `cordova plugin add https://github.com/appfeel/admob-google-cordova.git`
+
+
+To use in [Phonegap Build](https://build.phonegap.com), place the following tag in your `config.xml` file:
+
+```xml
+<gap:plugin name="com.admob.google" version="2.0.2" source="plugins.cordova.io" />
+```
 
 To start showing ads, place the following code in your `onDeviceReady` callback. Replace corresponding id's with yours:
 
@@ -353,7 +361,9 @@ You can use this cordova plugin for free. You can contribute to this project in 
 * Patching and bug fixing, especially when submitted with test code. [Open a pull request](https://github.com/appfeel/admob-google-cordova/pulls).
 * Other enhancements.
 
-You can also support this project by sharing 2% Ad traffic (it's not mandatory: if you are unwilling to share, please fork and remove the donation code) and by donations via [paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=MFQHUTN8U9XD6&lc=ES&item_name=AppFeel&item_number=com%2eadmob%2egoogle&amount=10%2e00&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted)
+You can also support this project by sharing 2% Ad traffic (it's not mandatory: if you are unwilling to share, please fork and remove the donation code).
+
+Love the project? Wanna buy me a coffee (or a beer :D)? [Click here](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ELWJTK68B9A54&item_name=AppFeel+admob+for+cordova&item_number=com%2eadmob%2egoogle)
 
 ---
 ## Screenshots ##

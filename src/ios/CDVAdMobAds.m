@@ -255,7 +255,7 @@
         CDVPluginResult *pluginResult;
         if (self.bannerView) {
             [self.bannerView setDelegate:nil];
-            dispatch_sync(dispatch_get_main_queue(), ^{
+            dispatch_async(dispatch_get_main_queue(), ^{
                 [self.bannerView removeFromSuperview];
                 self.bannerView = nil;
                 [self resizeViews];
@@ -657,8 +657,9 @@
         
         self.isBannerInitialized = YES;
         self.isBannerVisible = NO;
-        
-        [self resizeViews];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self resizeViews];
+        });
     }
     
     self.bannerView.adUnitID = __pid;
@@ -672,7 +673,9 @@
             [self.bannerView removeFromSuperview];
             self.bannerView = nil;
             
-            [self resizeViews];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self resizeViews];
+            });
         }
     } else {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -909,7 +912,9 @@
 }
 
 - (void)deviceOrientationChange:(NSNotification *)notification {
-    [self resizeViews];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self resizeViews];
+    });
 }
 
 #pragma mark -
