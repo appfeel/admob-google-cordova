@@ -1,4 +1,4 @@
-Made in Barcelona with Love and Code
+<p style="font-size: small;text-align: right;"><a style="color: #232323;" href="http://www.appfeel.com">Made in Barcelona with <span style="color: #FCB;font-weight: bold;">Love</span> and <span style="color: #BBCCFF;font-weight: bold;">Code</span></a></p>
 
 Cordova AdMob plugin
 ====================
