@@ -1,4 +1,4 @@
-<p style="font-size: small;text-align: right;" align="right"><a color="#232323;" href="http://www.appfeel.com">Made in Barcelona with <span color="#FCB">Love</span> and <span color="#BBCCFF">Code</span></a></p>
+<p style="font-size: small;text-align: right;" align="right"><a color="#232323;" href="http://www.appfeel.com">Made in Barcelona with <span color="lightred">Love</span> and <span color="lightblue">Code</span></a></p>
 
 Cordova AdMob plugin
 ====================
@@ -371,15 +371,15 @@ Love the project? Wanna buy me a coffee (or a beer :D)? [Click here](https://www
 ## Screenshots ##
 iPhone:
 
-![ScreenShot](demo/iphone.png)
+![Cordova admob plugin in iPhone](demo/iphone.png)
 
 iPad Banner Portrait:
 
-![ScreenShot](demo/banner-ipad.png)
+![Cordova admob plugin in iPad](demo/banner-ipad.png)
 
 iPad Banner Landscape:
 
-![ScreenShot](demo/banner-landscape-ipad.png)
+![Cordova admob plugin](demo/banner-landscape-ipad.png)
 
 ---
 ## License ##
