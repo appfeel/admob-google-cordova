@@ -12,7 +12,7 @@ Or
 
     admob.requestInterstitialAd({interstitialAdId: "ca-app-pub-8440343014846849/4596573817", autoShowInterstitial: true});
 
-![Integrate cordova admob plugin](demo/integrate-admob-cordova.gif)
+![Integrate cordova admob plugin](https://github.com/appfeel/admob-google-cordova/blob/master/demo/integrate-admob-cordova.gif)
 
 ## New Features ##
 
@@ -371,17 +371,17 @@ Love the project? Wanna buy me a coffee (or a beer :D)? [Click here](https://www
 
 ---
 ## Screenshots ##
-iPhone:
+#### iPhone:
 
-![Phonegp Cordova admob plugin in iPhone](demo/iphone.png)
+![Phonegp Cordova admob plugin in iPhone](https://github.com/appfeel/admob-google-cordova/blob/master/demo/iphone.png)
 
-iPad Banner Portrait:
+#### iPad Banner Portrait:
 
-![Phonegp Cordova admob plugin in iPad](demo/banner-ipad.png)
+![Phonegp Cordova admob plugin in iPad](https://github.com/appfeel/admob-google-cordova/blob/master/demo/banner-ipad.png)
 
-iPad Banner Landscape:
+#### iPad Banner Landscape:
 
-![Phonegp Cordova admob plugin](demo/banner-landscape-ipad.png)
+![Phonegp Cordova admob plugin](https://github.com/appfeel/admob-google-cordova/blob/master/demo/banner-landscape-ipad.png)
 
 ---
 ## License ##
