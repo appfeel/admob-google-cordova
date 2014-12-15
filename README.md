@@ -1,4 +1,4 @@
-*<p style="font-size: small;" align="right"><a color="#232323;" href="http://www.appfeel.com">Made in Barcelona with <span color="#FCB">Love</span> and <span color="#BBCCFF">Code</span></a></p>*
+*<p style="font-size: small;" align="right"><a color="#232323;" href>Made in Barcelona with <span color="#FCB">Love</span> and <span color="#BBCCFF">Code</span></a></p>*
 
 Cordova AdMob plugin
 ====================
