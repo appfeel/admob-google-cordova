@@ -12,6 +12,8 @@ Or
 
     admob.requestInterstitialAd({interstitialAdId: "ca-app-pub-8440343014846849/4596573817", autoShowInterstitial: true});
 
+![Integrate cordova admob plugin](demo/integrate-admob-cordova.gif)
+
 ## New Features ##
 
 #### Nov-2014: ####
@@ -86,10 +88,10 @@ To start showing ads, place the following code in your `onDeviceReady` callback.
       admob.createBannerView();
       
       // Request interstitial (will present automatically when autoShowInterstitial is set to true)
-      admob.requestIntertitial();
+      admob.requestInterstitial();
     }
     
-    document.addEventListener("deviceready", onDeviceReady, false)
+    document.addEventListener("deviceready", onDeviceReady, false);
 ```
 
 If you don't specify tappxId, no tappx requests will be placed (even if you specify a tappxShare).
@@ -371,15 +373,15 @@ Love the project? Wanna buy me a coffee (or a beer :D)? [Click here](https://www
 ## Screenshots ##
 iPhone:
 
-![Cordova admob plugin in iPhone](demo/iphone.png)
+![Phonegp Cordova admob plugin in iPhone](demo/iphone.png)
 
 iPad Banner Portrait:
 
-![Cordova admob plugin in iPad](demo/banner-ipad.png)
+![Phonegp Cordova admob plugin in iPad](demo/banner-ipad.png)
 
 iPad Banner Landscape:
 
-![Cordova admob plugin](demo/banner-landscape-ipad.png)
+![Phonegp Cordova admob plugin](demo/banner-landscape-ipad.png)
 
 ---
 ## License ##
