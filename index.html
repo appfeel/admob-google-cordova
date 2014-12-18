@@ -21,7 +21,7 @@
   <div class="wrapper">
     <header>
       <h1 class="header">Phonegap Cordova Admob</h1>
-      <p class="header">Cordova, Phonegap and Intel XDK AdMob ads plugin</p>
+      <p class="header">Cordova, Phonegap Ionic and Intel XDK AdMob ads plugin</p>
 
       <ul>
         <li class="download"><a class="buttons" href="https://github.com/appfeel/admob-google-cordova/zipball/master">Download ZIP</a>
@@ -41,9 +41,9 @@
       <p class="small"><a class="normal" href="http://www.appfeel.com">Made in Barcelona with <span class="love">Love</span> and <span class="code">Code</span></a>
       </p>
       <h1>
-<a id="cordova-admob-plugin" class="anchor" href="#cordova-admob-plugin" aria-hidden="true"><span class="octicon octicon-link"></span></a>Phonegap, Cordova, Intel XDK AdMob plugin</h1>
+<a id="cordova-admob-plugin" class="anchor" href="#cordova-admob-plugin" aria-hidden="true"><span class="octicon octicon-link"></span></a>Phonegap, Cordova, Ionic(Angular), Intel XDK AdMob plugin</h1>
 
-      <p>Monetize your Cordova/Phonegap/XDK apps with AdMob ads, <strong>using latest Google AdMob SDK</strong>. With this Cordova/Phonegap/XDK plugin you can show AdMob ads as easy as:</p>
+      <p>Monetize your Cordova/Phonegap/Ionic(Angular)/XDK apps with AdMob ads, <strong>using latest Google AdMob SDK</strong>. With this Cordova/Phonegap/XDK plugin you can show AdMob ads as easy as:</p>
 
       <pre><code>admob.createBannerView({publisherId: "ca-app-pub-8440343014846849/3119840614"});
 </code></pre>
@@ -153,6 +153,10 @@
         <li><code>cordova plugin add https://github.com/appfeel/admob-google-cordova.git</code>
         </li>
       </ul>
+
+      <p>To use in <a href="https://build.phonegap.com">Phonegap Build</a>, place the following tag in your <code>config.xml</code> file:</p>
+      <div class="highlight highlight-xml"><pre>&lt;<span class="pl-ent">gap</span><span class="pl-ent">:</span><span class="pl-ent">plugin</span> <span class="pl-e">name</span>=<span class="pl-s1"><span class="pl-pds">"</span>com.admob.google<span class="pl-pds">"</span></span> <span class="pl-e">source</span>=<span class="pl-s1"><span class="pl-pds">"</span>plugins.cordova.io<span class="pl-pds">"</span></span> /&gt;</pre>
+      </div>
 
       <p>To start showing ads, place the following code in your <code>onDeviceReady</code> callback. Replace corresponding id's with yours:</p>
 
