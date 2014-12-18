@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
   <meta name="google-site-verification" content="PJADUif8IEIJEewcv9O5Wl7nJYhkLvGze6tYK-IKNRs" />
   <meta name="msvalidate.01" content="F1CE932333C8EBADCCB2006F316C08AA" />
-  <meta name="description" content="Phonegap and Cordova Admob plugin. Monetize your mobile app with one javascript line. Supports Tappx and auto-detects internet connection changes."/>
+  <meta name="description" content="Phonegap and Cordova Admob plugin. Monetize your mobile app with one javascript line. Supports Tappx and auto-detects internet connection changes." />
   <title>Admob Plugin for Cordova and Phonegap</title>
 
   <link rel="stylesheet" href="css/styles.css">
@@ -38,7 +38,8 @@
 
     </header>
     <section>
-      <p class="small"><a class="normal" href="http://www.appfeel.com">Made in Barcelona with <span class="love">Love</span> and <span class="code">Code</span></a></p>
+      <p class="small"><a class="normal" href="http://www.appfeel.com">Made in Barcelona with <span class="love">Love</span> and <span class="code">Code</span></a>
+      </p>
       <h1>
 <a id="cordova-admob-plugin" class="anchor" href="#cordova-admob-plugin" aria-hidden="true"><span class="octicon octicon-link"></span></a>Phonegap, Cordova, Intel XDK AdMob plugin</h1>
 
@@ -52,8 +53,21 @@
       <pre><code>admob.requestInterstitialAd({interstitialAdId: "ca-app-pub-8440343014846849/4596573817", autoShowInterstitial: true});
 </code></pre>
 
+      <p>
+        <a href="https://github.com/appfeel/admob-google-cordova/blob/master/demo/integrate-admob-cordova.gif" target="_blank">
+          <img src="https://github.com/appfeel/admob-google-cordova/raw/master/demo/integrate-admob-cordova.gif" alt="Integrate cordova admob plugin" style="max-width:100%;">
+        </a>
+      </p>
+
       <h2>
 <a id="new-features" class="anchor" href="#new-features" aria-hidden="true"><span class="octicon octicon-link"></span></a>New Features</h2>
+
+      <h4>
+<a id="user-content-dec-2014" class="anchor" href="#dec-2014" aria-hidden="true"><span class="octicon octicon-link"></span></a>Dec-2014:</h4>
+      <ul class="task-list">
+        <li>
+          <strong>Ionic, Angular.js</strong>: Add support for <a href="https://angularjs.org">Angular.js</a> based apps, for example <a href="http://ionicframework.com">Ionic</a>.</li>
+      </ul>
 
       <h4>
 <a id="nov-2014" class="anchor" href="#nov-2014" aria-hidden="true"><span class="octicon octicon-link"></span></a>Nov-2014:</h4>
@@ -168,6 +182,56 @@
       </div>
 
       <p>If you don't specify tappxId, no tappx requests will be placed (even if you specify a tappxShare).</p>
+
+      <hr>
+
+      <h2>
+<a id="user-content-angularjs-based-apps-ionic-support" class="anchor" href="#angularjs-based-apps-ionic-support" aria-hidden="true"><span class="octicon octicon-link"></span></a>Angular.js based apps (Ionic) support</h2>
+
+      <p>Include the following script in your <code>index.html</code> (just it, no need to copy any file: the plugin is in charge to copy the script when the app is prepared):</p>
+
+      <div class="highlight highlight-html"><pre><span class="pl-s2">    &lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s1"><span class="pl-pds">"</span>lib/angular-admob/angular-admob.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</span></pre>
+      </div>
+
+      <p>Here is a quick example on how to use Admob plugin with Angular.js based apps, for example Ionic:</p>
+
+      <div class="highlight highlight-javascript"><pre>    <span class="pl-s">var</span> app <span class="pl-k">=</span> angular.module(<span class="pl-s1"><span class="pl-pds">'</span>myApp<span class="pl-pds">'</span></span>, [<span class="pl-s1"><span class="pl-pds">'</span>admobModule<span class="pl-pds">'</span></span>]);
+
+    app.config([<span class="pl-s1"><span class="pl-pds">'</span>admobSvcProvider<span class="pl-pds">'</span></span>, <span class="pl-st">function</span> (<span class="pl-vpf">admobSvcProvider</span>) {
+      <span class="pl-c">// Optionally you can configure the options here:</span>
+      admobSvcProvider.setOptions({
+        publisherId<span class="pl-k">:</span>          <span class="pl-s1"><span class="pl-pds">"</span>ca-app-pub-8440343014846849/3119840614<span class="pl-pds">"</span></span>,  <span class="pl-c">// Required</span>
+        interstitialAdId<span class="pl-k">:</span>     <span class="pl-s1"><span class="pl-pds">"</span>ca-app-pub-8440343014846849/4596573817<span class="pl-pds">"</span></span>,  <span class="pl-c">// Optional</span>
+        tappxIdiOs<span class="pl-k">:</span>           <span class="pl-s1"><span class="pl-pds">"</span>/120940746/Pub-2702-iOS-8226<span class="pl-pds">"</span></span>,            <span class="pl-c">// Optional</span>
+        tappxIdAndroid<span class="pl-k">:</span>       <span class="pl-s1"><span class="pl-pds">"</span>/120940746/Pub-2700-Android-8171<span class="pl-pds">"</span></span>,        <span class="pl-c">// Optional</span>
+        tappxShare<span class="pl-k">:</span>           <span class="pl-c1">0.5</span>                                        <span class="pl-c">// Optional</span>
+      });
+
+      <span class="pl-c">// Optionally configure the events prefix (by default set to 'admob:')</span>
+      admobSvcProvider.setPrefix(<span class="pl-s1"><span class="pl-pds">'</span>myTag~<span class="pl-pds">'</span></span>);
+    }]);
+
+
+    app.run([<span class="pl-s1"><span class="pl-pds">'</span>admobSvc<span class="pl-pds">'</span></span>, <span class="pl-st">function</span> (<span class="pl-vpf">admobSvc</span>) {
+      <span class="pl-c">// Also you could configure the options here (or in any controller):</span>
+      <span class="pl-c">// admobSvcProvider.setOptions({ ... });</span>
+
+      admobSvc.createBannerView();
+      <span class="pl-c">// You could also call admobSvc.createBannerView(options);</span>
+
+
+      <span class="pl-c">// Handle events:</span>
+      $rootScope.$on(<span class="pl-s1"><span class="pl-pds">'</span>myTag~<span class="pl-pds">'</span></span> <span class="pl-k">+</span> admobSvc.events.onAdOpened, <span class="pl-st">function</span> <span class="pl-en">onAdLeftApplication</span>(<span class="pl-vpf">evt</span>, <span class="pl-vpf">e</span>) {
+        <span class="pl-en">console</span><span class="pl-s3">.log</span>(<span class="pl-s1"><span class="pl-pds">'</span>adOpened: type of ad:<span class="pl-pds">'</span></span> <span class="pl-k">+</span> e.adType);
+      });
+
+      <span class="pl-c">// The default prefix for events is 'admob:'</span>
+      <span class="pl-c">// $rootScope.$on('admob:' + admobSvc.events...</span>
+    }]);</pre>
+      </div>
+
+
+
 
       <hr>
 
@@ -577,7 +641,8 @@
 
       <ul>
         <li>Testimonials of apps that are using this plugin gives your app free marketing and will be especially helpful. <a href="https://github.com/appfeel/admob-google-cordova/issues">Open an issue</a>.</li>
-        <li>Register to <a href="http://www.tappx.com/?h=dec334d63287772de859bdb4e977fce6">tappx</a> by using this link: <br/><a href="http://www.tappx.com/?h=dec334d63287772de859bdb4e977fce6">http://www.tappx.com/?h=dec334d63287772de859bdb4e977fce6</a>
+        <li>Register to <a href="http://www.tappx.com/?h=dec334d63287772de859bdb4e977fce6">tappx</a> by using this link:
+          <br/><a href="http://www.tappx.com/?h=dec334d63287772de859bdb4e977fce6">http://www.tappx.com/?h=dec334d63287772de859bdb4e977fce6</a>
           <br/>It is our Guess-Link and for each affiliate we will get 50k tappix (free exchange ads).</li>
         <li>
           <a href="https://github.com/appfeel/admob-google-cordova/issues">Reporting issues</a>.</li>
@@ -659,6 +724,7 @@
 
     ga('create', 'UA-57615001-1', 'auto');
     ga('require', 'displayfeatures');
+    ga('require', 'linkid', 'linkid.js');
     ga('send', 'pageview');
   </script>
 </body>
