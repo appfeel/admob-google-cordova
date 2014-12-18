@@ -24,28 +24,28 @@
  SOFTWARE.
  */
 
-var admob = module.exports,
-    defaultIds = {
-      ios : {
-        banner : "ca-app-pub-8440343014846849/2335511010",
-        interstitial : "ca-app-pub-8440343014846849/3812244218"
-      },
-      android : {
-        banner : "ca-app-pub-8440343014846849/3119840614",
-        interstitial : "ca-app-pub-8440343014846849/4596573817"
-      }
-    };
+var admob = {},
+  defaultIds = {
+    ios: {
+      banner: "ca-app-pub-8440343014846849/2335511010",
+      interstitial: "ca-app-pub-8440343014846849/3812244218"
+    },
+    android: {
+      banner: "ca-app-pub-8440343014846849/3119840614",
+      interstitial: "ca-app-pub-8440343014846849/4596573817"
+    }
+  };
 
 /**
  * This enum represents appfeel-cordova-admob plugin events
  */
 admob.events = {
-  onAdLoaded : "appfeel.cordova.admob.onAdLoaded",
-  onAdFailedToLoad : "appfeel.cordova.admob.onAdFailedToLoad",
-  onAdOpened : "appfeel.cordova.admob.onAdOpened",
-  onAdLeftApplication : "appfeel.cordova.admob.onAdLeftApplication",
-  onAdClosed : "appfeel.cordova.admob.onAdClosed",
-  onInAppPurchaseRequested : "appfeel.cordova.admob.onInAppPurchaseRequested",
+  onAdLoaded: "appfeel.cordova.admob.onAdLoaded",
+  onAdFailedToLoad: "appfeel.cordova.admob.onAdFailedToLoad",
+  onAdOpened: "appfeel.cordova.admob.onAdOpened",
+  onAdLeftApplication: "appfeel.cordova.admob.onAdLeftApplication",
+  onAdClosed: "appfeel.cordova.admob.onAdClosed",
+  onInAppPurchaseRequested: "appfeel.cordova.admob.onInAppPurchaseRequested",
 };
 
 /**
@@ -74,15 +74,15 @@ admob.PURCHASE_RESOLUTION = {
 };
 
 admob.options = {
-  publisherId : (/(android)/i.test(navigator.userAgent)) ? defaultIds.android.banner : defaultIds.ios.banner,
-  interstitialId : (/(android)/i.test(navigator.userAgent)) ? defaultIds.android.interstitial : defaultIds.ios.interstitial,
-  adSize : admob.AD_SIZE.SMART_BANNER,
-  bannerAtTop : false,
-  overlap : false,
-  offsetStatusBar : false,
-  isTesting : false,
-  adExtras : {},
-  autoShowBanner : true,
+  publisherId: (/(android)/i.test(navigator.userAgent)) ? defaultIds.android.banner : defaultIds.ios.banner,
+  interstitialId: (/(android)/i.test(navigator.userAgent)) ? defaultIds.android.interstitial : defaultIds.ios.interstitial,
+  adSize: admob.AD_SIZE.SMART_BANNER,
+  bannerAtTop: false,
+  overlap: false,
+  offsetStatusBar: false,
+  isTesting: false,
+  adExtras: {},
+  autoShowBanner: true,
   autoShowInterstitial: true
 };
 
@@ -98,12 +98,12 @@ admob.setOptions = function (options, successCallback, failureCallback) {
     successCallback = options;
     options = undefined;
   }
-  
+
   options = options || admob.DEFAULT_OPTIONS;
-  
+
   if (typeof options === 'object' && typeof options.publisherId === 'string' && options.publisherId.length > 0) {
     cordova.exec(successCallback, failureCallback, 'AdMobAds', 'setOptions', [options]);
-    
+
   } else {
     if (typeof failureCallback === 'function') {
       failureCallback('options.publisherId should be specified.')
@@ -125,26 +125,26 @@ admob.createBannerView = function (options, successCallback, failureCallback) {
     options = undefined;
   }
   options = options || {};
-  cordova.exec(successCallback, failureCallback, 'AdMobAds', 'createBannerView', [ options ]);
+  cordova.exec(successCallback, failureCallback, 'AdMobAds', 'createBannerView', [options]);
 };
 
 /*
  * Show or hide Ad.
- * 
- * @param {boolean} show true to show, false to hide.  
+ *
+ * @param {boolean} show true to show, false to hide.
  * @param {function()} successCallback The function to call if the ad was shown successfully.
  * @param {function()} failureCallback The function to call if the ad failed to be shown.
  */
 admob.showBannerAd = function (show, successCallback, failureCallback) {
   if (show === undefined) {
     show = true;
-    
+
   } else if (typeof show === 'function') {
     failureCallback = successCallback;
     successCallback = show;
     show = true;
   }
-  cordova.exec(successCallback, failureCallback, 'AdMobAds', 'showBannerAd', [ show ]);
+  cordova.exec(successCallback, failureCallback, 'AdMobAds', 'showBannerAd', [show]);
 };
 
 /**
@@ -170,7 +170,7 @@ admob.requestInterstitialAd = function (options, successCallback, failureCallbac
     options = undefined;
   }
   options = options || {};
-  cordova.exec(successCallback, failureCallback, 'AdMobAds', 'requestInterstitialAd', [ options ]);
+  cordova.exec(successCallback, failureCallback, 'AdMobAds', 'requestInterstitialAd', [options]);
 };
 
 /**
@@ -198,7 +198,7 @@ admob.recordResolution = function (purchaseId, resolution, successCallback, fail
       failureCallback('purchaseId and resolution should be specified.')
     }
   }
-  cordova.exec(successCallback, failureCallback, 'AdMobAds', 'recordResolution', [ purchaseId, resolution ]);
+  cordova.exec(successCallback, failureCallback, 'AdMobAds', 'recordResolution', [purchaseId, resolution]);
 };
 
 /**
@@ -216,6 +216,12 @@ admob.recordPlayBillingResolution = function (purchaseId, billingResponseCode, s
       failureCallback('purchaseId and billingResponseCode should be specified.')
     }
   }
-  cordova.exec(successCallback, failureCallback, 'AdMobAds', 'recordResolution', [ purchaseId, billingResponseCode ]);
+  cordova.exec(successCallback, failureCallback, 'AdMobAds', 'recordResolution', [purchaseId, billingResponseCode]);
 };
 
+if (typeof module !== 'undefined') {
+  // Export admob
+  module.exports = admob;
+}
+
+window.admob = admob;

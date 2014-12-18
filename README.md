@@ -16,6 +16,10 @@ Or
 
 ## New Features ##
 
+#### Dec-2014: ####
+
+* **Ionic, Angular.js**: Add support for [Angular.js](https://angularjs.org) based apps, for example [Ionic](http://ionicframework.com).
+
 #### Nov-2014: ####
 * **Connectivity detection**: When a new connection to WiFi or 3G/GPRS is detected, the ads are automatically shown if you asked to show them before and there was no connection.
 
@@ -95,6 +99,54 @@ To start showing ads, place the following code in your `onDeviceReady` callback.
 ```
 
 If you don't specify tappxId, no tappx requests will be placed (even if you specify a tappxShare).
+
+---
+## Angular.js based apps (Ionic) support ##
+
+Include the following script in your `index.html` (just it, the plugin is in charge to copy the script when the app is prepared):
+
+```html
+    <script src="lib/angular-admob/angular-admob.js"></script>
+```
+
+Here is a quick example on how to use Admob plugin with Angular.js based apps, for example Ionic:
+
+```javascript
+    var app = angular.module('myApp', ['admobModule']);
+
+    app.config(['admobSvcProvider', function (admobSvcProvider) {
+      // Optionally you can configure the options here:
+      admobSvcProvider.setOptions({
+        publisherId:          "ca-app-pub-8440343014846849/3119840614",  // Required
+        interstitialAdId:     "ca-app-pub-8440343014846849/4596573817",  // Optional
+        tappxIdiOs:           "/120940746/Pub-2702-iOS-8226",            // Optional
+        tappxIdAndroid:       "/120940746/Pub-2700-Android-8171",        // Optional
+        tappxShare:           0.5                                        // Optional
+      });
+
+      // Optionally configure the events prefix (by default set to 'admob:')
+      admobSvcProvider.setPrefix('myTag~');
+    }]);
+
+
+    app.run(['admobSvc', function (admobSvc) {
+      // Also you could configure the options here (or in any controller):
+      // admobSvcProvider.setOptions({ ... });
+
+      admobSvc.createBannerView();
+      // You could also call admobSvc.createBannerView(options);
+
+
+      // Handle events:
+      $rootScope.$on('myTag~' + admobSvc.events.onAdOpened, function onAdLeftApplication(evt, e) {
+        console.log('adOpened: type of ad:' + e.adType);
+      });
+
+      // The default prefix for events is 'admob:'
+      // $rootScope.$on('admob:' + admobSvc.events...
+    }]);
+```
+
 
 ---
 ## Javascript API ##

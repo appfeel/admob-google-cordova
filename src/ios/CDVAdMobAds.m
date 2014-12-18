@@ -277,7 +277,7 @@
     NSUInteger argc = [arguments count];
     if (argc >= 1) {
         NSString* showValue = [arguments objectAtIndex:0];
-        show = showValue ? [showValue boolValue] : YES;
+        show = (showValue != nil) ? [showValue boolValue] : YES;
     }
     isBannerShow = show;
     
