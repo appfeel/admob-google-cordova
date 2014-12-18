@@ -24,17 +24,7 @@
  SOFTWARE.
  */
 
-var admob = {},
-  defaultIds = {
-    ios: {
-      banner: "ca-app-pub-8440343014846849/2335511010",
-      interstitial: "ca-app-pub-8440343014846849/3812244218"
-    },
-    android: {
-      banner: "ca-app-pub-8440343014846849/3119840614",
-      interstitial: "ca-app-pub-8440343014846849/4596573817"
-    }
-  };
+var admob = {};
 
 /**
  * This enum represents appfeel-cordova-admob plugin events
@@ -73,9 +63,10 @@ admob.PURCHASE_RESOLUTION = {
   RESOLUTION_SUCCESS: 1
 };
 
+// This is not used by the plugin, it is just a helper to show how options are specified and their default values
 admob.options = {
-  publisherId: (/(android)/i.test(navigator.userAgent)) ? defaultIds.android.banner : defaultIds.ios.banner,
-  interstitialId: (/(android)/i.test(navigator.userAgent)) ? defaultIds.android.interstitial : defaultIds.ios.interstitial,
+  publisherId: (/(android)/i.test(navigator.userAgent)) ? "ca-app-pub-8440343014846849/3119840614" : "ca-app-pub-8440343014846849/2335511010",
+  interstitialId: (/(android)/i.test(navigator.userAgent)) ? "ca-app-pub-8440343014846849/4596573817" : "ca-app-pub-8440343014846849/3812244218",
   adSize: admob.AD_SIZE.SMART_BANNER,
   bannerAtTop: false,
   overlap: false,
