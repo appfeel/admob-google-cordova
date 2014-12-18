@@ -103,7 +103,7 @@ If you don't specify tappxId, no tappx requests will be placed (even if you spec
 ---
 ## Angular.js based apps (Ionic) support ##
 
-Include the following script in your `index.html` (just it, the plugin is in charge to copy the script when the app is prepared):
+Include the following script in your `index.html` (just it, no need to copy any file: the plugin is in charge to copy the script when the app is prepared):
 
 ```html
     <script src="lib/angular-admob/angular-admob.js"></script>
