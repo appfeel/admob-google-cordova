@@ -38,12 +38,6 @@ public class AdMobAdsAdListener extends AdListener {
   private AdMobAds admobAds;
   private boolean isBackFill = false;
 
-  public interface IAdLoadedAvailable {
-    void onAdLoaded(String adType);
-
-    void onAdOpened(String adType);
-  }
-
   public AdMobAdsAdListener(String adType, AdMobAds admobAds, boolean isBackFill) {
     this.adType = adType;
     this.admobAds = admobAds;

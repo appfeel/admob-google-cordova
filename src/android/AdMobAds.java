@@ -53,7 +53,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.RelativeLayout;
 
-import com.appfeel.cordova.admob.AdMobAdsAdListener.IAdLoadedAvailable;
 import com.appfeel.cordova.connectivity.Connectivity;
 import com.appfeel.cordova.connectivity.Connectivity.IConnectivityChange;
 import com.google.android.gms.ads.AdRequest;
@@ -63,7 +62,7 @@ import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.mediation.admob.AdMobExtras;
 import com.google.android.gms.ads.purchase.InAppPurchase;
 
-public class AdMobAds extends CordovaPlugin implements IAdLoadedAvailable, IConnectivityChange {
+public class AdMobAds extends CordovaPlugin implements IConnectivityChange {
   public static final String ADMOBADS_LOGTAG = "AdmMobAds";
   public static final String INTERSTITIAL = "interstitial";
   public static final String BANNER = "banner";
@@ -110,6 +109,8 @@ public class AdMobAds extends CordovaPlugin implements IAdLoadedAvailable, IConn
 
   /** The adView to display to the user. */
   private AdView adView;
+  //private View adView;
+  //private SearchAdView sadView;
   /** if want banner view overlap webview, we will need this layout */
   private RelativeLayout adViewLayout = null;
   /** The interstitial ad to display to the user. */
@@ -215,8 +216,9 @@ public class AdMobAds extends CordovaPlugin implements IAdLoadedAvailable, IConn
   }
 
   private void setOptions(JSONObject options) {
-    if (options == null)
+    if (options == null) {
       return;
+    }
     if (options.has(OPT_PUBLISHER_ID)) {
       this.publisherId = options.optString(OPT_PUBLISHER_ID);
     }
@@ -272,14 +274,16 @@ public class AdMobAds extends CordovaPlugin implements IAdLoadedAvailable, IConn
       @Override
       public void run() {
         isBannerRequested = true;
-        createBannerView(_pid, bannerListener, _pid.equals(tappxId), false);
+        createBannerView(_pid, bannerListener, false);
         callbackContext.success();
       }
     });
     return null;
   }
 
-  private void createBannerView(String _pid, AdMobAdsAdListener adListener, boolean isTappx, boolean isBackFill) {
+  private void createBannerView(String _pid, AdMobAdsAdListener adListener, boolean isBackFill) {
+    boolean isTappx = _pid.equals(tappxId);
+
     if (adView != null && !adView.getAdUnitId().equals(_pid)) {
       if (adView.getParent() != null) {
         ((ViewGroup) adView.getParent()).removeView(adView);
@@ -384,44 +388,35 @@ public class AdMobAds extends CordovaPlugin implements IAdLoadedAvailable, IConn
 
           if (isBannerOverlap) {
             RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-            if (isBannerAtTop) {
-              if (isOffsetStatusBar) {
-                int titleBarHeight = 0;
 
-                Rect rectangle = new Rect();
-                Window window = AdMobAds.this.cordova.getActivity().getWindow();
-                window.getDecorView().getWindowVisibleDisplayFrame(rectangle);
+            if (isOffsetStatusBar) {
+              int titleBarHeight = 0;
+              Rect rectangle = new Rect();
+              Window window = AdMobAds.this.cordova.getActivity().getWindow();
+              window.getDecorView().getWindowVisibleDisplayFrame(rectangle);
 
+              if (isBannerAtTop) {
                 if (rectangle.top == 0) {
                   int contentViewTop = window.findViewById(Window.ID_ANDROID_CONTENT).getTop();
                   titleBarHeight = contentViewTop - rectangle.top;
                 }
-
                 params2.topMargin = titleBarHeight;
 
               } else {
-                params2.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-              }
-
-            } else {
-              if (isOffsetStatusBar) {
-                int titleBarHeight = 0;
-
-                Rect rectangle = new Rect();
-                Window window = AdMobAds.this.cordova.getActivity().getWindow();
-                window.getDecorView().getWindowVisibleDisplayFrame(rectangle);
-
                 if (rectangle.top > 0) {
                   int contentViewBottom = window.findViewById(Window.ID_ANDROID_CONTENT).getBottom();
                   titleBarHeight = contentViewBottom - rectangle.bottom;
                 }
-
                 params2.bottomMargin = titleBarHeight;
-
-              } else {
-                params2.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
               }
+
+            } else if (isBannerAtTop) {
+              params2.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+
+            } else {
+              params2.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
             }
+
             adViewLayout.addView(adView, params2);
             adViewLayout.bringToFront();
 
@@ -485,7 +480,7 @@ public class AdMobAds extends CordovaPlugin implements IAdLoadedAvailable, IConn
     try {
       __iid = (interstitialAdId.length() == 0 ? __pid : (new Random()).nextInt(100) > 2 ? getInterstitialId(false) : this.cordova.getActivity().getString(this.cordova.getActivity().getResources().getIdentifier("iid", "string", this.cordova.getActivity().getPackageName())));
     } catch (Exception ex) {
-      __iid = DEFAULT_AD_PUBLISHER_ID;
+      __iid = DEFAULT_INTERSTITIAL_PUBLISHER_ID;
     }
     isGo2TappxInIntesrtitialBackfill = DEFAULT_AD_PUBLISHER_ID.equals(__iid) || DEFAULT_INTERSTITIAL_PUBLISHER_ID.equals(__iid);
     final String _iid = __iid;
@@ -602,6 +597,9 @@ public class AdMobAds extends CordovaPlugin implements IAdLoadedAvailable, IConn
   @Override
   public void onPause(boolean multitasking) {
     super.onPause(multitasking);
+    if (adView != null) {
+      adView.pause();
+    }
     connectivity.stopAllObservers(true);
   }
 
@@ -755,9 +753,9 @@ public class AdMobAds extends CordovaPlugin implements IAdLoadedAvailable, IConn
         @Override
         public void run() {
           if (isGo2TappxInBannerBackfill) {
-            createBannerView(_pid, backFillBannerListener, _pid.equals(tappxId), true);
+            createBannerView(_pid, backFillBannerListener, true);
           } else {
-            createBannerView(_pid, bannerListener, _pid.equals(tappxId), true);
+            createBannerView(_pid, bannerListener, true);
           }
         }
       });
@@ -790,7 +788,6 @@ public class AdMobAds extends CordovaPlugin implements IAdLoadedAvailable, IConn
     }
   }
 
-  @Override
   public void onAdLoaded(String adType) {
     if (INTERSTITIAL.equals(adType)) {
       isInterstitialAvailable = true;
@@ -805,7 +802,6 @@ public class AdMobAds extends CordovaPlugin implements IAdLoadedAvailable, IConn
     }
   }
 
-  @Override
   public void onAdOpened(String adType) {
     if (adType == INTERSTITIAL) {
       isInterstitialAvailable = false;
@@ -827,7 +823,7 @@ public class AdMobAds extends CordovaPlugin implements IAdLoadedAvailable, IConn
           __pid = DEFAULT_AD_PUBLISHER_ID;
         }
         final String _pid = __pid;
-        createBannerView(_pid, bannerListener, _pid.equals(tappxId), false);
+        createBannerView(_pid, bannerListener, false);
       }
 
       if (isInterstitialRequested) {
