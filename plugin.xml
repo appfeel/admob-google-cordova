@@ -19,6 +19,7 @@
 
   <js-module src="www/admob.js" name="AdMobAds">
     <clobbers target="window.admob" />
+    <clobbers target="window.tappx" />
   </js-module>
 
   <asset src="www/angular-admob.js" target="lib/angular-admob/angular-admob.js" />

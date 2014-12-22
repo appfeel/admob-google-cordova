@@ -216,3 +216,4 @@ if (typeof module !== 'undefined') {
 }
 
 window.admob = admob;
+window.tappx = admob;
