@@ -107,6 +107,13 @@ Visit the [wiki](https://github.com/appfeel/admob-google-cordova/wiki) of Google
   * In app purchase
     * [recordResolution](https://github.com/appfeel/admob-google-cordova/wiki/recordResolution)
     * [recordPlayBillingResolution](https://github.com/appfeel/admob-google-cordova/wiki/recordPlayBillingResolution)
+  * [Events](https://github.com/appfeel/admob-google-cordova/wiki/Events)
+    * [onAdLoaded](https://github.com/appfeel/admob-google-cordova/wiki/Events#admobeventsonadloaded)
+    * [onAdFailedToLoad](https://github.com/appfeel/admob-google-cordova/wiki/Events#admobeventsonadfailedtoload)
+    * [onAdOpened](https://github.com/appfeel/admob-google-cordova/wiki/Events#admobeventsonadopened)
+    * [onAdClosed](https://github.com/appfeel/admob-google-cordova/wiki/Events#admobeventsonadclosed)
+    * [onAdLeftApplication](https://github.com/appfeel/admob-google-cordova/wiki/Events#admobeventsonadleftapplication)
+    * [onInAppPurchaseRequested](https://github.com/appfeel/admob-google-cordova/wiki/Events#admobeventsoninapppurchaserequested)
 * [Complete example code](https://github.com/appfeel/admob-google-cordova/wiki/Complete-example-code)
 * [Contributing](https://github.com/appfeel/admob-google-cordova/wiki/Contributing)
 * [Screenshots](https://github.com/appfeel/admob-google-cordova/wiki/Screenshots)
