@@ -14,23 +14,6 @@ Or
 
 ![Integrate cordova admob plugin](https://github.com/appfeel/admob-google-cordova/blob/master/demo/integrate-admob-cordova.gif)
 
-## New Features ##
-
-#### Dec-2014: ####
-
-* **Ionic, Angular.js**: Add support for [Angular.js](https://angularjs.org) based apps, for example [Ionic](http://ionicframework.com).
-
-#### Nov-2014: ####
-* **Connectivity detection**: When a new connection to WiFi or 3G/GPRS is detected, the ads are automatically shown if you asked to show them before and there was no connection.
-
-* **[Integration with tappx](http://www.tappx.com/?h=dec334d63287772de859bdb4e977fce6)**: the developers community that exchanges advertisement to promote their apps. You can advertise your app for **FREE**. You can decide how much inventory you divert to Tappx.
-
-* **Back-filling**: your lost inventory is delivered to [tappx (you must have a free account)](http://www.tappx.com/?h=dec334d63287772de859bdb4e977fce6).
-
-#### Oct-2014: ####
-* **Google Libraries externalitzation**: The libraries are fetched from external repository, to help it keeping updated.
-
-* **Intel XDK**: Added support to Intel XDK platform and uploaded examples on how to integrate it.
 
 ---
 ## Testimonials ##
@@ -98,245 +81,35 @@ To start showing ads, place the following code in your `onDeviceReady` callback.
     document.addEventListener("deviceready", onDeviceReady, false);
 ```
 
-If you don't specify tappxId, no tappx requests will be placed (even if you specify a tappxShare).
+If you don't specify tappxId, no tappx requests will be placed (even if you specify a tappxShare). [See Tappx configuration](https://github.com/appfeel/admob-google-cordova/wiki/Tappx-configuration) for more detailed info.
 
 ---
-## Angular.js based apps (Ionic) support ##
+## Full documentation ##
 
-Include the following script in your `index.html` (just it, no need to copy any file: the plugin is in charge to copy the script when the app is prepared):
+Visit the [wiki](https://github.com/appfeel/admob-google-cordova/wiki) pages to know in detail about Google AdMob Cordova plugin, where you will find the following topics:
 
-```html
-    <script src="lib/angular-admob/angular-admob.js"></script>
-```
-
-Here is a quick example on how to use Admob plugin with Angular.js based apps, for example Ionic:
-
-```javascript
-    var app = angular.module('myApp', ['admobModule']);
-
-    app.config(['admobSvcProvider', function (admobSvcProvider) {
-      // Optionally you can configure the options here:
-      admobSvcProvider.setOptions({
-        publisherId:          "ca-app-pub-8440343014846849/3119840614",  // Required
-        interstitialAdId:     "ca-app-pub-8440343014846849/4596573817",  // Optional
-        tappxIdiOs:           "/120940746/Pub-2702-iOS-8226",            // Optional
-        tappxIdAndroid:       "/120940746/Pub-2700-Android-8171",        // Optional
-        tappxShare:           0.5                                        // Optional
-      });
-
-      // Optionally configure the events prefix (by default set to 'admob:')
-      admobSvcProvider.setPrefix('myTag~');
-    }]);
-
-
-    app.run(['admobSvc', function (admobSvc) {
-      // Also you could configure the options here (or in any controller):
-      // admobSvcProvider.setOptions({ ... });
-
-      admobSvc.createBannerView();
-      // You could also call admobSvc.createBannerView(options);
-
-
-      // Handle events:
-      $rootScope.$on('myTag~' + admobSvc.events.onAdOpened, function onAdLeftApplication(evt, e) {
-        console.log('adOpened: type of ad:' + e.adType);
-      });
-
-      // The default prefix for events is 'admob:'
-      // $rootScope.$on('admob:' + admobSvc.events...
-    }]);
-```
-
-
----
-## Javascript API ##
-
-*Note:* All success callbacks are in the form `'function () {}'`, and all failure callbacks are in the form `'function (err) {}'` where `err` is a String explaining the error reason.
-
-#### setOptions(options, success, fail);
-Set the options to start displaying ads:
-
-* options: setup options (see [options](#options)).
-* success: success callback.
-* failure: failure callback.
-
-#### Options
-A JSON object whith the following fields:
-
-* ***publisherId***: (Required) Your publisher id code from your AdMob account. [You can get it from AdMob](https://apps.admob.com/admob/signup).
-* **interstitialAdId**: (Optional) Your interstitial id code from your AdMob account. Defaults to `publisherId`.
-* **tappxIdiOS**: (Optional) Your tappx id for iOS apps. **[You can get it from tappx](http://www.tappx.com/?h=dec334d63287772de859bdb4e977fce6)**. It is also used to backfill your lost inventory (when there are no Admob ads available).
-* **tappxIdAndroid**: (Optional) Your tappx id for Android apps. **[You can get it from tappx](http://www.tappx.com/?h=dec334d63287772de859bdb4e977fce6)**. It is also used to backfill your lost inventory (when there are no Admob ads available).
-* **tappxShare**: (Optional) If any of tappxId is present, it tells the percentage of traffic diverted to tappx. Defaults to 50% (0.5).
-* **bannerAtTop**: (Optional) Indicates whether to put banner ads at top when set to true or at bottom when set to false. Default `false`.
-* **adSize**: (Optional) Indicates the size of banner ads.  
-Available values are (see [Google Docs](https://developers.google.com/mobile-ads-sdk/docs/admob/android/banner#size) for more info):
-  * admob.AD_SIZE.BANNER: 320x50. Standard Banner (Phones and Tablets).
-  * admob.AD_SIZE.IAB_MRECT: 300x250. IAB Medium Rectangle (Phones and Tablets).
-  * admob.AD_SIZE.IAB_BANNER: 468x60. IAB Full-Size Banner (Tablets).
-  * admob.AD_SIZE.IAB_LEADERBOARD: 728x90. IAB Leaderboard (Tablets).
-  * admob.AD_SIZE.SMART_BANNER: ([See table](https://developers.google.com/mobile-ads-sdk/docs/admob/android/banner#smart)) Smart Banner (Phones and Tablets).
-* **overlap**: (Optional) Allow banner overlap webview. Default `false`.
-* **offsetStatusBar**: (Optional) Set to true to avoid ios7 status bar overlap. Default `false`.
-* **isTesting**: (Optional) Set to true for receiving test ads (do not test with real ads as your account will be banned). Default `false`.
-* **adExtras**: (Options) A JSON object with additional {key: value} pairs (see [Google Docs](https://developers.google.com/mobile-ads-sdk/docs/admob/android/banner#color) for more info).
-* **autoShowBanner**: (Optional) Auto show banners ad when available (`admob.events.onAdLoaded` event is called). Default `true`.
-* **autoShowInterstitial**: (Optional) Auto show interstitials ad when available (`admob.events.onAdLoaded` event is called). Default `false`.
-
-*Example (those are also the default options, except for tappxId's which are empty by default):*
-```javascript
-{
-  publisherId:          "ca-app-pub-8440343014846849/3119840614",
-  interstitialAdId:     "ca-app-pub-8440343014846849/4596573817",
-  tappxIdiOs:           "/120940746/Pub-2702-iOS-8226",
-  tappxIdAndroid:       "/120940746/Pub-2700-Android-8171",
-  tappxShare:           0.5,
-  adSize:               admob.AD_SIZE.SMART_BANNER,
-  bannerAtTop:          false,
-  overlap:              false,
-  offsetStatusBar:      false,
-  isTesting:            false,
-  adExtras :            {},
-  autoShowBanner:       true,
-  autoShowInterstitial: true
-}
-```
-
-### Banners
-#### createBannerView(options, success, fail);
-Create a new banner view.
-
-* options: setup options (see [options](#options)).
-* success: success callback.
-* failure: failure callback.
-
-#### showAd(show, success, fail); 
-Show banner ads.
-
-* show[boolean]: Indicates whether to show or hide banner ads.
-* success: success callback.
-* failure: failure callback.
-
-#### destroyBannerView();
-Hide and destroy banner view.
-
-### Interstitials
-#### requestInterstitialAd(options, success, fail);
-Request an interstitial ad.  
-If `options.autoShowInterstitial` is set to true, the ad will automatically be displayed. Otherwise you should call `showInterstitialAd()` when `admob.events.onAdLoaded` event is called.  
-If you already called `requestInterstitialAd()` but the interstitial was never shown, the following calls to `requestInterstitialAd()` will result in the ad being inmediately available (the same ad as the one in the first call).
-
-* options: setup options (see [options](#options)).
-* success: success callback.
-* failure: failure callback.
-
-#### showInterstitialAd(success, fail);
-Show an interstitial ad.  
-This method must be called after `admob.events.onAdLoaded` event is called. If there is no ad available it calls fail callback.
-
-* success: success callback.
-* failure: failure callback.
-
-### In App Purchase
-#### recordResolution(purchaseId, resolution, success, fail);
-Records the purchase status and conversion events.
-
-* purchaseId: The id of the purchase (you will get it when `admob.events.onInAppPurchase` event is called).
-* resolution: The result of a purchase. The value can be:
-  * admob.PURCHASE_RESOLUTION.RESOLUTION_CANCELED: A resolution indicating the purchase was canceled.
-  * admob.PURCHASE_RESOLUTION.RESOLUTION_FAILURE: A resolution indicating the purchase failed.
-  * admob.PURCHASE_RESOLUTION.RESOLUTION_INVALID_PRODUCT: A resolution indicating the product is invalid.
-  * admob.PURCHASE_RESOLUTION.RESOLUTION_SUCCESS: A resolution indicating the purchase was successful.
-* success: success callback.
-* failure: failure callback.
-
-#### recordPlayBillingResolution(purchaseId, billingResponseCode, success, fail);
-Records the purchase status and conversion events for a play billing purchase.
-
-* purchaseId: The id of the purchase (you will get it when `admob.events.onInAppPurchase` event is called).
-* billingResponseCode: The result of a play billing purchase. The value can be any billing response code from:
-  * admob.PURCHASE_RESOLUTION.RESOLUTION_CANCELED: A resolution indicating the purchase was canceled.
-  * admob.PURCHASE_RESOLUTION.RESOLUTION_FAILURE: A resolution indicating the purchase failed.
-  * admob.PURCHASE_RESOLUTION.RESOLUTION_INVALID_PRODUCT: A resolution indicating the product is invalid.
-  * admob.PURCHASE_RESOLUTION.RESOLUTION_SUCCESS: A resolution indicating the purchase was successful.
-* success: success callback.
-* failure: failure callback.
-    
-### Events
-AdMobAds Cordova library will use the same events for Android as for iOS (the iOS ones are mapped to the Android ones). See [Google Docs](https://developers.google.com/mobile-ads-sdk/docs/admob/android/banner#adlistener) for more info.  
-To listen to any of those events you can use:
-
-    document.addEventListener(admob.events.onAdLoaded, function (e) { });
-    
-#### admob.events.onAdLoaded
-Called when an ad is received.
-
-* e: JSON object.  
-*Example:* `{ adType : "banner" }`  
-  * adType can be `admob.AD_TYPE.BANNER` or `admob.AD_TYPE.INTERSTITIAL`
-
-#### admob.events.onAdFailedToLoad
-Called when an ad request failed.
-
-* e: JSON object.  
-*Example:* `{ adType : "[string]", error : [integer], reason : "[string]" }`
-  * adType can be admob.AD_TYPE.BANNER or admob.AD_TYPE.INTERSTITIAL
-  * error is the error code and is usually one of the following:
-    * AdRequest.ERROR_CODE_INTERNAL_ERROR
-    * AdRequest.ERROR_CODE_INVALID_REQUEST
-    * AdRequest.ERROR_CODE_NETWORK_ERROR
-    * AdRequest.ERROR_CODE_NO_FILL
-  * reason is an english string with the reason of the error (for logging purposes).
-      
-#### admob.events.onAdOpened
-Called when an ad opens an overlay that covers the screen.
-Please note that `onPause` event is raised when an interstitial is shown.
-
-* e: JSON object.  
-*Example:* `{ adType : "banner" }`  
-  * adType can be `admob.AD_TYPE.BANNER` or `admob.AD_TYPE.INTERSTITIAL`
-      
-#### admob.events.onAdClosed
-Called when the user is about to return to the application after clicking on an ad.
-Please note that `onResume` event is raised when an interstitial is closed.
-
-* e: JSON object.  
-*Example:* `{ adType : "banner" }`  
-  * adType can be `admob.AD_TYPE.BANNER` or `admob.AD_TYPE.INTERSTITIAL`
-      
-#### admob.events.onAdLeftApplication
-Called when an ad leaves the application (e.g., to go to the browser).
-
-* e: JSON object.  
-*Example:* `{ adType : "banner" }`  
-  * adType can be `admob.AD_TYPE.BANNER` or `admob.AD_TYPE.INTERSTITIAL`
-      
-#### admob.events.onInAppPurchaseRequested
-Called when the user clicks the buy button of an in-app purchase ad. You shoud complete the transaction by calling `admob.recordResolution(...)` or `admob.recordPlayBillingResolution(...)`.
-
-* e: JSON object.  
-*Example:* `{ adType : "banner" }`  
-  * adType can be `admob.AD_TYPE.BANNER` or `admob.AD_TYPE.INTERSTITIAL`
-      
-
----
-## Quick example with cordova CLI ##
-```c
-    cordova create <project_folder> com.<company_name>.<app_name> <AppName>
-    cd <project_folder>
-    cordova platform add android
-    cordova platform add ios
-
-    // cordova will handle dependency automatically
-    cordova plugin add com.admob.google
-
-    // now remove the default www content, copy the demo html file to www
-    rm -rf www/*;
-    cp plugins/com.admob.google/test/* www/
-
-    cordova prepare; cordova run android; cordova run ios;
-    // or import into Xcode / eclipse
-```
+* [Index](https://github.com/appfeel/admob-google-cordova/wiki/Index)
+* [About Cordova AdMob plugin](https://github.com/appfeel/admob-google-cordova/wiki/About-Cordova-AdMob-plugin)
+* [Change Log](https://github.com/appfeel/admob-google-cordova/wiki/Change-Log)
+* [Testimonials](https://github.com/appfeel/admob-google-cordova/wiki/Testimonials)
+* [Setup](https://github.com/appfeel/admob-google-cordova/wiki/Setup)
+* [Angular.js, Ionic apps](https://github.com/appfeel/admob-google-cordova/wiki/Angular.js,-Ionic-apps)
+* [Tappx configuration](https://github.com/appfeel/admob-google-cordova/wiki/Tappx-configuration)
+* [Javascript API](https://github.com/appfeel/admob-google-cordova/wiki/Javascript-API)
+  * [setOptions](https://github.com/appfeel/admob-google-cordova/wiki/setOptions)
+  * Banners
+    * [createBannerView](https://github.com/appfeel/admob-google-cordova/wiki/createBannerView)
+    * [showAd](https://github.com/appfeel/admob-google-cordova/wiki/showAd)
+    * [destroyBannerView](https://github.com/appfeel/admob-google-cordova/wiki/destroyBannerView)
+  * Interstitials
+    * [requestInterstitialAd](https://github.com/appfeel/admob-google-cordova/wiki/requestInterstitialAd)
+    * [showInterstitialAd](https://github.com/appfeel/admob-google-cordova/wiki/showInterstitialAd)
+  * In app purchase
+    * [recordResolution](https://github.com/appfeel/admob-google-cordova/wiki/recordResolution)
+    * [recordPlayBillingResolution](https://github.com/appfeel/admob-google-cordova/wiki/recordPlayBillingResolution)
+* [Complete example code](https://github.com/appfeel/admob-google-cordova/wiki/Complete-example-code)
+* [Contributing](https://github.com/appfeel/admob-google-cordova/wiki/Contributing)
+* [Screenshots](https://github.com/appfeel/admob-google-cordova/wiki/Screenshots)
 
 ---
 ## Complete example code ##
@@ -448,6 +221,7 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
+
 ---
 ## Credits ##
 
