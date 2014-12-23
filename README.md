@@ -88,8 +88,8 @@ If you don't specify tappxId, no tappx requests will be placed (even if you spec
 
 Visit the [wiki](https://github.com/appfeel/admob-google-cordova/wiki) of Google AdMob Cordova plugin. Table of contents:
 
-* [Index](https://github.com/appfeel/admob-google-cordova/wiki/Index)
-* [About Cordova AdMob plugin](https://github.com/appfeel/admob-google-cordova/wiki/About-Cordova-AdMob-plugin)
+* [Home](https://github.com/appfeel/admob-google-cordova/wiki)
+* [Table of contents](https://github.com/appfeel/admob-google-cordova/wiki/Table-of-contents)
 * [Change Log](https://github.com/appfeel/admob-google-cordova/wiki/Change-Log)
 * [Testimonials](https://github.com/appfeel/admob-google-cordova/wiki/Testimonials)
 * [Setup](https://github.com/appfeel/admob-google-cordova/wiki/Setup)
