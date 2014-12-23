@@ -10,7 +10,7 @@ With this Cordova/Phonegap/XDK plugin you can show AdMob ads as easy as:
 
 Or
 
-    admob.requestInterstitialAd({interstitialAdId: "ca-app-pub-8440343014846849/4596573817", autoShowInterstitial: true});
+    admob.requestInterstitialAd({publisherId: "ca-app-pub-8440343014846849/3119840614", interstitialAdId: "ca-app-pub-8440343014846849/4596573817", autoShowInterstitial: true});
 
 ![Integrate cordova admob plugin](https://github.com/appfeel/admob-google-cordova/blob/master/demo/integrate-admob-cordova.gif)
 
