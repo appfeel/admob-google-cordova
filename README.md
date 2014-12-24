@@ -205,15 +205,15 @@ Love the project? Wanna buy me a coffee (or a beer :D)? [Click here](https://www
 ## Screenshots ##
 #### iPhone:
 
-<img src="https://github.com/appfeel/admob-google-cordova/blob/master/demo/iphone.png" border="2" alt="Phonegp Cordova admob plugin in iPhone" />
+<img src="https://github.com/appfeel/admob-google-cordova/blob/master/demo/iphone.png" border="10" alt="Phonegp Cordova admob plugin in iPhone" />
 
 #### iPad Banner Portrait:
 
-![Phonegp Cordova admob plugin in iPad](https://github.com/appfeel/admob-google-cordova/blob/master/demo/banner-ipad.png)
+<img src="https://github.com/appfeel/admob-google-cordova/blob/master/demo/banner-ipad.png" border="10" alt="Phonegp Cordova admob plugin in iPad" />
 
 #### iPad Banner Landscape:
 
-![Phonegp Cordova admob plugin](https://github.com/appfeel/admob-google-cordova/blob/master/demo/banner-landscape-ipad.png)
+<img src="https://github.com/appfeel/admob-google-cordova/blob/master/demo/banner-landscape-ipad.png" border="10" alt="Phonegp Cordova banner admob plugin" />
 
 ---
 ## License ##
