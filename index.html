@@ -230,7 +230,7 @@ admob.requestInterstitialAd({
 
 
       <span class="pl-c">// Handle events:</span>
-      $rootScope.$on(<span class="pl-s1"><span class="pl-pds">'</span>myTag~<span class="pl-pds">'</span></span> <span class="pl-k">+</span> admobSvc.events.onAdOpened, <span class="pl-st">function</span> <span class="pl-en">onAdLeftApplication</span>(<span class="pl-vpf">evt</span>, <span class="pl-vpf">e</span>) {
+      $rootScope.$on(<span class="pl-s1"><span class="pl-pds">'</span>myTag~<span class="pl-pds">'</span></span> <span class="pl-k">+</span> admobSvc.events.onAdOpened, <span class="pl-st">function</span> <span class="pl-en">onAdOpened</span>(<span class="pl-vpf">evt</span>, <span class="pl-vpf">e</span>) {
         <span class="pl-en">console</span><span class="pl-s3">.log</span>(<span class="pl-s1"><span class="pl-pds">'</span>adOpened: type of ad:<span class="pl-pds">'</span></span> <span class="pl-k">+</span> e.adType);
       });
 
