@@ -99,7 +99,7 @@ Visit the [wiki](https://github.com/appfeel/admob-google-cordova/wiki) of Google
   * [setOptions](https://github.com/appfeel/admob-google-cordova/wiki/setOptions)
   * Banners
     * [createBannerView](https://github.com/appfeel/admob-google-cordova/wiki/createBannerView)
-    * [showAd](https://github.com/appfeel/admob-google-cordova/wiki/showAd)
+    * [showBannerAd](https://github.com/appfeel/admob-google-cordova/wiki/showBannerAd)
     * [destroyBannerView](https://github.com/appfeel/admob-google-cordova/wiki/destroyBannerView)
   * Interstitials
     * [requestInterstitialAd](https://github.com/appfeel/admob-google-cordova/wiki/requestInterstitialAd)
