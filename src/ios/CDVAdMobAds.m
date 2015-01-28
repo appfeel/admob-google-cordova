@@ -123,7 +123,7 @@
     isTesting = false;
     
     isBannerAutoShow = true;
-    isInterstitialAutoShow = false;
+    isInterstitialAutoShow = true;
     
     isBannerInitialized = false;
     isBannerVisible = false;
