@@ -124,6 +124,8 @@ Note that the admob ads are configured inside `onDeviceReady()`. This is because
 
 ```javascript
 
+    var isAppForeground = true;
+    
     function initAds() {
       if (admob) {
         var adPublisherIds = {
@@ -144,7 +146,8 @@ Note that the admob ads are configured inside `onDeviceReady()`. This is because
           interstitialAdId: admobid.interstitial,
           tappxIdiOs:       "/120940746/Pub-2702-iOS-8226",
           tappxIdAndroid:   "/120940746/Pub-2700-Android-8171",
-          tappxShare:       0.5
+          tappxShare:       0.5,
+          
         });
 
         registerAdEvents();
@@ -155,11 +158,27 @@ Note that the admob ads are configured inside `onDeviceReady()`. This is because
     }
     
     function onAdLoaded(e) {
-      if (e.adType === admob.AD_TYPE.INTERSTITIAL) {
-        admob.showInterstitialAd();
-        showNextInterstitial = setTimeout(function() {
-          admob.requestInterstitialAd();
-        }, 2 * 60 * 1000); // 2 minutes
+      if (isAppForeground) {
+        if (e.adType === admob.AD_TYPE.INTERSTITIAL) {
+          console.log("An interstitial has been loaded and autoshown. If you want to load the interstitial first and show it later, set 'autoShowInterstitial: false' in admob.setOptions() and call 'admob.showInterstitialAd();' here");
+        } else if (e.adType === admob.AD_TYPE_BANNER) {
+          console.log("New banner received");
+        }
+      }
+    }
+    
+    function onPause() {
+      if (isAppForeground) {
+        admob.destroyBannerView();
+        isAppForeground = false;
+      }
+    }
+    
+    function onResume() {
+      if (!isAppForeground) {
+        setTimeout(admob.createBannerView, 1);
+        setTimeout(admob.requestInterstitialAd, 1);
+        isAppForeground = true;
       }
     }
     
@@ -171,6 +190,9 @@ Note that the admob ads are configured inside `onDeviceReady()`. This is because
       document.addEventListener(admob.events.onAdClosed, function (e) {});
       document.addEventListener(admob.events.onAdLeftApplication, function (e) {});
       document.addEventListener(admob.events.onInAppPurchaseRequested, function (e) {});
+      
+      document.addEventListener("pause", onPause, false);
+      document.addEventListener("resume", onResume, false);
     }
         
     function onDeviceReady() {
