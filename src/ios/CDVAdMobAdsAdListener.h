@@ -1,6 +1,6 @@
 /*
  CDVAdMobAdsAdListener.h
- Copyright 2014 AppFeel. All rights reserved.
+ Copyright 2015 AppFeel. All rights reserved.
  http://www.appfeel.com
  
  AdMobAds Cordova Plugin (com.admob.google)
@@ -26,8 +26,9 @@
 
 #import <Foundation/Foundation.h>
 #import "CDVAdMobAds.h"
-#import "GADBannerViewDelegate.h"
-#import "GADInterstitialDelegate.h"
+#import <GoogleMobileAds/GADBannerViewDelegate.h>
+#import <GoogleMobileAds/GADInterstitialDelegate.h>
+#import <GoogleMobileAds/GADExtras.h>
 
 @class CDVAdMobAds;
 

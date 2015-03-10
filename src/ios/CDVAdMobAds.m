@@ -27,7 +27,6 @@
 #import <AdSupport/ASIdentifierManager.h>
 #import <CommonCrypto/CommonDigest.h>
 #import "CDVAdMobAds.h"
-#import "GADAdMobExtras.h"
 #import "MainViewController.h"
 
 @interface CDVAdMobAds()
@@ -214,7 +213,7 @@
     
     NSUInteger argc = [args count];
     if (argc >= 1) {
-        NSDictionary* options = [command.arguments objectAtIndex:0 withDefault:[NSNull null]];
+        NSDictionary* options = [command argumentAtIndex:0 withDefault:[NSNull null]];
         [self __setOptions:options];
     }
     
@@ -228,7 +227,7 @@
     
     NSUInteger argc = [args count];
     if (argc >= 1) {
-        NSDictionary* options = [command.arguments objectAtIndex:0 withDefault:[NSNull null]];
+        NSDictionary* options = [command argumentAtIndex:0 withDefault:[NSNull null]];
         [self __setOptions:options];
     }
     
@@ -353,7 +352,7 @@
     
     NSUInteger argc = [args count];
     if (argc >= 1) {
-        NSDictionary* options = [command.arguments objectAtIndex:0 withDefault:[NSNull null]];
+        NSDictionary* options = [command argumentAtIndex:0 withDefault:[NSNull null]];
         [self __setOptions:options];
     }
     
@@ -704,14 +703,13 @@
         NSString *admobDeviceId = [[self __admobDeviceID] lowercaseString];
         request.testDevices =
         [NSArray arrayWithObjects:
-         GAD_SIMULATOR_ID,
          admobDeviceId,
          nil];
     }
     
     if (self.adExtras) {
         dispatch_sync(dispatch_get_main_queue(), ^{
-            GADAdMobExtras *extras = [[GADAdMobExtras alloc] init];
+            GADExtras *extras = [[GADExtras alloc] init];
             NSMutableDictionary *modifiedExtrasDict =
             [[NSMutableDictionary alloc] initWithDictionary:self.adExtras];
             
