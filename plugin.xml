@@ -12,7 +12,7 @@
   <issue>https://github.com/appfeel/admob-google-cordova/issues</issue>
 
   <engines>
-    <engine name="cordova" version=">=2.9" />
+    <engine name="cordova" version=">=3.8" />
   </engines>
 
   <dependency id="com.connectivity.monitor" />
