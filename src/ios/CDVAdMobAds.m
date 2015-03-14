@@ -35,8 +35,8 @@
 @property (assign) BOOL isInterstitialRequested;
 @property (assign) BOOL isNetworkActive;
 
-@property (nonatomic) Reachability *hostReachability;
-@property (nonatomic) Reachability *internetReachability;
+@property (nonatomic) AppFeelReachability *hostReachability;
+@property (nonatomic) AppFeelReachability *internetReachability;
 
 - (void) __reachabilityChanged:(NSNotification*)aNote;
 - (void) __setOptions:(NSDictionary*) options;
@@ -147,17 +147,17 @@
     
     NSString *remoteHostName = @"www.google.com";
     
-    self.hostReachability = [Reachability reachabilityWithHostName:remoteHostName];
+    self.hostReachability = [AppFeelReachability reachabilityWithHostName:remoteHostName];
     [self.hostReachability startNotifier];
     
-    self.internetReachability = [Reachability reachabilityForInternetConnection];
+    self.internetReachability = [AppFeelReachability reachabilityForInternetConnection];
     [self.internetReachability startNotifier];
     
     return self;
 }
 
 - (void) __reachabilityChanged:(NSNotification*)aNote {
-    Reachability *curReach = [aNote object];
+    AppFeelReachability *curReach = [aNote object];
     NetworkStatus remoteHostStatus = [curReach currentReachabilityStatus];
     
     if (remoteHostStatus == NotReachable) {

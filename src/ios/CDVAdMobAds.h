@@ -34,7 +34,7 @@
 #import <GoogleMobileAds/GADBannerViewDelegate.h>
 #import <GoogleMobileAds/GADInterstitialDelegate.h>
 #import "CDVAdMobAdsAdListener.h"
-#import "Reachability.h"
+#import "AppFeelReachability.h"
 
 #pragma mark - JS requestAd options
 
