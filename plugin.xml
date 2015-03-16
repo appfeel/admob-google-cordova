@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="com.admob.google" version="2.0.8">
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="com.admob.google" version="2.0.9">
 
   <description>Google AdMob Ads plugin for Cordova, Phonegap, Ionic/Angular and Intel XDK. Monetize your app with one javascript line. Android SDK v6.5, iOS SDK v7.0.0. With support for tappx and auto-detect internet connection.</description>
 
@@ -68,7 +68,7 @@
     <source-file src="src/ios/CDVAdMobAdsAdListener.m" />
 
     <!-- Google AdMob framework -->
-    <dependency id="com.ios.libgoogleadmobads"/>
+    <dependency id="com.ios.libgoogleadmobads" url="https://github.com/appfeel/google-iosadmobads"/>
     
     <!--config-file target="*-Info.plist" parent="CFBundleURLTypes">
       <array>
