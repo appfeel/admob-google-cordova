@@ -334,7 +334,6 @@ public class AdMobAds extends CordovaPlugin implements IConnectivityChange {
   }
 
   @SuppressLint("DefaultLocale")
-  @SuppressWarnings("unchecked")
   private AdRequest buildAdRequest() {
     AdRequest.Builder request_builder = new AdRequest.Builder();
     if (isTesting) {
