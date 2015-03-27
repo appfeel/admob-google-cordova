@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="com.admob.google" version="2.0.12">
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="com.admob.google" version="2.0.13">
 
   <description>Google AdMob Ads plugin for Cordova, Phonegap, Ionic/Angular and Intel XDK. Monetize your app with one javascript line. Android SDK v7.0, iOS SDK v7.0.0. With support for tappx and auto-detect internet connection.</description>
 
@@ -40,10 +40,10 @@
       <uses-permission android:name="android.permission.INTERNET" />
       <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     </config-file>
-    <config-file target="res/values/strings.xml" parent="/*">
+    <!--config-file target="res/values/strings.xml" parent="/*">
       <string name="banid">ca-app-pub-8440343014846849/3119840614</string>
       <string name="intid">ca-app-pub-8440343014846849/4596573817</string>
-    </config-file>
+    </config-file-->
 
     <dependency id="android.support.v4" url="https://github.com/appfeel/cordova-plugin-android-support-v4" />
     <dependency id="com.google.play.services" />
@@ -51,7 +51,7 @@
     <source-file src="src/android/AdMobAds.java" target-dir="src/com/appfeel/cordova/admob" />
     <source-file src="src/android/AdMobAdsAdListener.java" target-dir="src/com/appfeel/cordova/admob" />
     <source-file src="src/android/AdMobAdsAppPurchaseListener.java" target-dir="src/com/appfeel/cordova/admob" />
-    <source-file src="src/android/res/values/admob.xml" target-dir="res/values" />
+    <source-file src="src/android/res/xml/admob.xml" target-dir="res/xml" />
   </platform>
 
   <!-- ios -->
