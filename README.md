@@ -6,11 +6,11 @@ Cordova AdMob plugin
 Monetize your Cordova/Phonegap/XDK apps with AdMob ads, **using latest Google AdMob SDK**.
 With this Cordova/Phonegap/XDK plugin you can show AdMob ads as easy as:
 
-    admob.createBannerView({publisherId: "ca-app-pub-8440343014846849/3119840614"});
+    admob.createBannerView({publisherId: "ca-app-pub-XXXXXXXXXXXXXXXX/BBBBBBBBBB"});
 
 Or
 
-    admob.requestInterstitialAd({publisherId: "ca-app-pub-8440343014846849/3119840614", interstitialAdId: "ca-app-pub-8440343014846849/4596573817"});
+    admob.requestInterstitialAd({publisherId: "ca-app-pub-XXXXXXXXXXXXXXXX/BBBBBBBBBB", interstitialAdId: "ca-app-pub-XXXXXXXXXXXXXXXX/IIIIIIIIII"});
 
 ![Integrate cordova admob plugin](https://github.com/appfeel/admob-google-cordova/blob/master/demo/integrate-admob-cordova.gif)
 
