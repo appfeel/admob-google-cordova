@@ -45,15 +45,15 @@
 
       <p>Monetize your Cordova/Phonegap/Ionic(Angular)/XDK apps with AdMob ads, <strong>using latest Google AdMob SDK</strong>. With this Cordova/Phonegap/XDK plugin you can show AdMob ads as easy as:</p>
 
-      <pre><code>admob.createBannerView({publisherId: "ca-app-pub-8440343014846849/3119840614"});
+      <pre><code>admob.createBannerView({publisherId: "ca-app-pub-XXXXXXXXXXXXXXXX/BBBBBBBBBB"});
 </code></pre>
 
       <p>Or</p>
 
       <pre><code>
 admob.requestInterstitialAd({
-  publisherId: "ca-app-pub-8440343014846849/3119840614",
-  interstitialAdId: "ca-app-pub-8440343014846849/4596573817"
+  publisherId: "ca-app-pub-XXXXXXXXXXXXXXXX/BBBBBBBBBB",
+  interstitialAdId: "ca-app-pub-XXXXXXXXXXXXXXXX/IIIIIIIIII"
 });
 </code></pre>
 
@@ -127,7 +127,7 @@ admob.requestInterstitialAd({
 
       <ul>
         <li>iOS, using AdMob SDK for iOS, v7.0.0</li>
-        <li>Android, using Google Play Service for Android, v6.5</li>
+        <li>Android, using Google Play Service for Android, v7.0</li>
       </ul>
 
       <hr>
@@ -172,10 +172,10 @@ admob.requestInterstitialAd({
 
       <span class="pl-c">// Set AdMobAds options:</span>
       admob.setOptions({
-        publisherId<span class="pl-k">:</span>          <span class="pl-s1"><span class="pl-pds">"</span>ca-app-pub-8440343014846849/3119840614<span class="pl-pds">"</span></span>,  <span class="pl-c">// Required</span>
-        interstitialAdId<span class="pl-k">:</span>     <span class="pl-s1"><span class="pl-pds">"</span>ca-app-pub-8440343014846849/4596573817<span class="pl-pds">"</span></span>,  <span class="pl-c">// Optional</span>
-        tappxIdiOs<span class="pl-k">:</span>           <span class="pl-s1"><span class="pl-pds">"</span>/120940746/Pub-2702-iOS-8226<span class="pl-pds">"</span></span>,            <span class="pl-c">// Optional</span>
-        tappxIdAndroid<span class="pl-k">:</span>       <span class="pl-s1"><span class="pl-pds">"</span>/120940746/Pub-2700-Android-8171<span class="pl-pds">"</span></span>,        <span class="pl-c">// Optional</span>
+        publisherId<span class="pl-k">:</span>          <span class="pl-s1"><span class="pl-pds">"</span>ca-app-pub-XXXXXXXXXXXXXXXX/BBBBBBBBBB<span class="pl-pds">"</span></span>,  <span class="pl-c">// Required</span>
+        interstitialAdId<span class="pl-k">:</span>     <span class="pl-s1"><span class="pl-pds">"</span>ca-app-pub-XXXXXXXXXXXXXXXX/IIIIIIIIII<span class="pl-pds">"</span></span>,  <span class="pl-c">// Optional</span>
+        tappxIdiOs<span class="pl-k">:</span>           <span class="pl-s1"><span class="pl-pds">"</span>/XXXXXXXXX/Pub-XXXX-iOS-IIII<span class="pl-pds">"</span></span>,            <span class="pl-c">// Optional</span>
+        tappxIdAndroid<span class="pl-k">:</span>       <span class="pl-s1"><span class="pl-pds">"</span>/XXXXXXXXX/Pub-XXXX-Android-AAAA<span class="pl-pds">"</span></span>,        <span class="pl-c">// Optional</span>
         tappxShare<span class="pl-k">:</span>           <span class="pl-c1">0.5</span>                                        <span class="pl-c">// Optional</span>
       });
 
@@ -208,10 +208,10 @@ admob.requestInterstitialAd({
     app.config([<span class="pl-s1"><span class="pl-pds">'</span>admobSvcProvider<span class="pl-pds">'</span></span>, <span class="pl-st">function</span> (<span class="pl-vpf">admobSvcProvider</span>) {
       <span class="pl-c">// Optionally you can configure the options here:</span>
       admobSvcProvider.setOptions({
-        publisherId<span class="pl-k">:</span>          <span class="pl-s1"><span class="pl-pds">"</span>ca-app-pub-8440343014846849/3119840614<span class="pl-pds">"</span></span>,  <span class="pl-c">// Required</span>
-        interstitialAdId<span class="pl-k">:</span>     <span class="pl-s1"><span class="pl-pds">"</span>ca-app-pub-8440343014846849/4596573817<span class="pl-pds">"</span></span>,  <span class="pl-c">// Optional</span>
-        tappxIdiOs<span class="pl-k">:</span>           <span class="pl-s1"><span class="pl-pds">"</span>/120940746/Pub-2702-iOS-8226<span class="pl-pds">"</span></span>,            <span class="pl-c">// Optional</span>
-        tappxIdAndroid<span class="pl-k">:</span>       <span class="pl-s1"><span class="pl-pds">"</span>/120940746/Pub-2700-Android-8171<span class="pl-pds">"</span></span>,        <span class="pl-c">// Optional</span>
+        publisherId<span class="pl-k">:</span>          <span class="pl-s1"><span class="pl-pds">"</span>ca-app-pub-XXXXXXXXXXXXXXXX/BBBBBBBBBB<span class="pl-pds">"</span></span>,  <span class="pl-c">// Required</span>
+        interstitialAdId<span class="pl-k">:</span>     <span class="pl-s1"><span class="pl-pds">"</span>ca-app-pub-XXXXXXXXXXXXXXXX/IIIIIIIIII<span class="pl-pds">"</span></span>,  <span class="pl-c">// Optional</span>
+        tappxIdiOs<span class="pl-k">:</span>           <span class="pl-s1"><span class="pl-pds">"</span>/XXXXXXXXX/Pub-XXXX-iOS-IIII<span class="pl-pds">"</span></span>,            <span class="pl-c">// Optional</span>
+        tappxIdAndroid<span class="pl-k">:</span>       <span class="pl-s1"><span class="pl-pds">"</span>/XXXXXXXXX/Pub-XXXX-Android-AAAA<span class="pl-pds">"</span></span>,        <span class="pl-c">// Optional</span>
         tappxShare<span class="pl-k">:</span>           <span class="pl-c1">0.5</span>                                        <span class="pl-c">// Optional</span>
       });
 
@@ -307,10 +307,10 @@ admob.requestInterstitialAd({
       </p>
 
       <div class="highlight highlight-javascript"><pre>{
-  publisherId<span class="pl-k">:</span>          <span class="pl-s1"><span class="pl-pds">"</span>ca-app-pub-8440343014846849/3119840614<span class="pl-pds">"</span></span>,
-  interstitialAdId<span class="pl-k">:</span>     <span class="pl-s1"><span class="pl-pds">"</span>ca-app-pub-8440343014846849/4596573817<span class="pl-pds">"</span></span>,
-  tappxIdiOs<span class="pl-k">:</span>           <span class="pl-s1"><span class="pl-pds">"</span>/120940746/Pub-2702-iOS-8226<span class="pl-pds">"</span></span>,
-  tappxIdAndroid<span class="pl-k">:</span>       <span class="pl-s1"><span class="pl-pds">"</span>/120940746/Pub-2700-Android-8171<span class="pl-pds">"</span></span>,
+  publisherId<span class="pl-k">:</span>          <span class="pl-s1"><span class="pl-pds">"</span>ca-app-pub-XXXXXXXXXXXXXXXX/BBBBBBBBBB<span class="pl-pds">"</span></span>,
+  interstitialAdId<span class="pl-k">:</span>     <span class="pl-s1"><span class="pl-pds">"</span>ca-app-pub-XXXXXXXXXXXXXXXX/IIIIIIIIII<span class="pl-pds">"</span></span>,
+  tappxIdiOs<span class="pl-k">:</span>           <span class="pl-s1"><span class="pl-pds">"</span>/XXXXXXXXX/Pub-XXXX-iOS-IIII<span class="pl-pds">"</span></span>,
+  tappxIdAndroid<span class="pl-k">:</span>       <span class="pl-s1"><span class="pl-pds">"</span>/XXXXXXXXX/Pub-XXXX-Android-AAAA<span class="pl-pds">"</span></span>,
   tappxShare<span class="pl-k">:</span>           <span class="pl-c1">0.5</span>,
   adSize<span class="pl-k">:</span>               admob.AD_SIZE.SMART_BANNER,
   bannerAtTop<span class="pl-k">:</span>          <span class="pl-c1">false</span>,
@@ -581,12 +581,12 @@ admob.requestInterstitialAd({
       <span class="pl-k">if</span> (admob) {
         <span class="pl-s">var</span> adPublisherIds <span class="pl-k">=</span> {
           ios <span class="pl-k">:</span> {
-            banner <span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">"</span>ca-app-pub-8440343014846849/3119840614<span class="pl-pds">"</span></span>,
-            interstitial <span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">"</span>ca-app-pub-8440343014846849/4596573817<span class="pl-pds">"</span></span>
+            banner <span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">"</span>ca-app-pub-XXXXXXXXXXXXXXXX/BBBBBBBBBB<span class="pl-pds">"</span></span>,
+            interstitial <span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">"</span>ca-app-pub-XXXXXXXXXXXXXXXX/IIIIIIIIII<span class="pl-pds">"</span></span>
           },
           android <span class="pl-k">:</span> {
-            banner <span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">"</span>ca-app-pub-8440343014846849/3119840614<span class="pl-pds">"</span></span>,
-            interstitial <span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">"</span>ca-app-pub-8440343014846849/4596573817<span class="pl-pds">"</span></span>
+            banner <span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">"</span>ca-app-pub-XXXXXXXXXXXXXXXX/BBBBBBBBBB<span class="pl-pds">"</span></span>,
+            interstitial <span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">"</span>ca-app-pub-XXXXXXXXXXXXXXXX/IIIIIIIIII<span class="pl-pds">"</span></span>
           }
         };
 
@@ -595,8 +595,8 @@ admob.requestInterstitialAd({
         admob.setOptions({
           publisherId<span class="pl-k">:</span>      admobid.banner,
           interstitialAdId<span class="pl-k">:</span> admobid.interstitial,
-          tappxIdiOs<span class="pl-k">:</span>       <span class="pl-s1"><span class="pl-pds">"</span>/120940746/Pub-2702-iOS-8226<span class="pl-pds">"</span></span>,
-          tappxIdAndroid<span class="pl-k">:</span>   <span class="pl-s1"><span class="pl-pds">"</span>/120940746/Pub-2700-Android-8171<span class="pl-pds">"</span></span>,
+          tappxIdiOs<span class="pl-k">:</span>       <span class="pl-s1"><span class="pl-pds">"</span>/XXXXXXXXX/Pub-XXXX-iOS-IIII<span class="pl-pds">"</span></span>,
+          tappxIdAndroid<span class="pl-k">:</span>   <span class="pl-s1"><span class="pl-pds">"</span>/XXXXXXXXX/Pub-XXXX-Android-AAAA<span class="pl-pds">"</span></span>,
           tappxShare<span class="pl-k">:</span>       <span class="pl-c1">0.5</span>
         });
 
