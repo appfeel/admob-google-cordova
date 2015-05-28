@@ -32,6 +32,8 @@ Or
 * iOS, using AdMob SDK for iOS, v7.0.0
 * Android, using Google Play Service for Android, v7.0
 
+** Requires cordova >= 4.0.0 **
+
 ---
 ## Demo projects: ##
 - [Intel XDK](https://github.com/appfeel/admob-google-xdk)
