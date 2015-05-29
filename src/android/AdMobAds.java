@@ -327,7 +327,7 @@ public class AdMobAds extends CordovaPlugin implements IConnectivityChange {
     if (adViewLayout == null) {
       adViewLayout = new RelativeLayout(cordova.getActivity());
       RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-      ((ViewGroup) webView.getView()).addView(adViewLayout, params); // webView.addView(adViewLayout, params);
+      webView.addView(adViewLayout, params);
     }
     isBannerVisible = false;
     adView.loadAd(buildAdRequest());
@@ -420,7 +420,7 @@ public class AdMobAds extends CordovaPlugin implements IConnectivityChange {
             adViewLayout.bringToFront();
 
           } else {
-            ViewGroup parentView = (ViewGroup) webView.getView().getParent();
+            ViewGroup parentView = (ViewGroup) webView.getParent();
             if (isBannerAtTop) {
               parentView.addView(adView, 0);
             } else {
