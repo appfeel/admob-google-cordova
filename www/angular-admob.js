@@ -131,27 +131,27 @@ if (typeof angular !== 'undefined') {
 
     // Manage admob events
     function _onAdLoaded(e) {
-      $rootScope.$broadcast('admob:' + admob.events.onAdLoaded, e);
+      $rootScope.$broadcast(options.eventPrefix + admob.events.onAdLoaded, e);
     }
 
     function _onAdFailedToLoad(e) {
-      $rootScope.$broadcast('admob:' + admob.events.onAdFailedToLoad, e);
+      $rootScope.$broadcast(options.eventPrefix + admob.events.onAdFailedToLoad, e);
     }
 
     function _onAdOpened(e) {
-      $rootScope.$broadcast('admob:' + admob.events.onAdOpened, e);
+      $rootScope.$broadcast(options.eventPrefix + admob.events.onAdOpened, e);
     }
 
     function _onAdLeftApplication(e) {
-      $rootScope.$broadcast('admob:' + admob.events.onAdLeftApplication, e);
+      $rootScope.$broadcast(options.eventPrefix + admob.events.onAdLeftApplication, e);
     }
 
     function _onAdClosed(e) {
-      $rootScope.$broadcast('admob:' + admob.events.onAdClosed, e);
+      $rootScope.$broadcast(options.eventPrefix + admob.events.onAdClosed, e);
     }
 
     function _onInAppPurchaseRequested(e) {
-      $rootScope.$broadcast('admob:' + admob.events.onInAppPurchaseRequested, e);
+      $rootScope.$broadcast(options.eventPrefix + admob.events.onInAppPurchaseRequested, e);
     }
     
     deviceready.promise.then(function () {

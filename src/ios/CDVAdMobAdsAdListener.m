@@ -182,7 +182,7 @@
 // onAdClosed
 - (void)interstitialDidDismissScreen:(GADInterstitial *)interstitial {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        [adMobAds.commandDelegate evalJs:@"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdClosed, { 'adType' : 'banner' }); }, 1);"];
+        [adMobAds.commandDelegate evalJs:@"setTimeout(function (){ cordova.fireDocumentEvent(admob.events.onAdClosed, { 'adType' : 'interstitial' }); }, 1);"];
     }];
     adMobAds.isInterstitialAvailable = false;
 }
