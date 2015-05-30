@@ -51,6 +51,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.appfeel.cordova.connectivity.Connectivity;
@@ -67,6 +68,7 @@ public class AdMobAds extends CordovaPlugin implements IConnectivityChange {
   public static final String INTERSTITIAL = "interstitial";
   public static final String BANNER = "banner";
 
+  private static final boolean CORDOVA_4 = Integer.valueOf(CordovaWebView.CORDOVA_VERSION.split("\\.")[0]) >= 4;
   private static final String DEFAULT_AD_PUBLISHER_ID = "ca-app-pub-8440343014846849/3119840614";
   private static final String DEFAULT_INTERSTITIAL_PUBLISHER_ID = "ca-app-pub-8440343014846849/4596573817";
   private static final String DEFAULT_TAPPX_ID = "/120940746/Pub-2700-Android-8171";
@@ -106,6 +108,8 @@ public class AdMobAds extends CordovaPlugin implements IConnectivityChange {
   private boolean isNetworkActive = false;
   private boolean isBannerRequested = false;
   private boolean isInterstitialRequested = false;
+
+  private ViewGroup parentView;
 
   /** The adView to display to the user. */
   private AdView adView;
@@ -324,11 +328,6 @@ public class AdMobAds extends CordovaPlugin implements IConnectivityChange {
     if (adView.getParent() != null) {
       ((ViewGroup) adView.getParent()).removeView(adView);
     }
-    if (adViewLayout == null) {
-      adViewLayout = new RelativeLayout(cordova.getActivity());
-      RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-      webView.addView(adViewLayout, params);
-    }
     isBannerVisible = false;
     adView.loadAd(buildAdRequest());
   }
@@ -416,17 +415,47 @@ public class AdMobAds extends CordovaPlugin implements IConnectivityChange {
               params2.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
             }
 
+            if (adViewLayout == null) {
+              adViewLayout = new RelativeLayout(cordova.getActivity());
+              RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+              if (CORDOVA_4) {
+                ((ViewGroup) webView.getView().getParent()).addView(adViewLayout, params);
+              } else {
+                ((ViewGroup) webView).addView(adViewLayout, params);
+              }
+            }
             adViewLayout.addView(adView, params2);
             adViewLayout.bringToFront();
 
           } else {
-            ViewGroup parentView = (ViewGroup) webView.getParent();
+            if (CORDOVA_4) {
+              ViewGroup wvParentView = (ViewGroup) webView.getView().getParent();
+
+              if (parentView == null) {
+                parentView = new LinearLayout(webView.getContext());
+              }
+
+              if (wvParentView != null && wvParentView != parentView) {
+                wvParentView.removeView(webView.getView());
+                ((LinearLayout) parentView).setOrientation(LinearLayout.VERTICAL);
+                parentView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 0.0F));
+                webView.getView().setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1.0F));
+                parentView.addView(webView.getView());
+                cordova.getActivity().setContentView(parentView);
+              }
+
+            } else {
+              parentView = (ViewGroup) ((ViewGroup) webView).getParent();
+            }
+
             if (isBannerAtTop) {
               parentView.addView(adView, 0);
             } else {
               parentView.addView(adView);
             }
             parentView.bringToFront();
+            parentView.requestLayout();
+
           }
 
           adView.setVisibility(View.VISIBLE);

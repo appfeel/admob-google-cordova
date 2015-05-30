@@ -22,6 +22,10 @@ Or
 
 > It was really easy to integrate, thanks.
 
+* [Military Quotes Android](https://play.google.com/store/apps/details?id=com.covernator.fb.military.quotes), an interesting free app for those interested in images and quotes from US Military.
+
+> It works like a charm. Test ads and real ads show up. Thanks so much for following up, awesome support.
+
 <br><br>
 **[Place your testimonial here](https://github.com/appfeel/admob-google-cordova/issues)**
 
@@ -30,7 +34,7 @@ Or
 ## Platform SDK supported ##
 
 * iOS, using AdMob SDK for iOS, v7.0.0
-* Android, using Google Play Service for Android, v7.0
+* Android, using Google Play Service for Android, v7.5
 
 
 ---
