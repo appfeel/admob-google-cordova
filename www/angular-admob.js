@@ -29,12 +29,13 @@
 if (typeof angular !== 'undefined') {
   var admobModule = angular.module('admobModule', []);
 
-  window.admob = window.admob || {}; // Cordova admob script is injected later than angular module!!
+  window.admob = window.admob || {}; // Cordova admob script is injected after angular one does!!
 
   function AdmobLauncher($timeout, $q, $rootScope, options) {
-    var deviceready = $q.defer(),
+    var
+      deviceready = $q.defer(),
       makePromise,
-      cordovaAdmob;
+      angularAdmob;
 
     /**
      * Promise wrapper for Cordova native methods.
@@ -44,7 +45,8 @@ if (typeof angular !== 'undefined') {
      * @returns {Object}   $q.defer().promise object.
      */
     makePromise = function makePromise(fn, args, sync) {
-      var deferred = $q.defer(),
+      var
+        deferred = $q.defer(),
         success = function (response) {
           if (sync) {
             deferred.resolve(response);
@@ -81,7 +83,7 @@ if (typeof angular !== 'undefined') {
 
 
     // The returning object
-    cordovaAdmob = {
+    angularAdmob = {
       events: {},
       AD_SIZE: {},
       AD_TYPE: {},
@@ -131,57 +133,64 @@ if (typeof angular !== 'undefined') {
 
     // Manage admob events
     function _onAdLoaded(e) {
-      $rootScope.$broadcast(options.eventPrefix + admob.events.onAdLoaded, e);
+      $rootScope.$broadcast(angularAdmob.events.onAdLoaded, e);
     }
 
     function _onAdFailedToLoad(e) {
-      $rootScope.$broadcast(options.eventPrefix + admob.events.onAdFailedToLoad, e);
+      $rootScope.$broadcast(angularAdmob.events.onAdFailedToLoad, e);
     }
 
     function _onAdOpened(e) {
-      $rootScope.$broadcast(options.eventPrefix + admob.events.onAdOpened, e);
+      $rootScope.$broadcast(angularAdmob.events.onAdOpened, e);
     }
 
     function _onAdLeftApplication(e) {
-      $rootScope.$broadcast(options.eventPrefix + admob.events.onAdLeftApplication, e);
+      $rootScope.$broadcast(angularAdmob.events.onAdLeftApplication, e);
     }
 
     function _onAdClosed(e) {
-      $rootScope.$broadcast(options.eventPrefix + admob.events.onAdClosed, e);
+      $rootScope.$broadcast(angularAdmob.events.onAdClosed, e);
     }
 
     function _onInAppPurchaseRequested(e) {
-      $rootScope.$broadcast(options.eventPrefix + admob.events.onInAppPurchaseRequested, e);
+      $rootScope.$broadcast(angularAdmob.events.onInAppPurchaseRequested, e);
     }
-    
+
     deviceready.promise.then(function () {
-      document.addEventListener(admob.events.onAdLoaded, _onAdLoaded, true);
-      document.addEventListener(admob.events.onAdFailedToLoad, _onAdFailedToLoad, true);
-      document.addEventListener(admob.events.onAdOpened, _onAdOpened, true);
-      document.addEventListener(admob.events.onAdLeftApplication, _onAdLeftApplication, true);
-      document.addEventListener(admob.events.onAdClosed, _onAdClosed, true);
-      document.addEventListener(admob.events.onInAppPurchaseRequested, _onInAppPurchaseRequested, true);
-      
-      cordovaAdmob.events = admob.events;
-      cordovaAdmob.AD_SIZE = admob.AD_SIZE;
-      cordovaAdmob.AD_TYPE = admob.AD_TYPE;
-      cordovaAdmob.PURCHASE_RESOLUTION = admob.PURCHASE_RESOLUTION;
-      cordovaAdmob.options = admob.options;
-      
+      var admobEvt;
+
+      document.addEventListener(admob.events.onAdLoaded, angularAdmob._onAdLoaded, true);
+      document.addEventListener(admob.events.onAdFailedToLoad, angularAdmob._onAdFailedToLoad, true);
+      document.addEventListener(admob.events.onAdOpened, angularAdmob._onAdOpened, true);
+      document.addEventListener(admob.events.onAdLeftApplication, _angularAdmob.onAdLeftApplication, true);
+      document.addEventListener(admob.events.onAdClosed, angularAdmob._onAdClosed, true);
+      document.addEventListener(admob.events.onInAppPurchaseRequested, angularAdmob._onInAppPurchaseRequested, true);
+
+      angularAdmob.events = {};
+      for (admobEvt in admob.events) {
+        if (admob.events[admobEvt].hasOwnProperty(admobEvt)) {
+          angularAdmob.events[admobEvt] = options.eventPrefix + admob.events[admobEvt];
+        }
+      }
+
+      angularAdmob.AD_SIZE = admob.AD_SIZE;
+      angularAdmob.AD_TYPE = admob.AD_TYPE;
+      angularAdmob.PURCHASE_RESOLUTION = admob.PURCHASE_RESOLUTION;
+      angularAdmob.options = admob.options;
     });
-    
+
     // Clean up
     $rootScope.$on('$destroy', function (event) {
-      document.removeEventListener(admob.events.onAdLoaded, _onAdLoaded, true);
-      document.removeEventListener(admob.events.onAdFailedToLoad, _onAdFailedToLoad, true);
-      document.removeEventListener(admob.events.onAdOpened, _onAdOpened, true);
-      document.removeEventListener(admob.events.onAdLeftApplication, _onAdLeftApplication, true);
-      document.removeEventListener(admob.events.onAdClosed, _onAdClosed, true);
-      document.removeEventListener(admob.events.onInAppPurchaseRequested, _onInAppPurchaseRequested, true);
+      document.removeEventListener(admob.events.onAdLoaded, angularAdmob._onAdLoaded, true);
+      document.removeEventListener(admob.events.onAdFailedToLoad, angularAdmob._onAdFailedToLoad, true);
+      document.removeEventListener(admob.events.onAdOpened, angularAdmob._onAdOpened, true);
+      document.removeEventListener(admob.events.onAdLeftApplication, angularAdmob._onAdLeftApplication, true);
+      document.removeEventListener(admob.events.onAdClosed, angularAdmob._onAdClosed, true);
+      document.removeEventListener(admob.events.onInAppPurchaseRequested, angularAdmob._onInAppPurchaseRequested, true);
     });
 
 
-    return cordovaAdmob;
+    return angularAdmob;
   }
 
   /**
