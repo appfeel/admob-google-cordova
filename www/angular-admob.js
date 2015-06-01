@@ -25,7 +25,7 @@
  */
 
 
-// Support for Angular
+// Support for Ionic/Angular apps
 if (typeof angular !== 'undefined') {
   var admobModule = angular.module('admobModule', []);
 
