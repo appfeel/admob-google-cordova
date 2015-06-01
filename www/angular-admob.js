@@ -162,7 +162,7 @@ if (typeof angular !== 'undefined') {
       document.addEventListener(admob.events.onAdLoaded, angularAdmob._onAdLoaded, true);
       document.addEventListener(admob.events.onAdFailedToLoad, angularAdmob._onAdFailedToLoad, true);
       document.addEventListener(admob.events.onAdOpened, angularAdmob._onAdOpened, true);
-      document.addEventListener(admob.events.onAdLeftApplication, _angularAdmob.onAdLeftApplication, true);
+      document.addEventListener(admob.events.onAdLeftApplication, angularAdmob._onAdLeftApplication, true);
       document.addEventListener(admob.events.onAdClosed, angularAdmob._onAdClosed, true);
       document.addEventListener(admob.events.onInAppPurchaseRequested, angularAdmob._onInAppPurchaseRequested, true);
 
