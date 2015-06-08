@@ -12,7 +12,7 @@ Or
 
     admob.requestInterstitialAd({publisherId: "ca-app-pub-XXXXXXXXXXXXXXXX/BBBBBBBBBB", interstitialAdId: "ca-app-pub-XXXXXXXXXXXXXXXX/IIIIIIIIII"});
 
-![Integrate cordova admob plugin](https://github.com/appfeel/admob-google-cordova-images/wiki/demo/integrate-admob-cordova.gif)
+![Integrate cordova admob plugin](https://github.com/appfeel/admob-google-cordova/wiki/demo/integrate-admob-cordova.gif)
 
 
 ---
@@ -233,7 +233,7 @@ Love the project? Wanna buy me a coffee (or a beer :D)? [Click here](https://www
 ## Screenshots ##
 #### iPhone:
 
-<img src="https://github.com/appfeel/admob-google-cordova-images/wiki/demo/iphone.png" border="10" alt="Phonegp Cordova admob plugin in iPhone" />
+<img src="https://github.com/appfeel/admob-google-cordova/wiki/demo/iphone.png" border="10" alt="Phonegp Cordova admob plugin in iPhone" />
 
 #### iPad Banner Portrait:
 
