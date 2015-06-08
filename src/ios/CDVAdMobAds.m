@@ -1,6 +1,6 @@
 /*
  CDVAdMobAds.m
- Copyright 2014 AppFeel. All rights reserved.
+ Copyright 2015 AppFeel. All rights reserved.
  http://www.appfeel.com
  
  AdMobAds Cordova Plugin (com.admob.google)
@@ -777,9 +777,8 @@
         self.interstitialView = nil;
     }
     dispatch_sync(dispatch_get_main_queue(), ^{
-        self.interstitialView = [[GADInterstitial alloc] init];
+        self.interstitialView = [[GADInterstitial alloc] initWithAdUnitID:_iid];
     });
-    self.interstitialView.adUnitID = _iid;
     self.interstitialView.delegate = adListener;
     
     GADRequest *request = [self __buildAdRequest];
