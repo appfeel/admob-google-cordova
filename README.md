@@ -12,7 +12,7 @@ Or
 
     admob.requestInterstitialAd({publisherId: "ca-app-pub-XXXXXXXXXXXXXXXX/BBBBBBBBBB", interstitialAdId: "ca-app-pub-XXXXXXXXXXXXXXXX/IIIIIIIIII"});
 
-![Integrate cordova admob plugin](https://github.com/appfeel/admob-google-cordova-images/wiki/blob/master/demo/integrate-admob-cordova.gif)
+![Integrate cordova admob plugin](https://github.com/appfeel/admob-google-cordova-images/wiki/demo/integrate-admob-cordova.gif)
 
 
 ---
@@ -233,15 +233,15 @@ Love the project? Wanna buy me a coffee (or a beer :D)? [Click here](https://www
 ## Screenshots ##
 #### iPhone:
 
-<img src="https://github.com/appfeel/admob-google-cordova-images/wiki/blob/master/demo/iphone.png" border="10" alt="Phonegp Cordova admob plugin in iPhone" />
+<img src="https://github.com/appfeel/admob-google-cordova-images/wiki/demo/iphone.png" border="10" alt="Phonegp Cordova admob plugin in iPhone" />
 
 #### iPad Banner Portrait:
 
-<img src="https://github.com/appfeel/admob-google-cordova-images/wiki/blob/master/demo/banner-ipad.png" border="10" alt="Phonegp Cordova admob plugin in iPad" />
+<img src="https://github.com/appfeel/admob-google-cordova/wiki/demo/banner-ipad.png" border="10" alt="Phonegp Cordova admob plugin in iPad" />
 
 #### iPad Banner Landscape:
 
-<img src="https://github.com/appfeel/admob-google-cordova-images/wiki/blob/master/demo/banner-landscape-ipad.png" border="10" alt="Phonegp Cordova banner admob plugin" />
+<img src="https://raw.githubusercontent.com/wiki/appfeel/admob-google-cordova/demo/banner-landscape-ipad.png" border="10" alt="Phonegp Cordova banner admob plugin" />
 
 ---
 ## License ##
