@@ -81,7 +81,7 @@ To start showing ads, place the following code in your `onDeviceReady` callback.
       admob.createBannerView();
       
       // Request interstitial (will present automatically when autoShowInterstitial is set to true)
-      admob.requestInterstitial();
+      admob.requestInterstitialAd();
     }
     
     document.addEventListener("deviceready", onDeviceReady, false);
