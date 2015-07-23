@@ -55,7 +55,7 @@ To install this plugin, follow the [Command-line Interface Guide](http://cordova
 To use in [Phonegap Build](https://build.phonegap.com), place the following tag in your `config.xml` file:
 
 ```xml
-<gap:plugin name="com.ads.tappx" source="plugins.cordova.io" version="2.0.14"/>
+<gap:plugin name="com.admob.google" source="plugins.cordova.io" version="2.0.14"/>
 ```
  Please note to use version 2.0.14 as Phonegap Build is still not supporting cordova android@4.0.0.
 

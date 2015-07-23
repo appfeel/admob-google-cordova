@@ -31,14 +31,14 @@ if (typeof angular !== 'undefined') {
 
   window.admob = window.admob || {}; // Cordova admob script is injected after angular one does!!
 
-  function AdmobLauncher($timeout, $q, $rootScope, options) {
+  function AdmobLauncher($timeout, $q, $rootScope, options, eventPrefix) {
     var
       deviceready = $q.defer(),
       makePromise,
       angularAdmob;
 
     /**
-     * Promise wrapper for Cordova native methods.
+     * Creates an angular promise for any javascript method.
      * @param   {Function} fn    The javascript function to be called.
      * @param   {Array}    args  The arguments to apply to fn.
      * @param   {Boolean}  sync  When set to true resolves the promise inmediately, otherwise in a timeout wrapper.
@@ -72,27 +72,42 @@ if (typeof angular !== 'undefined') {
       return deferred.promise;
     };
 
-    /**
-     * Resolves the deviceready promise. In this way admob methods are always executed when deviceready.
-     */
-    function onDeviceready() {
-      deviceready.resolve();
-      document.removeEventListener('deviceready', onDeviceready, false);
-    }
-    document.addEventListener('deviceready', onDeviceready, false);
-
-
     // The returning object
     angularAdmob = {
-      events: {},
-      AD_SIZE: {},
-      AD_TYPE: {},
-      PURCHASE_RESOLUTION: {},
-      options: {},
+      events: {
+        onAdLoaded: "appfeel.cordova.admob.onAdLoaded",
+        onAdFailedToLoad: "appfeel.cordova.admob.onAdFailedToLoad",
+        onAdOpened: "appfeel.cordova.admob.onAdOpened",
+        onAdLeftApplication: "appfeel.cordova.admob.onAdLeftApplication",
+        onAdClosed: "appfeel.cordova.admob.onAdClosed",
+        onInAppPurchaseRequested: "appfeel.cordova.admob.onInAppPurchaseRequested"
+      },
+      AD_SIZE: {
+        BANNER: 'BANNER',
+        IAB_MRECT: 'IAB_MRECT',
+        IAB_BANNER: 'IAB_BANNER',
+        IAB_LEADERBOARD: 'IAB_LEADERBOARD',
+        SMART_BANNER: 'SMART_BANNER'
+      },
+      AD_TYPE: {
+        BANNER: 'banner',
+        INTERSTITIAL: 'interstitial'
+      },
+      PURCHASE_RESOLUTION: {
+        RESOLUTION_CANCELED: 2,
+        RESOLUTION_FAILURE: 0,
+        RESOLUTION_INVALID_PRODUCT: 3,
+        RESOLUTION_SUCCESS: 1
+      },
+      options: options,
+      eventPrefix: eventPrefix,
       setOptions: function (options) {
         return deviceready.promise.then(function () {
           return makePromise(admob.setOptions, [options]);
         });
+      },
+      setEventPrefix: function (prefix) {
+        angularAdmob.eventPrefix = prefix;
       },
       createBannerView: function (options) {
         return deviceready.promise.then(function () {
@@ -133,51 +148,56 @@ if (typeof angular !== 'undefined') {
 
     // Manage admob events
     function _onAdLoaded(e) {
-      $rootScope.$broadcast(angularAdmob.events.onAdLoaded, e);
+      $rootScope.$broadcast(eventPrefix + admob.events.onAdLoaded, e);
     }
 
     function _onAdFailedToLoad(e) {
-      $rootScope.$broadcast(angularAdmob.events.onAdFailedToLoad, e);
+      $rootScope.$broadcast(angularAdmob.options.eventPrefix + admob.events.onAdFailedToLoad, e);
     }
 
     function _onAdOpened(e) {
-      $rootScope.$broadcast(angularAdmob.events.onAdOpened, e);
+      $rootScope.$broadcast(angularAdmob.options.eventPrefix + admob.events.onAdOpened, e);
     }
 
     function _onAdLeftApplication(e) {
-      $rootScope.$broadcast(angularAdmob.events.onAdLeftApplication, e);
+      $rootScope.$broadcast(angularAdmob.options.eventPrefix + admob.events.onAdLeftApplication, e);
     }
 
     function _onAdClosed(e) {
-      $rootScope.$broadcast(angularAdmob.events.onAdClosed, e);
+      $rootScope.$broadcast(angularAdmob.options.eventPrefix + admob.events.onAdClosed, e);
     }
 
     function _onInAppPurchaseRequested(e) {
-      $rootScope.$broadcast(angularAdmob.events.onInAppPurchaseRequested, e);
+      $rootScope.$broadcast(angularAdmob.options.eventPrefix + admob.events.onInAppPurchaseRequested, e);
     }
 
     deviceready.promise.then(function () {
       var admobEvt;
 
-      document.addEventListener(admob.events.onAdLoaded, angularAdmob._onAdLoaded, true);
-      document.addEventListener(admob.events.onAdFailedToLoad, angularAdmob._onAdFailedToLoad, true);
-      document.addEventListener(admob.events.onAdOpened, angularAdmob._onAdOpened, true);
-      document.addEventListener(admob.events.onAdLeftApplication, angularAdmob._onAdLeftApplication, true);
-      document.addEventListener(admob.events.onAdClosed, angularAdmob._onAdClosed, true);
-      document.addEventListener(admob.events.onInAppPurchaseRequested, angularAdmob._onInAppPurchaseRequested, true);
-
-      angularAdmob.events = {};
-      for (admobEvt in admob.events) {
-        if (admob.events[admobEvt].hasOwnProperty(admobEvt)) {
-          angularAdmob.events[admobEvt] = options.eventPrefix + admob.events[admobEvt];
-        }
-      }
+      document.addEventListener(admob.events.onAdLoaded, _onAdLoaded, true);
+      document.addEventListener(admob.events.onAdFailedToLoad, _onAdFailedToLoad, true);
+      document.addEventListener(admob.events.onAdOpened, _onAdOpened, true);
+      document.addEventListener(admob.events.onAdLeftApplication, _onAdLeftApplication, true);
+      document.addEventListener(admob.events.onAdClosed, _onAdClosed, true);
+      document.addEventListener(admob.events.onInAppPurchaseRequested, _onInAppPurchaseRequested, true);
 
       angularAdmob.AD_SIZE = admob.AD_SIZE;
       angularAdmob.AD_TYPE = admob.AD_TYPE;
       angularAdmob.PURCHASE_RESOLUTION = admob.PURCHASE_RESOLUTION;
       angularAdmob.options = admob.options;
+      
+      angularAdmob.setEventPrefix(eventPrefix);
     });
+    
+    /**
+     * Resolves the deviceready promise. In this way admob methods are always executed when deviceready.
+     */
+    function onDeviceready() {
+      deviceready.resolve();
+      document.removeEventListener('deviceready', onDeviceready, false);
+    }
+    document.addEventListener('deviceready', onDeviceready, false);
+    
 
     // Clean up
     $rootScope.$on('$destroy', function (event) {
@@ -200,16 +220,15 @@ if (typeof angular !== 'undefined') {
   function AdmobProvider() {
     'use strict';
 
-    var options = {
-      eventPrefix: 'admob:'
-    };
+    var eventPrefix = 'admob:',
+      options = {};
 
     /**
      * Sets the event prefix. By default is set to 'admob:'.
      * @param {String} prefix The prefix for admob events.
      */
     this.setPrefix = function setPrefix(prefix) {
-      options.eventPrefix = prefix;
+      eventPrefix = prefix;
     }
 
     /**
@@ -217,6 +236,7 @@ if (typeof angular !== 'undefined') {
      * @param {Object} admobOptions Admob plugin options.
      */
     this.setOptions = function setOptions(admobOptions) {
+      options = admobOptions;
       document.addEventListener('deviceready', function onDeviceready() {
         document.removeEventListener('deviceready', onDeviceready, false);
         admob.setOptions(admobOptions);
@@ -226,7 +246,7 @@ if (typeof angular !== 'undefined') {
     // expose to provider
     this.$get = ['$timeout', '$q', '$rootScope',
       function admobFactory($timeout, $q, $rootScope) {
-        return new AdmobLauncher($timeout, $q, $rootScope, options);
+        return new AdmobLauncher($timeout, $q, $rootScope, options, eventPrefix);
     }];
   }
   admobModule.provider('admobSvc', AdmobProvider);
