@@ -3,7 +3,7 @@
  Copyright 2014 AppFeel. All rights reserved.
  http://www.appfeel.com
  
- AdMobAds Cordova Plugin (com.admob.google)
+ AdMobAds Cordova Plugin (cordova-admob)
  
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to
@@ -96,7 +96,7 @@ admob.setOptions = function (options, successCallback, failureCallback) {
 
   } else {
     if (typeof failureCallback === 'function') {
-      failureCallback('options.publisherId should be specified.')
+      failureCallback('options.publisherId should be specified.');
     }
   }
 };
@@ -185,7 +185,7 @@ admob.showInterstitialAd = function (successCallback, failureCallback) {
 admob.recordResolution = function (purchaseId, resolution, successCallback, failureCallback) {
   if (purchaseId === undefined || resolution === undefined) {
     if (typeof failureCallback === 'function') {
-      failureCallback('purchaseId and resolution should be specified.')
+      failureCallback('purchaseId and resolution should be specified.');
     }
   }
   cordova.exec(successCallback, failureCallback, 'AdMobAds', 'recordResolution', [purchaseId, resolution]);
@@ -203,7 +203,7 @@ admob.recordResolution = function (purchaseId, resolution, successCallback, fail
 admob.recordPlayBillingResolution = function (purchaseId, billingResponseCode, successCallback, failureCallback) {
   if (purchaseId === undefined || billingResponseCode === undefined) {
     if (typeof failureCallback === 'function') {
-      failureCallback('purchaseId and billingResponseCode should be specified.')
+      failureCallback('purchaseId and billingResponseCode should be specified.');
     }
   }
   cordova.exec(successCallback, failureCallback, 'AdMobAds', 'recordResolution', [purchaseId, billingResponseCode]);

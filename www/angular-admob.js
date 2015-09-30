@@ -3,7 +3,7 @@
  Copyright 2014 AppFeel. All rights reserved.
  http://www.appfeel.com
  
- AdMobAds Cordova Plugin (com.admob.google)
+ AdMobAds Cordova Plugin (cordova-admob)
  
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to
@@ -103,7 +103,7 @@ if (typeof angular !== 'undefined') {
       eventPrefix: eventPrefix,
       setOptions: function (options) {
         return deviceready.promise.then(function () {
-          return makePromise(admob.setOptions, [options]);
+          return makePromise(window.admob.setOptions, [options]);
         });
       },
       setEventPrefix: function (prefix) {
@@ -111,80 +111,78 @@ if (typeof angular !== 'undefined') {
       },
       createBannerView: function (options) {
         return deviceready.promise.then(function () {
-          return makePromise(admob.createBannerView, [options]);
+          return makePromise(window.admob.createBannerView, [options]);
         });
       },
       showBannerAd: function (show) {
         return deviceready.promise.then(function () {
-          return makePromise(admob.showBannerAd, [show]);
+          return makePromise(window.admob.showBannerAd, [show]);
         });
       },
       destroyBannerView: function () {
         return deviceready.promise.then(function () {
-          return makePromise(admob.destroyBannerView, []);
+          return makePromise(window.admob.destroyBannerView, []);
         });
       },
       requestInterstitialAd: function (options) {
         return deviceready.promise.then(function () {
-          return makePromise(admob.requestInterstitialAd, [options]);
+          return makePromise(window.admob.requestInterstitialAd, [options]);
         });
       },
       showInterstitialAd: function () {
         return deviceready.promise.then(function () {
-          return makePromise(admob.showInterstitialAd, []);
+          return makePromise(window.admob.showInterstitialAd, []);
         });
       },
       recordResolution: function (purchaseId, resolution) {
         return deviceready.promise.then(function () {
-          return makePromise(admob.recordResolution, [purchaseId, resolution]);
+          return makePromise(window.admob.recordResolution, [purchaseId, resolution]);
         });
       },
       recordPlayBillingResolution: function (purchaseId, billingResponseCode) {
         return deviceready.promise.then(function () {
-          return makePromise(admob.recordPlayBillingResolution, [purchaseId, billingResponseCode]);
+          return makePromise(window.admob.recordPlayBillingResolution, [purchaseId, billingResponseCode]);
         });
       }
     };
 
     // Manage admob events
     function _onAdLoaded(e) {
-      $rootScope.$broadcast(eventPrefix + admob.events.onAdLoaded, e);
+      $rootScope.$broadcast(angularAdmob.eventPrefix + window.admob.events.onAdLoaded, e);
     }
 
     function _onAdFailedToLoad(e) {
-      $rootScope.$broadcast(angularAdmob.options.eventPrefix + admob.events.onAdFailedToLoad, e);
+      $rootScope.$broadcast(angularAdmob.eventPrefix + window.admob.events.onAdFailedToLoad, e);
     }
 
     function _onAdOpened(e) {
-      $rootScope.$broadcast(angularAdmob.options.eventPrefix + admob.events.onAdOpened, e);
+      $rootScope.$broadcast(angularAdmob.eventPrefix + window.admob.events.onAdOpened, e);
     }
 
     function _onAdLeftApplication(e) {
-      $rootScope.$broadcast(angularAdmob.options.eventPrefix + admob.events.onAdLeftApplication, e);
+      $rootScope.$broadcast(angularAdmob.eventPrefix + window.admob.events.onAdLeftApplication, e);
     }
 
     function _onAdClosed(e) {
-      $rootScope.$broadcast(angularAdmob.options.eventPrefix + admob.events.onAdClosed, e);
+      $rootScope.$broadcast(angularAdmob.eventPrefix + window.admob.events.onAdClosed, e);
     }
 
     function _onInAppPurchaseRequested(e) {
-      $rootScope.$broadcast(angularAdmob.options.eventPrefix + admob.events.onInAppPurchaseRequested, e);
+      $rootScope.$broadcast(angularAdmob.eventPrefix + window.admob.events.onInAppPurchaseRequested, e);
     }
 
     deviceready.promise.then(function () {
-      var admobEvt;
+      document.addEventListener(window.admob.events.onAdLoaded, _onAdLoaded, true);
+      document.addEventListener(window.admob.events.onAdFailedToLoad, _onAdFailedToLoad, true);
+      document.addEventListener(window.admob.events.onAdOpened, _onAdOpened, true);
+      document.addEventListener(window.admob.events.onAdLeftApplication, _onAdLeftApplication, true);
+      document.addEventListener(window.admob.events.onAdClosed, _onAdClosed, true);
+      document.addEventListener(window.admob.events.onInAppPurchaseRequested, _onInAppPurchaseRequested, true);
 
-      document.addEventListener(admob.events.onAdLoaded, _onAdLoaded, true);
-      document.addEventListener(admob.events.onAdFailedToLoad, _onAdFailedToLoad, true);
-      document.addEventListener(admob.events.onAdOpened, _onAdOpened, true);
-      document.addEventListener(admob.events.onAdLeftApplication, _onAdLeftApplication, true);
-      document.addEventListener(admob.events.onAdClosed, _onAdClosed, true);
-      document.addEventListener(admob.events.onInAppPurchaseRequested, _onInAppPurchaseRequested, true);
-
-      angularAdmob.AD_SIZE = admob.AD_SIZE;
-      angularAdmob.AD_TYPE = admob.AD_TYPE;
-      angularAdmob.PURCHASE_RESOLUTION = admob.PURCHASE_RESOLUTION;
-      angularAdmob.options = admob.options;
+      angularAdmob.AD_SIZE = window.admob.AD_SIZE;
+      angularAdmob.AD_TYPE = window.admob.AD_TYPE;
+      angularAdmob.PURCHASE_RESOLUTION = window.admob.PURCHASE_RESOLUTION;
+      angularAdmob.options = window.admob.options;
       
       angularAdmob.setEventPrefix(eventPrefix);
     });
@@ -200,13 +198,13 @@ if (typeof angular !== 'undefined') {
     
 
     // Clean up
-    $rootScope.$on('$destroy', function (event) {
-      document.removeEventListener(admob.events.onAdLoaded, angularAdmob._onAdLoaded, true);
-      document.removeEventListener(admob.events.onAdFailedToLoad, angularAdmob._onAdFailedToLoad, true);
-      document.removeEventListener(admob.events.onAdOpened, angularAdmob._onAdOpened, true);
-      document.removeEventListener(admob.events.onAdLeftApplication, angularAdmob._onAdLeftApplication, true);
-      document.removeEventListener(admob.events.onAdClosed, angularAdmob._onAdClosed, true);
-      document.removeEventListener(admob.events.onInAppPurchaseRequested, angularAdmob._onInAppPurchaseRequested, true);
+    $rootScope.$on('$destroy', function () {
+      document.removeEventListener(window.admob.events.onAdLoaded, angularAdmob._onAdLoaded, true);
+      document.removeEventListener(window.admob.events.onAdFailedToLoad, angularAdmob._onAdFailedToLoad, true);
+      document.removeEventListener(window.admob.events.onAdOpened, angularAdmob._onAdOpened, true);
+      document.removeEventListener(window.admob.events.onAdLeftApplication, angularAdmob._onAdLeftApplication, true);
+      document.removeEventListener(window.admob.events.onAdClosed, angularAdmob._onAdClosed, true);
+      document.removeEventListener(window.admob.events.onInAppPurchaseRequested, angularAdmob._onInAppPurchaseRequested, true);
     });
 
 
@@ -229,7 +227,7 @@ if (typeof angular !== 'undefined') {
      */
     this.setPrefix = function setPrefix(prefix) {
       eventPrefix = prefix;
-    }
+    };
 
     /**
      * Sets admob options. They can be also set in run mode.
@@ -239,9 +237,9 @@ if (typeof angular !== 'undefined') {
       options = admobOptions;
       document.addEventListener('deviceready', function onDeviceready() {
         document.removeEventListener('deviceready', onDeviceready, false);
-        admob.setOptions(admobOptions);
+        window.admob.setOptions(admobOptions);
       }, false);
-    }
+    };
 
     // expose to provider
     this.$get = ['$timeout', '$q', '$rootScope',

@@ -48,16 +48,15 @@ Or
 
 To install this plugin, follow the [Command-line Interface Guide](http://cordova.apache.org/docs/en/edge/guide_cli_index.md.html#The%20Command-line%20Interface). You can use one of the following command lines:
 
-* `cordova plugin add com.admob.google`
+* `cordova plugin add cordova-admob`
 * `cordova plugin add https://github.com/appfeel/admob-google-cordova.git`
 
 
 To use in [Phonegap Build](https://build.phonegap.com), place the following tag in your `config.xml` file:
 
 ```xml
-<gap:plugin name="com.admob.google" source="plugins.cordova.io" version="2.0.14"/>
+<gap:plugin name="cordova-admob" source="npm"/>
 ```
- Please note to use version 2.0.14 as Phonegap Build is still not supporting cordova android@4.0.0.
 
 To start showing ads, place the following code in your `onDeviceReady` callback. Replace corresponding id's with yours:
 
