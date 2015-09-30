@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="com.admob.google" version="2.0.14">
-
   <description>Google AdMob Ads plugin for Cordova, Phonegap, Ionic/Angular and Intel XDK. Monetize your app with one javascript line. Android SDK v7.0, iOS SDK v7.0.0. With support for tappx and auto-detect internet connection.</description>
-
   <name>AdMob Google Ads + Tappx</name>
   <author email="info@appfeel.com" href="https://github.com/appfeel/admob-google-cordova">AppFeel</author>
   <license>MIT</license>
@@ -44,9 +41,8 @@
       <string name="banid">ca-app-pub-8440343014846849/3119840614</string>
       <string name="intid">ca-app-pub-8440343014846849/4596573817</string>
     </config-file-->
-
-    <dependency id="android.support.v4" url="https://github.com/appfeel/cordova-plugin-android-support-v4" />
-    <dependency id="com.google.play.services" />
+    <dependency id="cordova-android-support-v4" url="https://github.com/appfeel/cordova-plugin-android-support-v4" />
+    <dependency id="cordova-google-play-services" />
 
     <source-file src="src/android/AdMobAds.java" target-dir="src/com/appfeel/cordova/admob" />
     <source-file src="src/android/AdMobAdsAdListener.java" target-dir="src/com/appfeel/cordova/admob" />
@@ -68,7 +64,7 @@
     <source-file src="src/ios/CDVAdMobAdsAdListener.m" />
 
     <!-- Google AdMob framework -->
-    <dependency id="com.ios.libgoogleadmobads" url="https://github.com/appfeel/google-iosadmobads"/>
+    <dependency id="cordova-libgoogleadmobads" url="https://github.com/appfeel/google-iosadmobads" commit="09484803aba433471741af5c221a837a6545c248"/>
     
     <!--config-file target="*-Info.plist" parent="CFBundleURLTypes">
       <array>
