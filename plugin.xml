@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<<<<<<< HEAD
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="com.admob.google" version="2.0.14">
   <description>Google AdMob Ads plugin for Cordova, Phonegap, Ionic/Angular and Intel XDK. Monetize your app with one javascript line. Android SDK v7.0, iOS SDK v7.0.0. With support for tappx and auto-detect internet connection.</description>
+=======
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="cordova-admob" version="4.1.2">
+  <description>Google AdMob Ads plugin for Cordova, Phonegap, Ionic/Angular and Intel XDK. Monetize your app with one javascript line. Android SDK v7.5, iOS SDK v7.3.1. With support for tappx and auto-detect internet connection.</description>
+>>>>>>> refs/remotes/origin/master
   <name>AdMob Google Ads + Tappx</name>
   <author email="info@appfeel.com" href="https://github.com/appfeel/admob-google-cordova">AppFeel</author>
   <license>MIT</license>
@@ -12,7 +17,7 @@
     <engine name="cordova" version=">=3.0.0" />
   </engines>
 
-  <dependency id="com.connectivity.monitor" />
+  <dependency id="cordova-connectivity-monitor" />
 
   <js-module src="www/admob.js" name="AdMobAds">
     <clobbers target="window.admob" />
@@ -65,6 +70,7 @@
 
     <!-- Google AdMob framework -->
     <dependency id="cordova-libgoogleadmobads" url="https://github.com/appfeel/google-iosadmobads" commit="09484803aba433471741af5c221a837a6545c248"/>
+    <dependency id="cordova-libgoogleadmobads" url="https://github.com/appfeel/google-iosadmobads" commit="v.7.3.1"/>
     
     <!--config-file target="*-Info.plist" parent="CFBundleURLTypes">
       <array>

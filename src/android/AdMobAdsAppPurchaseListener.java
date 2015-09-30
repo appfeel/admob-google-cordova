@@ -1,6 +1,6 @@
 /*
  AdMobAdsPurchaseListener.java
- Copyright 2014 AppFeel. All rights reserved.
+ Copyright 2015 AppFeel. All rights reserved.
  http://www.appfeel.com
  
  AdMobAds Cordova Plugin (com.admob.google)

@@ -12,7 +12,7 @@ Or
 
     admob.requestInterstitialAd({publisherId: "ca-app-pub-XXXXXXXXXXXXXXXX/BBBBBBBBBB", interstitialAdId: "ca-app-pub-XXXXXXXXXXXXXXXX/IIIIIIIIII"});
 
-![Integrate cordova admob plugin](https://github.com/appfeel/admob-google-cordova/blob/master/demo/integrate-admob-cordova.gif)
+![Integrate cordova admob plugin](https://github.com/appfeel/admob-google-cordova/wiki/demo/integrate-admob-cordova.gif)
 
 
 ---
@@ -22,6 +22,10 @@ Or
 
 > It was really easy to integrate, thanks.
 
+* [Military Quotes Android](https://play.google.com/store/apps/details?id=com.covernator.fb.military.quotes), an interesting free app for those interested in images and quotes from US Military.
+
+> It works like a charm. Test ads and real ads show up. Thanks so much for following up, awesome support.
+
 <br><br>
 **[Place your testimonial here](https://github.com/appfeel/admob-google-cordova/issues)**
 
@@ -29,8 +33,9 @@ Or
 ---
 ## Platform SDK supported ##
 
-* iOS, using AdMob SDK for iOS, v7.0.0
-* Android, using Google Play Service for Android, v7.0
+* iOS, using AdMob SDK for iOS, v7.3.1
+* Android, using Google Play Service for Android, v7.5
+
 
 ---
 ## Demo projects: ##
@@ -50,8 +55,9 @@ To install this plugin, follow the [Command-line Interface Guide](http://cordova
 To use in [Phonegap Build](https://build.phonegap.com), place the following tag in your `config.xml` file:
 
 ```xml
-<gap:plugin name="com.admob.google" source="plugins.cordova.io" />
+<gap:plugin name="com.admob.google" source="plugins.cordova.io" version="2.0.14"/>
 ```
+ Please note to use version 2.0.14 as Phonegap Build is still not supporting cordova android@4.0.0.
 
 To start showing ads, place the following code in your `onDeviceReady` callback. Replace corresponding id's with yours:
 
@@ -75,7 +81,7 @@ To start showing ads, place the following code in your `onDeviceReady` callback.
       admob.createBannerView();
       
       // Request interstitial (will present automatically when autoShowInterstitial is set to true)
-      admob.requestInterstitial();
+      admob.requestInterstitialAd();
     }
     
     document.addEventListener("deviceready", onDeviceReady, false);
@@ -227,15 +233,15 @@ Love the project? Wanna buy me a coffee (or a beer :D)? [Click here](https://www
 ## Screenshots ##
 #### iPhone:
 
-<img src="https://github.com/appfeel/admob-google-cordova/blob/master/demo/iphone.png" border="10" alt="Phonegp Cordova admob plugin in iPhone" />
+<img src="https://github.com/appfeel/admob-google-cordova/wiki/demo/iphone.png" border="10" alt="Phonegp Cordova admob plugin in iPhone" />
 
 #### iPad Banner Portrait:
 
-<img src="https://github.com/appfeel/admob-google-cordova/blob/master/demo/banner-ipad.png" border="10" alt="Phonegp Cordova admob plugin in iPad" />
+<img src="https://github.com/appfeel/admob-google-cordova/wiki/demo/banner-ipad.png" border="10" alt="Phonegp Cordova admob plugin in iPad" />
 
 #### iPad Banner Landscape:
 
-<img src="https://github.com/appfeel/admob-google-cordova/blob/master/demo/banner-landscape-ipad.png" border="10" alt="Phonegp Cordova banner admob plugin" />
+<img src="https://raw.githubusercontent.com/wiki/appfeel/admob-google-cordova/demo/banner-landscape-ipad.png" border="10" alt="Phonegp Cordova banner admob plugin" />
 
 ---
 ## License ##
