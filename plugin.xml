@@ -65,7 +65,6 @@
 
     <!-- Google AdMob framework -->
     <dependency id="cordova-libgoogleadmobads" url="https://github.com/appfeel/google-iosadmobads" commit="09484803aba433471741af5c221a837a6545c248"/>
-    <dependency id="cordova-libgoogleadmobads" url="https://github.com/appfeel/google-iosadmobads" commit="v.7.3.1"/>
     
     <!--config-file target="*-Info.plist" parent="CFBundleURLTypes">
       <array>
