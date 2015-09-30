@@ -161,14 +161,14 @@ admob.requestInterstitialAd({
       <p>To install this plugin, follow the <a href="http://cordova.apache.org/docs/en/edge/guide_cli_index.md.html#The%20Command-line%20Interface">Command-line Interface Guide</a>. You can use one of the following command lines:</p>
 
       <ul>
-        <li><code>cordova plugin add com.admob.google</code>
+        <li><code>cordova plugin add cordova-admob</code>
         </li>
         <li><code>cordova plugin add https://github.com/appfeel/admob-google-cordova.git</code>
         </li>
       </ul>
 
       <p>To use in <a href="https://build.phonegap.com">Phonegap Build</a>, place the following tag in your <code>config.xml</code> file:</p>
-      <div class="highlight highlight-xml"><pre>&lt;<span class="pl-ent">gap</span><span class="pl-ent">:</span><span class="pl-ent">plugin</span> <span class="pl-e">name</span>=<span class="pl-s1"><span class="pl-pds">"</span>com.admob.google<span class="pl-pds">"</span></span> <span class="pl-e">source</span>=<span class="pl-s1"><span class="pl-pds">"</span>plugins.cordova.io<span class="pl-pds">"</span></span> /&gt;</pre>
+      <div class="highlight highlight-xml"><pre>&lt;<span class="pl-ent">gap</span><span class="pl-ent">:</span><span class="pl-ent">plugin</span> <span class="pl-e">name</span>=<span class="pl-s1"><span class="pl-pds">"</span>cordova-admob<span class="pl-pds">"</span></span> <span class="pl-e">source</span>=<span class="pl-s1"><span class="pl-pds">"</span>npm<span class="pl-pds">"</span></span> /&gt;</pre>
       </div>
 
       <p>To start showing ads, place the following code in your <code>onDeviceReady</code> callback. Replace corresponding id's with yours:</p>
@@ -192,7 +192,7 @@ admob.requestInterstitialAd({
       admob.createBannerView();
 
       <span class="pl-c">// Request interstitial (will present automatically when autoShowInterstitial is set to true)</span>
-      admob.requestIntertitial();
+      admob.requestInterstitialAd();
     }
 
     <span class="pl-s3">document</span>.addEventListener(<span class="pl-s1"><span class="pl-pds">"</span>deviceready<span class="pl-pds">"</span></span>, onDeviceReady, <span class="pl-c1">false</span>)</pre>
@@ -568,11 +568,11 @@ admob.requestInterstitialAd({
     cordova platform add ios
 
     <span class="pl-c">// cordova will handle dependency automatically</span>
-    cordova plugin add com.admob.google
+    cordova plugin add cordova-admob
 
     <span class="pl-c">// now remove the default www content, copy the demo html file to www</span>
     rm -rf www<span class="pl-c">/*;</span>
-<span class="pl-c">    cp plugins/com.admob.google/test/* www/</span>
+<span class="pl-c">    cp plugins/cordova-admob/test/* www/</span>
 <span class="pl-c"></span>
 <span class="pl-c">    cordova prepare; cordova run android; cordova run ios;</span>
 <span class="pl-c">    // or import into Xcode / eclipse</span></pre>
