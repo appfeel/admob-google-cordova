@@ -71,7 +71,7 @@ To start showing ads, place the following code in your `onDeviceReady` callback.
       admob.setOptions({
         publisherId:          "ca-app-pub-XXXXXXXXXXXXXXXX/BBBBBBBBBB",  // Required
         interstitialAdId:     "ca-app-pub-XXXXXXXXXXXXXXXX/IIIIIIIIII",  // Optional
-        tappxIdiOs:           "/XXXXXXXXX/Pub-XXXX-iOS-IIII",            // Optional
+        tappxIdiOS:           "/XXXXXXXXX/Pub-XXXX-iOS-IIII",            // Optional
         tappxIdAndroid:       "/XXXXXXXXX/Pub-XXXX-Android-AAAA",        // Optional
         tappxShare:           0.5                                        // Optional
       });
@@ -149,7 +149,7 @@ Note that the admob ads are configured inside `onDeviceReady()`. This is because
         admob.setOptions({
           publisherId:      admobid.banner,
           interstitialAdId: admobid.interstitial,
-          tappxIdiOs:       "/XXXXXXXXX/Pub-XXXX-iOS-IIII",
+          tappxIdiOS:       "/XXXXXXXXX/Pub-XXXX-iOS-IIII",
           tappxIdAndroid:   "/XXXXXXXXX/Pub-XXXX-Android-AAAA",
           tappxShare:       0.5,
           
