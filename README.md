@@ -55,7 +55,7 @@ To install this plugin, follow the [Command-line Interface Guide](http://cordova
 To use in [Phonegap Build](https://build.phonegap.com), place the following tag in your `config.xml` file:
 
 ```xml
-<gap:plugin name="cordova-admob" source="npm"/>
+<gap:plugin name="phonegap-admob" source="npm"/>
 ```
 
 To start showing ads, place the following code in your `onDeviceReady` callback. Replace corresponding id's with yours:
