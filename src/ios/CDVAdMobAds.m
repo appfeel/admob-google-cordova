@@ -97,19 +97,16 @@
 
 #pragma mark Cordova JS bridge
 
-- (CDVPlugin *)initWithWebView:(UIWebView *)theWebView {
-    self = (CDVAdMobAds *)[super initWithWebView:theWebView];
-    if (self) {
-        // These notifications are required for re-placing the ad on orientation
-        // changes. Start listening for notifications here since we need to
-        // translate the Smart Banner constants according to the orientation.
-        [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-        [[NSNotificationCenter defaultCenter]
+- (void)pluginInitialize {
+    // These notifications are required for re-placing the ad on orientation
+    // changes. Start listening for notifications here since we need to
+    // translate the Smart Banner constants according to the orientation.
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter]
          addObserver:self
          selector:@selector(deviceOrientationChange:)
          name:UIDeviceOrientationDidChangeNotification
          object:nil];
-    }
     
     isBannerShow = true;
     publisherId = DEFAULT_AD_PUBLISHER_ID;
@@ -152,8 +149,6 @@
     
     self.internetReachability = [AppFeelReachability reachabilityForInternetConnection];
     [self.internetReachability startNotifier];
-    
-    return self;
 }
 
 - (void) __reachabilityChanged:(NSNotification*)aNote {
@@ -701,10 +696,10 @@
         // @"9a6658d2afbc898171e38c6e8080e20de4e4dc42",
         // @"9A6658D2AFBC898171E38C6E8080E20DE4E4DC42",
         NSString *admobDeviceId = [[self __admobDeviceID] lowercaseString];
-        request.testDevices =
-        [NSArray arrayWithObjects:
-         admobDeviceId,
-         nil];
+        request.testDevices = [NSArray arrayWithObjects:
+                               admobDeviceId,
+                               kGADSimulatorID,
+                               nil];
     }
     
     if (self.adExtras) {
