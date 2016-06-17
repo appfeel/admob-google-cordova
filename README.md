@@ -86,7 +86,12 @@ To start showing ads, place the following code in your `onDeviceReady` callback.
     document.addEventListener("deviceready", onDeviceReady, false);
 ```
 
+
+
+
 If you don't specify tappxId, no tappx requests will be placed (even if you specify a tappxShare). [See Tappx configuration](https://github.com/appfeel/admob-google-cordova/wiki/Tappx-configuration) for more detailed info.
+
+:warning: Be sure to only fire on "deviceready" otherwise, the plugin would not work.
 
 ---
 ## Full documentation ##
