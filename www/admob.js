@@ -2,19 +2,19 @@
  admob.js
  Copyright 2014 AppFeel. All rights reserved.
  http://www.appfeel.com
- 
+
  AdMobAds Cordova Plugin (cordova-admob)
- 
+
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to
  deal in the Software without restriction, including without limitation the
  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
  sell copies of the Software, and to permit persons to whom the Software is
  furnished to do so, subject to the following conditions:
- 
+
  The above copyright notice and this permission notice shall be included in
  all copies or substantial portions of the Software.
- 
+
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -64,8 +64,8 @@ admob.PURCHASE_RESOLUTION = {
 
 // This is not used by the plugin, it is just a helper to show how options are specified and their default values
 admob.options = {
-  publisherId: (/(android)/i.test(navigator.userAgent)) ? "ca-app-pub-8440343014846849/3119840614" : "ca-app-pub-8440343014846849/2335511010",
-  interstitialId: (/(android)/i.test(navigator.userAgent)) ? "ca-app-pub-8440343014846849/4596573817" : "ca-app-pub-8440343014846849/3812244218",
+  publisherId: "",
+  interstitialAdId: "",
   adSize: admob.AD_SIZE.SMART_BANNER,
   bannerAtTop: false,
   overlap: false,
