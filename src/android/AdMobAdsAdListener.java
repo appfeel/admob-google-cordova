@@ -2,19 +2,19 @@
  AdMobAdsListener.java
  Copyright 2015 AppFeel. All rights reserved.
  http://www.appfeel.com
- 
+
  AdMobAds Cordova Plugin (cordova-admob)
- 
+
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to
  deal in the Software without restriction, including without limitation the
  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
  sell copies of the Software, and to permit persons to whom the Software is
  furnished to do so, subject to the following conditions:
- 
+
  The above copyright notice and this permission notice shall be included in
  all copies or substantial portions of the Software.
- 
+
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -36,12 +36,10 @@ import com.google.android.gms.ads.AdRequest;
 public class AdMobAdsAdListener extends AdListener {
     private String adType = "";
     private AdMobAds admobAds;
-    private boolean isBackFill = false;
 
-    public AdMobAdsAdListener(String adType, AdMobAds admobAds, boolean isBackFill) {
+    public AdMobAdsAdListener(String adType, AdMobAds admobAds) {
         this.adType = adType;
         this.admobAds = admobAds;
-        this.isBackFill = isBackFill;
     }
 
     @Override
@@ -59,20 +57,16 @@ public class AdMobAdsAdListener extends AdListener {
 
     @Override
     public void onAdFailedToLoad(int errorCode) {
-        if (this.isBackFill) {
-            final int code = errorCode;
-            admobAds.cordova.getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    String reason = getErrorReason(code);
-                    Log.d(AdMobAds.ADMOBADS_LOGTAG, adType + ": failed to load ad (" + reason + ")");
-                    String event = String.format("javascript:cordova.fireDocumentEvent(admob.events.onAdFailedToLoad, { 'adType': '%s', 'error': %d, 'reason': '%s' });", adType, code, reason);
-                    admobAds.webView.loadUrl(event);
-                }
-            });
-        } else {
-            admobAds.tryBackfill(adType);
-        }
+		final int code = errorCode;
+		admobAds.cordova.getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				String reason = getErrorReason(code);
+				Log.d(AdMobAds.ADMOBADS_LOGTAG, adType + ": failed to load ad (" + reason + ")");
+				String event = String.format("javascript:cordova.fireDocumentEvent(admob.events.onAdFailedToLoad, { 'adType': '%s', 'error': %d, 'reason': '%s' });", adType, code, reason);
+				admobAds.webView.loadUrl(event);
+			}
+		});
     }
 
     /**
