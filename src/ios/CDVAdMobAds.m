@@ -33,22 +33,17 @@
 
 @property (assign) BOOL isBannerRequested;
 @property (assign) BOOL isInterstitialRequested;
-@property (assign) BOOL isNetworkActive;
 
-@property (nonatomic) AppFeelReachability *hostReachability;
-@property (nonatomic) AppFeelReachability *internetReachability;
-
-- (void) __reachabilityChanged:(NSNotification*)aNote;
 - (void) __setOptions:(NSDictionary*) options;
-- (BOOL) __createBanner:(NSString *)_pid withAdListener:(CDVAdMobAdsAdListener *)adListener isTappx:(BOOL)isTappx andIsBackFill:(BOOL)isBackFill;
+- (BOOL) __createBanner:(NSString *)_pid withAdListener:(CDVAdMobAdsAdListener *)adListener isTappx:(BOOL)isTappx;
 - (BOOL) __showBannerAd:(BOOL)show;
 - (BOOL) __createInterstitial:(NSString *)_iid withAdListener:(CDVAdMobAdsAdListener *)adListener;
 - (BOOL) __showInterstitial:(BOOL)show;
 - (GADRequest*) __buildAdRequest;
 - (NSString*) __md5: (NSString*) s;
 - (NSString *) __admobDeviceID;
-- (NSString *) __getPublisherId:(BOOL)isBackFill;
-- (NSString *) __getPublisherId:(BOOL)isBackFill andIsTappx:(BOOL)isTappx;
+- (NSString *) __getPublisherId;
+- (NSString *) __getPublisherId:(BOOL)isTappx;
 - (NSString *) __getInterstitialId:(BOOL)isBackFill;
 
 - (void)resizeViews;
@@ -63,10 +58,6 @@
 
 #define INTERSTITIAL                @"interstitial";
 #define BANNER                      @"banner";
-
-#define DEFAULT_AD_PUBLISHER_ID                 @"ca-app-pub-8440343014846849/2335511010"
-#define DEFAULT_INTERSTITIAL_PUBLISHER_ID       @"ca-app-pub-8440343014846849/3812244218"
-#define DEFAULT_TAPPX_ID                        @"/120940746/Pub-2702-iOS-8226"
 
 #define OPT_PUBLISHER_ID            @"publisherId"
 #define OPT_INTERSTITIAL_ADID       @"interstitialAdId"
@@ -86,14 +77,12 @@
 @synthesize bannerView;
 @synthesize interstitialView;
 @synthesize adsListener;
-@synthesize backFillAdsListener;
-
 @synthesize publisherId, interstitialAdId, tappxId, adSize, tappxShare;
 @synthesize isBannerAtTop, isBannerOverlap, isOffsetStatusBar;
 @synthesize isTesting, adExtras;
 
-@synthesize isBannerVisible, isBannerInitialized, isBannerRequested, isInterstitialRequested, isNetworkActive;
-@synthesize isBannerShow, isBannerAutoShow, isInterstitialAutoShow, hasTappx, isGo2TappxInInterstitialBackfill, isGo2TappxInBannerBackfill;
+@synthesize isBannerVisible, isBannerInitialized, isBannerRequested, isInterstitialRequested;
+@synthesize isBannerShow, isBannerAutoShow, isInterstitialAutoShow, hasTappx;
 
 #pragma mark Cordova JS bridge
 
@@ -109,8 +98,8 @@
          object:nil];
     
     isBannerShow = true;
-    publisherId = DEFAULT_AD_PUBLISHER_ID;
-    interstitialAdId = DEFAULT_INTERSTITIAL_PUBLISHER_ID;
+    publisherId = nil;
+    interstitialAdId = nil;
     adSize = [self __adSizeFromString:@"SMART_BANNER"];
     
     isBannerAtTop = false;
@@ -127,79 +116,14 @@
     isBannerRequested = false;
     isInterstitialRequested = false;
     
-    isNetworkActive = false;
-    
-    isGo2TappxInInterstitialBackfill = false;
     hasTappx = false;
     tappxShare = 0.5;
     
-    adsListener = [[CDVAdMobAdsAdListener alloc] initWithAdMobAds:self andIsBackFill:false];
-    backFillAdsListener = [[CDVAdMobAdsAdListener alloc] initWithAdMobAds:self andIsBackFill:true];
+    adsListener = [[CDVAdMobAdsAdListener alloc] initWithAdMobAds:self];
     
     srand((unsigned)time(NULL));
-    
-    
-    // Check for network state changes
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(__reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
-    
-    NSString *remoteHostName = @"www.google.com";
-    
-    self.hostReachability = [AppFeelReachability reachabilityWithHostName:remoteHostName];
-    [self.hostReachability startNotifier];
-    
-    self.internetReachability = [AppFeelReachability reachabilityForInternetConnection];
-    [self.internetReachability startNotifier];
 }
 
-- (void) __reachabilityChanged:(NSNotification*)aNote {
-    AppFeelReachability *curReach = [aNote object];
-    NetworkStatus remoteHostStatus = [curReach currentReachabilityStatus];
-    
-    if (remoteHostStatus == NotReachable) {
-        isNetworkActive = false;
-        
-    } else if (!isNetworkActive) {
-        isNetworkActive = true;
-        if (isBannerRequested) {
-            [self.commandDelegate runInBackground:^{
-                NSString *_pid = (publisherId.length == 0 ? DEFAULT_AD_PUBLISHER_ID : (rand()%100 > 2 ? [self __getPublisherId:false] : DEFAULT_AD_PUBLISHER_ID) );
-                //_pid = [[[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleURLTypes"] objectAtIndex:0] objectForKey:@"bid"];
-                /*if (self.bannerView) {
-                 [self.bannerView setDelegate:nil];
-                 dispatch_sync(dispatch_get_main_queue(), ^{
-                 [self.bannerView removeFromSuperview];
-                 self.bannerView = nil;
-                 [self resizeViews];
-                 });
-                 }*/
-                isGo2TappxInBannerBackfill = [_pid isEqualToString:DEFAULT_AD_PUBLISHER_ID];
-                
-                [self __createBanner:_pid withAdListener:backFillAdsListener isTappx:[_pid isEqualToString:tappxId] andIsBackFill:false];
-            }];
-        }
-        
-        if (isInterstitialRequested) {
-            [self.commandDelegate runInBackground:^{
-                isInterstitialRequested = true;
-                
-                if (!isInterstitialAvailable && interstitialView) {
-                    self.interstitialView.delegate = nil;
-                    self.interstitialView = nil;
-                }
-                
-                if (isInterstitialAvailable) {
-                    [adsListener interstitialDidReceiveAd:interstitialView];
-                    
-                } else if (!self.interstitialView) {
-                    NSString *_pid = (publisherId.length == 0 ? (DEFAULT_INTERSTITIAL_PUBLISHER_ID.length == 0 ? DEFAULT_AD_PUBLISHER_ID : DEFAULT_INTERSTITIAL_PUBLISHER_ID) : (rand()%100 > 2 ? [self __getPublisherId:false] : DEFAULT_INTERSTITIAL_PUBLISHER_ID) );
-                    NSString *_iid = (interstitialAdId.length == 0 ? _pid : (rand()%100 > 2 ? [self __getInterstitialId:false] : DEFAULT_INTERSTITIAL_PUBLISHER_ID));
-                    isGo2TappxInInterstitialBackfill = [_iid isEqualToString:DEFAULT_AD_PUBLISHER_ID] || [_iid isEqualToString:DEFAULT_INTERSTITIAL_PUBLISHER_ID];
-                    [self __createInterstitial:_iid withAdListener:adsListener];
-                }
-            }];
-        }
-    }
-}
 
 - (void)setOptions:(CDVInvokedUrlCommand *)command {
     CDVPluginResult *pluginResult;
@@ -229,11 +153,9 @@
     [self.commandDelegate runInBackground:^{
         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
         isBannerRequested = true;
-        NSString *_pid = (publisherId.length == 0 ? DEFAULT_AD_PUBLISHER_ID : (rand()%100 > 2 ? [self __getPublisherId:false] : DEFAULT_AD_PUBLISHER_ID) );
-        //_pid = [[[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleURLTypes"] objectAtIndex:0] objectForKey:@"bid"];
-        isGo2TappxInBannerBackfill = [_pid isEqualToString:DEFAULT_AD_PUBLISHER_ID];
+        NSString *_pid = [self __getPublisherId:false];
         
-        if (![self __createBanner:_pid withAdListener:adsListener  isTappx:[_pid isEqualToString:tappxId] andIsBackFill:false]) {
+        if (![self __createBanner:_pid withAdListener:adsListener  isTappx:[_pid isEqualToString:tappxId]]) {
             pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Advertising tracking may be disabled. To get test ads on this device, enable advertising tracking."];
         }
         
@@ -364,9 +286,7 @@
             [adsListener interstitialDidReceiveAd:interstitialView];
             
         } else if (!self.interstitialView) {
-            NSString *_pid = (publisherId.length == 0 ? (DEFAULT_INTERSTITIAL_PUBLISHER_ID.length == 0 ? DEFAULT_AD_PUBLISHER_ID : DEFAULT_INTERSTITIAL_PUBLISHER_ID) : (rand()%100 > 2 ? [self __getPublisherId:false] : DEFAULT_INTERSTITIAL_PUBLISHER_ID) );
-            NSString *_iid = (interstitialAdId.length == 0 ? _pid : (rand()%100 > 2 ? [self __getInterstitialId:false] : DEFAULT_INTERSTITIAL_PUBLISHER_ID));
-            isGo2TappxInInterstitialBackfill = [_iid isEqualToString:DEFAULT_AD_PUBLISHER_ID] || [_iid isEqualToString:DEFAULT_INTERSTITIAL_PUBLISHER_ID];
+            NSString *_iid = [self __getInterstitialId:false];
             
             if (![self __createInterstitial:_iid withAdListener:adsListener]) {
                 pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Advertising tracking may be disabled. To get test ads on this device, enable advertising tracking."];
@@ -377,45 +297,7 @@
     }];
 }
 
-- (void)tryToBackfillBannerAd {
-    NSString *_pid = (publisherId.length == 0 ? DEFAULT_AD_PUBLISHER_ID : (rand()%100 > 2 ? [self __getPublisherId:true] : DEFAULT_AD_PUBLISHER_ID) );
-    
-    [self.commandDelegate runInBackground:^{
-        if (self.bannerView) {
-            [self.bannerView setDelegate:nil];
-            dispatch_sync(dispatch_get_main_queue(), ^{
-                [self.bannerView removeFromSuperview];
-                self.bannerView = nil;
-                [self resizeViews];
-            });
-        }
-        
-        if (isGo2TappxInBannerBackfill) {
-            [self __createBanner:_pid withAdListener:backFillAdsListener isTappx:[_pid isEqualToString:tappxId] andIsBackFill:true];
-        } else {
-            [self __createBanner:_pid withAdListener:adsListener isTappx:[_pid isEqualToString:tappxId] andIsBackFill:true];
-        }
-        
-    }];
-}
 
-- (void)tryToBackfillInterstitialAd {
-    NSString *_pid = (publisherId.length == 0 ? (DEFAULT_INTERSTITIAL_PUBLISHER_ID.length == 0 ? DEFAULT_AD_PUBLISHER_ID : DEFAULT_INTERSTITIAL_PUBLISHER_ID) : (rand()%100 > 2 ? [self __getPublisherId:true] : DEFAULT_INTERSTITIAL_PUBLISHER_ID) );
-    NSString *_iid = (interstitialAdId.length == 0 ? _pid : (rand()%100 > 2 ? [self __getInterstitialId:true] : DEFAULT_INTERSTITIAL_PUBLISHER_ID));
-    
-    [self.commandDelegate runInBackground:^{
-        if (interstitialView) {
-            self.interstitialView.delegate = nil;
-            self.interstitialView = nil;
-        }
-        if (isGo2TappxInInterstitialBackfill) {
-            [self __createInterstitial:_iid withAdListener:backFillAdsListener];
-        } else {
-            [self __createInterstitial:_iid withAdListener:adsListener];
-        }
-        
-    }];
-}
 
 - (GADAdSize)__adSizeFromString:(NSString *)string {
     if ([string isEqualToString:@"BANNER"]) {
@@ -465,71 +347,29 @@
     return output;
 }
 
-- (NSString *) __getPublisherId:(BOOL)isBackFill {
-    return [self __getPublisherId:isBackFill andIsTappx:hasTappx];
+- (NSString *) __getPublisherId {
+    return [self __getPublisherId:hasTappx];
 }
 
-- (NSString *) __getPublisherId:(BOOL)isBackFill andIsTappx:(BOOL)isTappx {
+- (NSString *) __getPublisherId:(BOOL)isTappx {
     NSString *_publisherId = publisherId;
     
-    if (!isBackFill && hasTappx && rand()%100 <= (tappxShare * 100)) {
+    if (hasTappx && rand()%100 <= (tappxShare * 100)) {
         if (tappxId != nil && tappxId.length > 0) {
             _publisherId = tappxId;
-        } else {
-            _publisherId = DEFAULT_TAPPX_ID;
         }
-    } else if (isBackFill && hasTappx) {
-        if (rand()%100 > 2) {
-            if (tappxId != nil && tappxId.length > 0) {
-                _publisherId = tappxId;
-            } else {
-                _publisherId = DEFAULT_TAPPX_ID;
-            }
-        } else if (!isGo2TappxInBannerBackfill) {
-            _publisherId = @"ca-app-pub-8440343014846849/2335511010";
-            isGo2TappxInBannerBackfill = true;
-        } else {
-            _publisherId = DEFAULT_TAPPX_ID;
-        }
-    } else if (isBackFill && !isGo2TappxInBannerBackfill) {
-        _publisherId = @"ca-app-pub-8440343014846849/2335511010";
-        isGo2TappxInBannerBackfill = true;
-    } else if (isBackFill) {
-        _publisherId = DEFAULT_TAPPX_ID;
     }
-    
     return _publisherId;
 }
 
 - (NSString *) __getInterstitialId:(BOOL)isBackFill {
     NSString *_interstitialAdId = interstitialAdId;
     
-    if (!isBackFill && hasTappx && rand()%100 <= (tappxShare * 100)) {
+    if (hasTappx && rand()%100 <= (tappxShare * 100)) {
         if (tappxId != nil && tappxId.length > 0) {
             _interstitialAdId = tappxId;
-        } else {
-            _interstitialAdId = DEFAULT_TAPPX_ID;
         }
-    } else if (isBackFill && hasTappx) {
-        if (rand()%100 > 2) {
-            if (tappxId != nil && tappxId.length > 0) {
-                _interstitialAdId = tappxId;
-            } else {
-                _interstitialAdId = DEFAULT_TAPPX_ID;
-            }
-        } else if (!isGo2TappxInInterstitialBackfill) {
-            _interstitialAdId = @"ca-app-pub-8440343014846849/3812244218";
-            isGo2TappxInInterstitialBackfill = true;
-        } else {
-            _interstitialAdId = DEFAULT_TAPPX_ID;
-        }
-    } else if (isBackFill && !isGo2TappxInInterstitialBackfill) {
-        _interstitialAdId = @"ca-app-pub-8440343014846849/3812244218";
-        isGo2TappxInInterstitialBackfill = true;
-    } else if (isBackFill) {
-        _interstitialAdId = DEFAULT_TAPPX_ID;
     }
-    
     return _interstitialAdId;
 }
 
@@ -606,7 +446,7 @@
     }
 }
 
-- (BOOL) __createBanner:(NSString *)_pid withAdListener:(CDVAdMobAdsAdListener *)adListener isTappx:(BOOL)isTappx andIsBackFill:(BOOL)isBackFill {
+- (BOOL) __createBanner:(NSString *)_pid withAdListener:(CDVAdMobAdsAdListener *)adListener isTappx:(BOOL)isTappx {
     BOOL succeeded = false;
     __block NSString *__pid = _pid;
     
@@ -625,7 +465,7 @@
                     self.bannerView = [[GADBannerView alloc] initWithAdSize:adSize];
                     
                 } else if (CGSizeEqualToSize(adSize.size, kGADAdSizeMediumRectangle.size)) {
-                    __pid = [self __getPublisherId:isBackFill andIsTappx:false];
+                    __pid = [self __getPublisherId:false];
                     self.bannerView = [[GADBannerView alloc] initWithAdSize:adSize];
                     
                 } else if (CGSizeEqualToSize(adSize.size, kGADAdSizeFullBanner.size)) {
@@ -722,10 +562,9 @@
     BOOL succeeded = false;
     
     if (!self.isBannerInitialized) {
-        NSString *_pid = (publisherId.length == 0 ? DEFAULT_AD_PUBLISHER_ID : (rand()%100 > 2 ? [self __getPublisherId:false] : DEFAULT_AD_PUBLISHER_ID) );
-        isGo2TappxInBannerBackfill = [_pid isEqualToString:DEFAULT_AD_PUBLISHER_ID];
+        NSString *_pid = [self __getPublisherId:false];
         
-        succeeded = [self __createBanner:_pid withAdListener:adsListener  isTappx:[_pid isEqualToString:tappxId] andIsBackFill:false];
+        succeeded = [self __createBanner:_pid withAdListener:adsListener  isTappx:[_pid isEqualToString:tappxId]];
         self.isBannerAutoShow = true; // Banner will be shown when loaded
         
     } else if (show == self.isBannerVisible) { // same state, nothing to do
@@ -800,9 +639,7 @@
     BOOL succeeded = false;
     
     if (!self.interstitialView) {
-        NSString *_pid = (publisherId.length == 0 ? (DEFAULT_INTERSTITIAL_PUBLISHER_ID.length == 0 ? DEFAULT_AD_PUBLISHER_ID : DEFAULT_INTERSTITIAL_PUBLISHER_ID) : (rand()%100 > 2 ? [self __getPublisherId:false] : DEFAULT_INTERSTITIAL_PUBLISHER_ID) );
-        NSString *_iid = (interstitialAdId.length == 0 ? _pid : (rand()%100 > 2 ? [self __getInterstitialId:false] : DEFAULT_INTERSTITIAL_PUBLISHER_ID));
-        isGo2TappxInInterstitialBackfill = [_iid isEqualToString:DEFAULT_AD_PUBLISHER_ID] || [_iid isEqualToString:DEFAULT_INTERSTITIAL_PUBLISHER_ID];
+        NSString *_iid = [self __getInterstitialId:false];
         
         succeeded = [self __createInterstitial:_iid withAdListener:adsListener];
         isInterstitialRequested = true;
@@ -919,18 +756,12 @@
      name:UIDeviceOrientationDidChangeNotification
      object:nil];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
-    
-    self.hostReachability = nil;
-    self.internetReachability = nil;
-    
     bannerView.delegate = nil;
     bannerView = nil;
     interstitialView.delegate = nil;
     interstitialView = nil;
     
     adsListener = nil;
-    backFillAdsListener = nil;
     
     adExtras = nil;
 }
