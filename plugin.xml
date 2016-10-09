@@ -42,7 +42,7 @@
       <string name="banid">ca-app-pub-8440343014846849/3119840614</string>
       <string name="intid">ca-app-pub-8440343014846849/4596573817</string>
     </config-file-->
-    <framework src="com.google.android.gms:play-services:9.4.0" />
+    <framework src="com.google.android.gms:play-services-ads:+" />
 
     <source-file src="src/android/AdMobAds.java" target-dir="src/com/appfeel/cordova/admob" />
     <source-file src="src/android/AdMobAdsAdListener.java" target-dir="src/com/appfeel/cordova/admob" />
