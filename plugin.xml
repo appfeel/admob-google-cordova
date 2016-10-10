@@ -59,7 +59,7 @@
     <source-file src="src/ios/CDVAdMobAdsAdListener.m" />
 
     <!-- Google AdMob framework -->
-    <dependency id="cordova-libgoogleadmobads" url="https://github.com/appfeel/google-iosadmobads" commit="482f14dd825feee9f7994ca5327dc527b8705910"/>
+    <dependency id="cordova-libgoogleadmobads" url="https://github.com/TheBosZ/google-iosadmobads" commit="master"/>
 
     <!--config-file target="*-Info.plist" parent="CFBundleURLTypes">
       <array>
