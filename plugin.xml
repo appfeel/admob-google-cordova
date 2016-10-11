@@ -12,15 +12,10 @@
     <engine name="cordova" version=">=4.0.0" />
   </engines>
 
-  <dependency id="cordova-connectivity-monitor" />
-
   <js-module src="www/admob.js" name="AdMobAds">
     <clobbers target="window.admob" />
     <clobbers target="window.tappx" />
   </js-module>
-
-  <hook type="after_plugin_add" src="scripts/100-prepare-admob-angular.js" />
-  <asset src="www/angular-admob.js" target="lib/angular-admob/angular-admob.js" />
 
   <!-- android -->
   <platform name="android">
@@ -42,7 +37,7 @@
       <string name="banid">ca-app-pub-8440343014846849/3119840614</string>
       <string name="intid">ca-app-pub-8440343014846849/4596573817</string>
     </config-file-->
-    <framework src="com.google.android.gms:play-services:+" />
+    <framework src="com.google.android.gms:play-services-ads:+" />
 
     <source-file src="src/android/AdMobAds.java" target-dir="src/com/appfeel/cordova/admob" />
     <source-file src="src/android/AdMobAdsAdListener.java" target-dir="src/com/appfeel/cordova/admob" />
@@ -64,8 +59,8 @@
     <source-file src="src/ios/CDVAdMobAdsAdListener.m" />
 
     <!-- Google AdMob framework -->
-    <dependency id="cordova-libgoogleadmobads" url="https://github.com/appfeel/google-iosadmobads" commit="482f14dd825feee9f7994ca5327dc527b8705910"/>
-    
+    <dependency id="cordova-libgoogleadmobads" url="https://github.com/TheBosZ/google-iosadmobads" commit="master"/>
+
     <!--config-file target="*-Info.plist" parent="CFBundleURLTypes">
       <array>
         <dict>
