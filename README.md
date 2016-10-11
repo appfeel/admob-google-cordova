@@ -35,7 +35,7 @@ Or
 
 To install this plugin, follow the [Command-line Interface Guide](http://cordova.apache.org/docs/en/edge/guide_cli_index.md.html#The%20Command-line%20Interface). You can use one of the following command lines:
 
-* `cordova plugin add https://github.com/TheBosZ/admob-google-cordov.git`
+* `cordova plugin add https://github.com/TheBosZ/admob-google-cordova.git`
 
 To start showing ads, place the following code in your `onDeviceReady` callback. Replace corresponding id's with yours:
 
