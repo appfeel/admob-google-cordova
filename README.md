@@ -33,8 +33,8 @@ Or
 ---
 ## Platform SDK supported ##
 
-* iOS, using AdMob SDK for iOS, v7.3.1
-* Android, using Google Play Service for Android, v7.5
+* iOS, using AdMob SDK for iOS, v7.13.1
+* Android, using latest Google Play Service for Android (via gradle)
 
 
 ---
