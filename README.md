@@ -137,16 +137,12 @@ Visit the [wiki](https://github.com/appfeel/admob-google-cordova/wiki) of Google
   * Interstitials
     * [requestInterstitialAd](https://github.com/appfeel/admob-google-cordova/wiki/requestInterstitialAd)
     * [showInterstitialAd](https://github.com/appfeel/admob-google-cordova/wiki/showInterstitialAd)
-  * In app purchase
-    * [recordResolution](https://github.com/appfeel/admob-google-cordova/wiki/recordResolution)
-    * [recordPlayBillingResolution](https://github.com/appfeel/admob-google-cordova/wiki/recordPlayBillingResolution)
   * [Events](https://github.com/appfeel/admob-google-cordova/wiki/Events)
     * [onAdLoaded](https://github.com/appfeel/admob-google-cordova/wiki/Events#admobeventsonadloaded)
     * [onAdFailedToLoad](https://github.com/appfeel/admob-google-cordova/wiki/Events#admobeventsonadfailedtoload)
     * [onAdOpened](https://github.com/appfeel/admob-google-cordova/wiki/Events#admobeventsonadopened)
     * [onAdClosed](https://github.com/appfeel/admob-google-cordova/wiki/Events#admobeventsonadclosed)
     * [onAdLeftApplication](https://github.com/appfeel/admob-google-cordova/wiki/Events#admobeventsonadleftapplication)
-    * [onInAppPurchaseRequested](https://github.com/appfeel/admob-google-cordova/wiki/Events#admobeventsoninapppurchaserequested)
 * [Complete example code](https://github.com/appfeel/admob-google-cordova/wiki/Complete-example-code)
 * [Contributing](https://github.com/appfeel/admob-google-cordova/wiki/Contributing)
 * [Screenshots](https://github.com/appfeel/admob-google-cordova/wiki/Screenshots)
@@ -222,7 +218,6 @@ Note that the admob ads are configured inside `onDeviceReady()`. This is because
       document.addEventListener(admob.events.onAdOpened, function (e) {});
       document.addEventListener(admob.events.onAdClosed, function (e) {});
       document.addEventListener(admob.events.onAdLeftApplication, function (e) {});
-      document.addEventListener(admob.events.onInAppPurchaseRequested, function (e) {});
       
       document.addEventListener("pause", onPause, false);
       document.addEventListener("resume", onResume, false);

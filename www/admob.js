@@ -34,7 +34,6 @@ admob.events = {
   onAdOpened: "appfeel.cordova.admob.onAdOpened",
   onAdLeftApplication: "appfeel.cordova.admob.onAdLeftApplication",
   onAdClosed: "appfeel.cordova.admob.onAdClosed",
-  onInAppPurchaseRequested: "appfeel.cordova.admob.onInAppPurchaseRequested",
 };
 
 /**
@@ -53,13 +52,6 @@ admob.AD_SIZE = {
 admob.AD_TYPE = {
   BANNER: 'banner',
   INTERSTITIAL: 'interstitial'
-};
-
-admob.PURCHASE_RESOLUTION = {
-  RESOLUTION_CANCELED: 2,
-  RESOLUTION_FAILURE: 0,
-  RESOLUTION_INVALID_PRODUCT: 3,
-  RESOLUTION_SUCCESS: 1
 };
 
 // This is not used by the plugin, it is just a helper to show how options are specified and their default values
@@ -171,42 +163,6 @@ admob.requestInterstitialAd = function (options, successCallback, failureCallbac
  */
 admob.showInterstitialAd = function (successCallback, failureCallback) {
   cordova.exec(successCallback, failureCallback, 'AdMobAds', 'showInterstitialAd', []);
-};
-
-/**
- * Records a resolution after an inAppPurchase.
- *
- * @param {Integer}    purchaseId      The id of the purchase.
- * @param {Integer}    resolution      The resolution code.
- * @param {function()} successCallback The function to call if the ad was shown successfully.
- * @param {function()} successCallback The function to call if the ad was shown successfully.
- * @param {function()} failureCallback The function to call if the ad failed to be shown.
- */
-admob.recordResolution = function (purchaseId, resolution, successCallback, failureCallback) {
-  if (purchaseId === undefined || resolution === undefined) {
-    if (typeof failureCallback === 'function') {
-      failureCallback('purchaseId and resolution should be specified.');
-    }
-  }
-  cordova.exec(successCallback, failureCallback, 'AdMobAds', 'recordResolution', [purchaseId, resolution]);
-};
-
-/**
- * Records a resolution after an inAppPurchase.
- *
- * @param {Integer}    purchaseId           The id of the purchase.
- * @param {Integer}    billingResponseCode  The resolution code.
- * @param {function()} successCallback      The function to call if the ad was shown successfully.
- * @param {function()} successCallback      The function to call if the ad was shown successfully.
- * @param {function()} failureCallback      The function to call if the ad failed to be shown.
- */
-admob.recordPlayBillingResolution = function (purchaseId, billingResponseCode, successCallback, failureCallback) {
-  if (purchaseId === undefined || billingResponseCode === undefined) {
-    if (typeof failureCallback === 'function') {
-      failureCallback('purchaseId and billingResponseCode should be specified.');
-    }
-  }
-  cordova.exec(successCallback, failureCallback, 'AdMobAds', 'recordResolution', [purchaseId, billingResponseCode]);
 };
 
 if (typeof module !== 'undefined') {

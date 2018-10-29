@@ -80,7 +80,6 @@ if (typeof angular !== 'undefined') {
         onAdOpened: "appfeel.cordova.admob.onAdOpened",
         onAdLeftApplication: "appfeel.cordova.admob.onAdLeftApplication",
         onAdClosed: "appfeel.cordova.admob.onAdClosed",
-        onInAppPurchaseRequested: "appfeel.cordova.admob.onInAppPurchaseRequested"
       },
       AD_SIZE: {
         BANNER: 'BANNER',
@@ -92,12 +91,6 @@ if (typeof angular !== 'undefined') {
       AD_TYPE: {
         BANNER: 'banner',
         INTERSTITIAL: 'interstitial'
-      },
-      PURCHASE_RESOLUTION: {
-        RESOLUTION_CANCELED: 2,
-        RESOLUTION_FAILURE: 0,
-        RESOLUTION_INVALID_PRODUCT: 3,
-        RESOLUTION_SUCCESS: 1
       },
       options: options,
       eventPrefix: eventPrefix,
@@ -134,16 +127,6 @@ if (typeof angular !== 'undefined') {
           return makePromise(window.admob.showInterstitialAd, []);
         });
       },
-      recordResolution: function (purchaseId, resolution) {
-        return deviceready.promise.then(function () {
-          return makePromise(window.admob.recordResolution, [purchaseId, resolution]);
-        });
-      },
-      recordPlayBillingResolution: function (purchaseId, billingResponseCode) {
-        return deviceready.promise.then(function () {
-          return makePromise(window.admob.recordPlayBillingResolution, [purchaseId, billingResponseCode]);
-        });
-      }
     };
 
     // Manage admob events
@@ -167,21 +150,15 @@ if (typeof angular !== 'undefined') {
       $rootScope.$broadcast(angularAdmob.eventPrefix + window.admob.events.onAdClosed, e);
     }
 
-    function _onInAppPurchaseRequested(e) {
-      $rootScope.$broadcast(angularAdmob.eventPrefix + window.admob.events.onInAppPurchaseRequested, e);
-    }
-
     deviceready.promise.then(function () {
       document.addEventListener(window.admob.events.onAdLoaded, _onAdLoaded, true);
       document.addEventListener(window.admob.events.onAdFailedToLoad, _onAdFailedToLoad, true);
       document.addEventListener(window.admob.events.onAdOpened, _onAdOpened, true);
       document.addEventListener(window.admob.events.onAdLeftApplication, _onAdLeftApplication, true);
       document.addEventListener(window.admob.events.onAdClosed, _onAdClosed, true);
-      document.addEventListener(window.admob.events.onInAppPurchaseRequested, _onInAppPurchaseRequested, true);
 
       angularAdmob.AD_SIZE = window.admob.AD_SIZE;
       angularAdmob.AD_TYPE = window.admob.AD_TYPE;
-      angularAdmob.PURCHASE_RESOLUTION = window.admob.PURCHASE_RESOLUTION;
       angularAdmob.options = window.admob.options;
       
       angularAdmob.setEventPrefix(eventPrefix);
@@ -204,7 +181,6 @@ if (typeof angular !== 'undefined') {
       document.removeEventListener(window.admob.events.onAdOpened, angularAdmob._onAdOpened, true);
       document.removeEventListener(window.admob.events.onAdLeftApplication, angularAdmob._onAdLeftApplication, true);
       document.removeEventListener(window.admob.events.onAdClosed, angularAdmob._onAdClosed, true);
-      document.removeEventListener(window.admob.events.onInAppPurchaseRequested, angularAdmob._onInAppPurchaseRequested, true);
     });
 
 

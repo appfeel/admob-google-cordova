@@ -61,7 +61,6 @@ import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.mediation.admob.AdMobExtras;
-import com.google.android.gms.ads.purchase.InAppPurchase;
 
 public class AdMobAds extends CordovaPlugin implements IConnectivityChange {
     public static final String ADMOBADS_LOGTAG = "AdmMobAds";
@@ -80,8 +79,6 @@ public class AdMobAds extends CordovaPlugin implements IConnectivityChange {
     private static final String ACTION_DESTROY_BANNER_VIEW = "destroyBannerView";
     private static final String ACTION_REQUEST_INTERSTITIAL_AD = "requestInterstitialAd";
     private static final String ACTION_SHOW_INTERSTITIAL_AD = "showInterstitialAd";
-    private static final String ACTION_RECORD_RESOLUTION = "recordResolution";
-    private static final String ACTION_RECORD_PLAY_BILLING_RESOLUTION = "recordPlayBillingResolution";
 
     /* options */
     private static final String OPT_PUBLISHER_ID = "publisherId";
@@ -103,7 +100,6 @@ public class AdMobAds extends CordovaPlugin implements IConnectivityChange {
     private AdMobAdsAdListener interstitialListener = new AdMobAdsAdListener(INTERSTITIAL, this, false);
     private AdMobAdsAdListener backFillBannerListener = new AdMobAdsAdListener(BANNER, this, true);
     private AdMobAdsAdListener backFillInterstitialListener = new AdMobAdsAdListener(INTERSTITIAL, this, true);
-    private AdMobAdsAppPurchaseListener inAppPurchaseListener = new AdMobAdsAppPurchaseListener(this);
     private boolean isInterstitialAvailable = false;
     private boolean isNetworkActive = false;
     private boolean isBannerRequested = false;
@@ -190,17 +186,6 @@ public class AdMobAds extends CordovaPlugin implements IConnectivityChange {
 
         } else if (ACTION_SHOW_INTERSTITIAL_AD.equals(action)) {
             result = executeShowInterstitialAd(callbackContext);
-
-        } else if (ACTION_RECORD_RESOLUTION.equals(action)) {
-            int purchaseId = args.getInt(0);
-            int resolution = args.getInt(1);
-            result = executeRecordResolution(purchaseId, resolution, callbackContext);
-
-        } else if (ACTION_RECORD_PLAY_BILLING_RESOLUTION.equals(action)) {
-            int purchaseId = args.getInt(0);
-            int billingResponseCode = args.getInt(1);
-            result = executeRecordPlayBillingResolution(purchaseId, billingResponseCode, callbackContext);
-
         } else {
             Log.d(ADMOBADS_LOGTAG, String.format("Invalid action passed: %s", action));
             return false;
@@ -623,7 +608,6 @@ public class AdMobAds extends CordovaPlugin implements IConnectivityChange {
     private void createInterstitialView(String _iid, AdMobAdsAdListener adListener) {
         interstitialAd = new InterstitialAd(cordova.getActivity());
         interstitialAd.setAdUnitId(_iid);
-        interstitialAd.setInAppPurchaseListener(inAppPurchaseListener);
         interstitialAd.setAdListener(adListener);
         interstitialAd.loadAd(buildAdRequest());
     }
@@ -698,51 +682,6 @@ public class AdMobAds extends CordovaPlugin implements IConnectivityChange {
                 }
             }
         });
-        return null;
-    }
-
-    private PluginResult executeRecordResolution(final int purchaseId, final int resolution, final CallbackContext callbackContext) {
-        final InAppPurchase purchase = inAppPurchaseListener.getPurchase(purchaseId);
-        if (purchase != null) {
-            cordova.getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Log.d(ADMOBADS_LOGTAG, "AdMobAds.recordResolution: Recording purchase resolution");
-                    purchase.recordResolution(resolution);
-                    inAppPurchaseListener.removePurchase(purchaseId);
-
-                    if (callbackContext != null) {
-                        callbackContext.success();
-                    }
-                }
-            });
-
-        } else if (callbackContext != null) {
-            callbackContext.success();
-        }
-
-        return null;
-    }
-
-    private PluginResult executeRecordPlayBillingResolution(final int purchaseId, final int billingResponseCode, final CallbackContext callbackContext) {
-        final InAppPurchase purchase = inAppPurchaseListener.getPurchase(purchaseId);
-        if (purchase != null) {
-            cordova.getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Log.d(ADMOBADS_LOGTAG, "AdMobAds.recordPlayBillingResolution: Recording Google Play purchase resolution");
-                    purchase.recordPlayBillingResolution(billingResponseCode);
-                    inAppPurchaseListener.removePurchase(purchaseId);
-
-                    if (callbackContext != null) {
-                        callbackContext.success();
-                    }
-                }
-            });
-        } else if (callbackContext != null) {
-            callbackContext.success();
-        }
-
         return null;
     }
 
