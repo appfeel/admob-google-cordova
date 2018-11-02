@@ -872,6 +872,10 @@
                     bf.origin.y = 0; // banner is subview of webview
                 } else {
                     bf.origin.y = top;
+                    //Apply bottom safe area for iPhone X
+                    if (@available(iOS 11.0, *)) {
+                        bf.origin.y += self.webView.superview.safeAreaInsets.top;
+                    }
                     wf.origin.y = bf.origin.y + bf.size.height;
                 }
                 
@@ -883,11 +887,27 @@
                     bf.origin.y = wf.size.height - bf.size.height; // banner is subview of webview
                 } else {
                     bf.origin.y = pr.size.height - bf.size.height;
+                    //Apply bottom safe area for iPhone X
+                    if (@available(iOS 11.0, *)) {
+                        bf.origin.y -= self.webView.superview.safeAreaInsets.bottom;
+                    }
                 }
+                //Set background to black if banner is at bottom (looks better on iPhone X than white border)
+                self.webView.superview.backgroundColor = [UIColor blackColor];
             }
             
             if (!isBannerOverlap) {
                 wf.size.height -= bf.size.height;
+                if (@available(iOS 11.0, *)) {
+                    //Remove safe area from web view
+                    if (isBannerAtTop) {
+                        wf.size.height -= self.webView.superview.safeAreaInsets.top;
+                    } else {
+                        wf.size.height -= self.webView.superview.safeAreaInsets.bottom;
+                    }
+                    //Apply left / right safe area for iPhone X
+                    bf.size.width = wf.size.width - self.webView.superview.safeAreaInsets.right - self.webView.superview.safeAreaInsets.left;
+                }
             }
             
             bf.origin.x = (pr.size.width - bf.size.width) * 0.5f;
