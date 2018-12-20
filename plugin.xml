@@ -47,6 +47,7 @@
 
     <source-file src="src/android/AdMobAds.java" target-dir="src/com/appfeel/cordova/admob" />
     <source-file src="src/android/AdMobAdsAdListener.java" target-dir="src/com/appfeel/cordova/admob" />
+    <source-file src="src/android/AdMobAdsRewardedAdListener.java" target-dir="src/com/appfeel/cordova/admob" />
     <source-file src="src/android/res/xml/admob.xml" target-dir="res/xml" />
   </platform>
 
@@ -62,6 +63,8 @@
     <source-file src="src/ios/CDVAdMobAds.m" />
     <header-file src="src/ios/CDVAdMobAdsAdListener.h" />
     <source-file src="src/ios/CDVAdMobAdsAdListener.m" />
+    <header-file src="src/ios/CDVAdMobAdsRewardedAdListener.h" />
+    <source-file src="src/ios/CDVAdMobAdsRewardedAdListener.m" />
 
     <!-- Google AdMob framework -->
     <dependency id="cordova-libgoogleadmobads" url="https://github.com/appfeel/google-iosadmobads" commit="master"/>

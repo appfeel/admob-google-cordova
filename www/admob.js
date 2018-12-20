@@ -34,6 +34,9 @@ admob.events = {
   onAdOpened: "appfeel.cordova.admob.onAdOpened",
   onAdLeftApplication: "appfeel.cordova.admob.onAdLeftApplication",
   onAdClosed: "appfeel.cordova.admob.onAdClosed",
+  onRewardedAd: "appfeel.cordova.admob.onRewardedAd",
+  onRewardedAdVideoStarted: "appfeel.cordova.admob.onRewardedAdVideoStarted",
+  onRewardedAdVideoCompleted: "appfeel.cordova.admob.onRewardedAdVideoCompleted",
 };
 
 /**
@@ -51,13 +54,15 @@ admob.AD_SIZE = {
 
 admob.AD_TYPE = {
   BANNER: 'banner',
-  INTERSTITIAL: 'interstitial'
+  INTERSTITIAL: 'interstitial',
+  REWARDED: 'rewarded'
 };
 
 // This is not used by the plugin, it is just a helper to show how options are specified and their default values
 admob.options = {
   publisherId: (/(android)/i.test(navigator.userAgent)) ? "ca-app-pub-8440343014846849/3119840614" : "ca-app-pub-8440343014846849/2335511010",
   interstitialId: (/(android)/i.test(navigator.userAgent)) ? "ca-app-pub-8440343014846849/4596573817" : "ca-app-pub-8440343014846849/3812244218",
+  rewardedAdId: (/(android)/i.test(navigator.userAgent)) ? "ca-app-pub-3940256099942544/5224354917" : "ca-app-pub-3940256099942544/1712485313",
   adSize: admob.AD_SIZE.SMART_BANNER,
   bannerAtTop: false,
   overlap: false,
@@ -65,7 +70,8 @@ admob.options = {
   isTesting: false,
   adExtras: {},
   autoShowBanner: true,
-  autoShowInterstitial: true
+  autoShowInterstitial: true,
+  autoShowRewarded: true
 };
 
 /**
@@ -163,6 +169,33 @@ admob.requestInterstitialAd = function (options, successCallback, failureCallbac
  */
 admob.showInterstitialAd = function (successCallback, failureCallback) {
   cordova.exec(successCallback, failureCallback, 'AdMobAds', 'showInterstitialAd', []);
+};
+
+/**
+ * Request an AdMob rewarded ad.
+ *
+ * @param {!Object}    options         The options used to request an ad. (use admob.options as template)
+ * @param {function()} successCallback The function to call if an ad was requested successfully.
+ * @param {function()} failureCallback The function to call if an ad failed to be requested.
+ */
+admob.requestRewardedAd = function (options, successCallback, failureCallback) {
+  if (typeof options === 'function') {
+    failureCallback = successCallback;
+    successCallback = options;
+    options = undefined;
+  }
+  options = options || {};
+  cordova.exec(successCallback, failureCallback, 'AdMobAds', 'requestRewardedAd', [options]);
+};
+
+/**
+ * Shows an rewarded ad. This function should be called when onAdLoaded occurred.
+ *
+ * @param {function()} successCallback The function to call if the ad was shown successfully.
+ * @param {function()} failureCallback The function to call if the ad failed to be shown.
+ */
+admob.showRewardedAd = function (successCallback, failureCallback) {
+  cordova.exec(successCallback, failureCallback, 'AdMobAds', 'showRewardedAd', []);
 };
 
 if (typeof module !== 'undefined') {
