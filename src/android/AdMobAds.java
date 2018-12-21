@@ -111,6 +111,7 @@ public class AdMobAds extends CordovaPlugin implements IConnectivityChange {
     private AdMobAdsRewardedAdListener rewardedListener = new AdMobAdsRewardedAdListener(REWARDED, this, false);
     private AdMobAdsAdListener backFillBannerListener = new AdMobAdsAdListener(BANNER, this, true);
     private AdMobAdsAdListener backFillInterstitialListener = new AdMobAdsAdListener(INTERSTITIAL, this, true);
+    private AdMobAdsRewardedAdListener backfillRewardedListener = new AdMobAdsRewardedAdListener(REWARDED, this, true);
     private boolean isInterstitialAvailable = false;
     private boolean isRewardedAvailable = false;
     private boolean isNetworkActive = false;
@@ -722,8 +723,11 @@ public class AdMobAds extends CordovaPlugin implements IConnectivityChange {
         return null;
     }
 
-    private String getRewardedId() {
+    private String getRewardedId(boolean isBackfill) {
         String _rewardedAdId = rewardedAdId;
+        if (isBackfill) {
+            _rewardedAdId = "ca-app-pub-3940256099942544/5224354917";
+        }
         return _rewardedAdId;
     }
 
@@ -743,7 +747,7 @@ public class AdMobAds extends CordovaPlugin implements IConnectivityChange {
             __pid = DEFAULT_AD_PUBLISHER_ID;
         }
         try {
-            __rid = (rewardedAdId.length() == 0 ? __pid : (new Random()).nextInt(100) > 2 ? getRewardedId() : this.cordova.getActivity().getString(this.cordova.getActivity().getResources().getIdentifier("rid", "string", this.cordova.getActivity().getPackageName())));
+            __rid = (rewardedAdId.length() == 0 ? __pid : (new Random()).nextInt(100) > 2 ? getRewardedId(false) : this.cordova.getActivity().getString(this.cordova.getActivity().getResources().getIdentifier("rid", "string", this.cordova.getActivity().getPackageName())));
         } catch (Exception ex) {
             __rid = DEFAULT_REWARDED_PUBLISHER_ID;
         }
@@ -849,12 +853,12 @@ public class AdMobAds extends CordovaPlugin implements IConnectivityChange {
             String __pid = publisherId;
             String __rid = rewardedAdId;
             try {
-                __pid = (publisherId.length() == 0 ? DEFAULT_AD_PUBLISHER_ID : ((new Random()).nextInt(100) > 2 ? getPublisherId(false) : this.cordova.getActivity().getString(this.cordova.getActivity().getResources().getIdentifier("bid", "string", this.cordova.getActivity().getPackageName()))));
+                __pid = (publisherId.length() == 0 ? DEFAULT_AD_PUBLISHER_ID : ((new Random()).nextInt(100) > 2 ? getPublisherId(true) : this.cordova.getActivity().getString(this.cordova.getActivity().getResources().getIdentifier("bid", "string", this.cordova.getActivity().getPackageName()))));
             } catch (Exception ex) {
                 __pid = DEFAULT_AD_PUBLISHER_ID;
             }
             try {
-                __rid = (rewardedAdId.length() == 0 ? __pid : (new Random()).nextInt(100) > 2 ? getRewardedId() : this.cordova.getActivity().getString(this.cordova.getActivity().getResources().getIdentifier("rid", "string", this.cordova.getActivity().getPackageName())));
+                __rid = (rewardedAdId.length() == 0 ? __pid : (new Random()).nextInt(100) > 2 ? getRewardedId(true) : this.cordova.getActivity().getString(this.cordova.getActivity().getResources().getIdentifier("rid", "string", this.cordova.getActivity().getPackageName())));
             } catch (Exception ex) {
                 __rid = DEFAULT_REWARDED_PUBLISHER_ID;
             }
@@ -862,7 +866,7 @@ public class AdMobAds extends CordovaPlugin implements IConnectivityChange {
             cordova.getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    createRewardedView(_rid, rewardedListener);
+                    createRewardedView(_rid, backfillRewardedListener);
                 }
             });
         }
@@ -936,7 +940,7 @@ public class AdMobAds extends CordovaPlugin implements IConnectivityChange {
                         __pid = DEFAULT_AD_PUBLISHER_ID;
                     }
                     try {
-                        __rid = (rewardedAdId.length() == 0 ? __pid : (new Random()).nextInt(100) > 2 ? getRewardedId() : this.cordova.getActivity().getString(this.cordova.getActivity().getResources().getIdentifier("rid", "string", this.cordova.getActivity().getPackageName())));
+                        __rid = (rewardedAdId.length() == 0 ? __pid : (new Random()).nextInt(100) > 2 ? getRewardedId(false) : this.cordova.getActivity().getString(this.cordova.getActivity().getResources().getIdentifier("rid", "string", this.cordova.getActivity().getPackageName())));
                     } catch (Exception ex) {
                         __rid = DEFAULT_AD_PUBLISHER_ID;
                     }
