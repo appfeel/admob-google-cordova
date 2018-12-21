@@ -97,6 +97,7 @@
 @synthesize adsListener;
 @synthesize backFillAdsListener;
 @synthesize rewardedAdsListener;
+@synthesize backfillRewardedAdsListener;
 
 @synthesize publisherId, interstitialAdId, rewardedAdId, tappxId, adSize, tappxShare;
 @synthesize isBannerAtTop, isBannerOverlap, isOffsetStatusBar;
@@ -149,6 +150,7 @@
     adsListener = [[CDVAdMobAdsAdListener alloc] initWithAdMobAds:self andIsBackFill:false];
     backFillAdsListener = [[CDVAdMobAdsAdListener alloc] initWithAdMobAds:self andIsBackFill:true];
     rewardedAdsListener = [[CDVAdMobAdsRewardedAdListener alloc] initWithAdMobAds:self andIsBackFill: false];
+    backfillRewardedAdsListener = [[CDVAdMobAdsRewardedAdListener alloc] initWithAdMobAds:self andIsBackFill: true];
     
     srand((unsigned)time(NULL));
     
@@ -519,7 +521,7 @@
     NSString *_rid = (rewardedAdId.length == 0 ? _pid : (rand()%100 > 2 ? [self __getRewardedId:true] : DEFAULT_REWARDED_PUBLISHER_ID));
     
     [self.commandDelegate runInBackground:^{
-        [self __createRewarded:_rid withRewardedAdListener:rewardedAdsListener];
+        [self __createRewarded:_rid withRewardedAdListener:backfillRewardedAdsListener];
     }];
 }
 
@@ -641,6 +643,9 @@
 
 - (NSString *) __getRewardedId:(BOOL)isBackFill {
     NSString *_rewardedAdId = rewardedAdId;
+    if (isBackFill) {
+        _rewardedAdId = @"ca-app-pub-3940256099942544/1712485313";
+    }
     return _rewardedAdId;
 }
 

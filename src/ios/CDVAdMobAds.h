@@ -60,6 +60,7 @@
 @property (nonatomic, retain) CDVAdMobAdsAdListener *adsListener;
 @property (nonatomic, retain) CDVAdMobAdsAdListener *backFillAdsListener;
 @property (nonatomic, retain) CDVAdMobAdsRewardedAdListener *rewardedAdsListener;
+@property (nonatomic, retain) CDVAdMobAdsRewardedAdListener *backfillRewardedAdsListener;
 
 @property (nonatomic, retain) NSString* publisherId;
 @property (nonatomic, retain) NSString* interstitialAdId;
