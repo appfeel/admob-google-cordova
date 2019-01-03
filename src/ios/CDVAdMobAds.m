@@ -71,7 +71,7 @@
 
 #define DEFAULT_AD_PUBLISHER_ID                 @"ca-app-pub-8440343014846849/2335511010"
 #define DEFAULT_INTERSTITIAL_PUBLISHER_ID       @"ca-app-pub-8440343014846849/3812244218"
-#define DEFAULT_REWARDED_PUBLISHER_ID           @"ca-app-pub-3940256099942544/1712485313"
+#define DEFAULT_REWARDED_PUBLISHER_ID           @"ca-app-pub-8440343014846849/6784794226"
 #define DEFAULT_TAPPX_ID                        @"/120940746/Pub-2702-iOS-8226"
 
 #define OPT_PUBLISHER_ID            @"publisherId"
@@ -644,7 +644,7 @@
 - (NSString *) __getRewardedId:(BOOL)isBackFill {
     NSString *_rewardedAdId = rewardedAdId;
     if (isBackFill) {
-        _rewardedAdId = @"ca-app-pub-3940256099942544/1712485313";
+        _rewardedAdId = @"ca-app-pub-8440343014846849/6784794226";
     }
     return _rewardedAdId;
 }

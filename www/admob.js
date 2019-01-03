@@ -62,7 +62,7 @@ admob.AD_TYPE = {
 admob.options = {
   publisherId: (/(android)/i.test(navigator.userAgent)) ? "ca-app-pub-8440343014846849/3119840614" : "ca-app-pub-8440343014846849/2335511010",
   interstitialId: (/(android)/i.test(navigator.userAgent)) ? "ca-app-pub-8440343014846849/4596573817" : "ca-app-pub-8440343014846849/3812244218",
-  rewardedAdId: (/(android)/i.test(navigator.userAgent)) ? "ca-app-pub-3940256099942544/5224354917" : "ca-app-pub-3940256099942544/1712485313",
+  rewardedAdId: (/(android)/i.test(navigator.userAgent)) ? "ca-app-pub-8440343014846849/4854611361" : "ca-app-pub-8440343014846849/6784794226",
   adSize: admob.AD_SIZE.SMART_BANNER,
   bannerAtTop: false,
   overlap: false,
