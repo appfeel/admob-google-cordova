@@ -1,27 +1,33 @@
 *<p style="font-size: small;" align="right"><a style="color:#232323" color="#232323" href="http://appfeel.com">Made in Barcelona with <span color="#FCB">Love</span> and <span color="#BBCCFF">Code</span></a></p>*
 
-Cordova AdMob plugin
+Cordova AdMob plugin<br>[![License][license]][npm-url] [![NPM version][npm-version]][npm-url] [![NPM downloads][npm-downloads]][npm-url]
 ====================
 
-### It simply works :)
+[npm-url]: https://www.npmjs.com/package/cordova-admob
+[license]: http://img.shields.io/badge/license-MIT-blue.svg?style=flat
+[npm-version]: https://img.shields.io/npm/v/cordova-admob.svg?style=flat
+[npm-downloads]: https://img.shields.io/npm/dm/cordova-admob.svg?style=flat
+
+## It simply works :)
 Monetize your Cordova/Phonegap/XDK HTML5 hybrid apps and games with AdMob ads, **using latest Google AdMob SDK**.
+- Now available with Ionic Native too
+- Supports banner, interstitials and rewarded
+- Optional [Tappx](http://www.tappx.com/?h=dec334d63287772de859bdb4e977fce6) backfill
+
 With this Cordova/Phonegap/XDK plugin you can show AdMob ads as easy as:
 
+```js
     admob.createBannerView({publisherId: "ca-app-pub-XXXXXXXXXXXXXXXX/BBBBBBBBBB"});
-
-Or
-
-    admob.requestInterstitialAd({publisherId: "ca-app-pub-XXXXXXXXXXXXXXXX/BBBBBBBBBB", interstitialAdId: "ca-app-pub-XXXXXXXXXXXXXXXX/IIIIIIIIII"});
+```
 
 ![Integrate cordova admob plugin](https://github.com/appfeel/admob-google-cordova/wiki/demo/integrate-admob-cordova.gif)
 
-
 ---
-## Plugin update (phonega/cordova cli) ##
+## Plugin update (phonegap/cordova cli) ##
 
-`cordova-admob~4.1.15` and later are now updated to Firebase (ios 7.13.1 and later and managed by gradle in android)
+`cordova-admob~4.1.15` and later are now updated to Firebase SDK (ios 7.13.1 and later, android managed by gradle)
 
-To update the plugin you should remove the plugin ad add it again:
+To update the plugin you should remove the plugin and add it again:
 
 ```
 $ cordova plugin rm cordova-admob
@@ -58,7 +64,7 @@ $ cordova plugin add cordova-admob
 ## Platform SDK supported ##
 
 * iOS, using AdMob SDK for iOS, v7.13.1
-* Android, using latest Google Play Service for Android (managed by gradle)
+* Android, using latest Google Play Services for Android (managed by gradle)
 
 
 ---
@@ -93,29 +99,32 @@ To start showing ads, place the following code in your `onDeviceReady` callback.
       
       // Set AdMobAds options:
       admob.setOptions({
-        publisherId:          "ca-app-pub-XXXXXXXXXXXXXXXX/BBBBBBBBBB",  // Required
-        interstitialAdId:     "ca-app-pub-XXXXXXXXXXXXXXXX/IIIIIIIIII",  // Optional
-        tappxIdiOS:           "/XXXXXXXXX/Pub-XXXX-iOS-IIII",            // Optional
-        tappxIdAndroid:       "/XXXXXXXXX/Pub-XXXX-Android-AAAA",        // Optional
-        tappxShare:           0.5                                        // Optional
+        publisherId:           "ca-app-pub-XXXXXXXXXXXXXXXX/BBBBBBBBBB",  // Required
+        interstitialAdId:      "ca-app-pub-XXXXXXXXXXXXXXXX/IIIIIIIIII",  // Optional
+        autoShowBanner:        true,                                      // Optional
+        autoShowRInterstitial: false,                                     // Optional
+        autoShowRewarded:      false,                                     // Optional
+        tappxIdiOS:            "/XXXXXXXXX/Pub-XXXX-iOS-IIII",            // Optional
+        tappxIdAndroid:        "/XXXXXXXXX/Pub-XXXX-Android-AAAA",        // Optional
+        tappxShare:            0.5                                        // Optional
       });
       
       // Start showing banners (atomatic when autoShowBanner is set to true)
       admob.createBannerView();
       
-      // Request interstitial (will present automatically when autoShowInterstitial is set to true)
+      // Request interstitial ad (will present automatically when autoShowInterstitial is set to true)
       admob.requestInterstitialAd();
+
+      // Request rewarded ad (will present automatically when autoShowRewarded is set to true)
+      admob.requestRewardedAd();
     }
     
     document.addEventListener("deviceready", onDeviceReady, false);
 ```
 
-
-
-
 If you don't specify tappxId, no tappx requests will be placed (even if you specify a tappxShare). [See Tappx configuration](https://github.com/appfeel/admob-google-cordova/wiki/Tappx-configuration) for more detailed info.
 
-:warning: Be sure to only fire on "deviceready" otherwise, the plugin would not work.
+:warning: Be sure to start ads on "deviceready" event otherwise, the plugin would not work.
 
 ---
 ## Full documentation ##
@@ -138,6 +147,9 @@ Visit the [wiki](https://github.com/appfeel/admob-google-cordova/wiki) of Google
   * Interstitials
     * [requestInterstitialAd](https://github.com/appfeel/admob-google-cordova/wiki/requestInterstitialAd)
     * [showInterstitialAd](https://github.com/appfeel/admob-google-cordova/wiki/showInterstitialAd)
+  * Rewarded
+    * [requestRewardedAd](https://github.com/appfeel/admob-google-cordova/wiki/requestRewardedAd)
+    * [showRewardedAd](https://github.com/appfeel/admob-google-cordova/wiki/showRewardedAd)
   * [Events](https://github.com/appfeel/admob-google-cordova/wiki/Events)
     * [onAdLoaded](https://github.com/appfeel/admob-google-cordova/wiki/Events#admobeventsonadloaded)
     * [onAdFailedToLoad](https://github.com/appfeel/admob-google-cordova/wiki/Events#admobeventsonadfailedtoload)
@@ -172,12 +184,14 @@ Note that the admob ads are configured inside `onDeviceReady()`. This is because
         var admobid = (/(android)/i.test(navigator.userAgent)) ? adPublisherIds.android : adPublisherIds.ios;
             
         admob.setOptions({
-          publisherId:      admobid.banner,
-          interstitialAdId: admobid.interstitial,
-          tappxIdiOS:       "/XXXXXXXXX/Pub-XXXX-iOS-IIII",
-          tappxIdAndroid:   "/XXXXXXXXX/Pub-XXXX-Android-AAAA",
-          tappxShare:       0.5,
-          
+          publisherId:          admobid.banner,
+          interstitialAdId:     admobid.interstitial,
+          autoShowBanner:       true,
+          autoShowInterstitial: false,
+          autoShowRewarded:     false,
+          tappxIdiOS:           "/XXXXXXXXX/Pub-XXXX-iOS-IIII",
+          tappxIdAndroid:       "/XXXXXXXXX/Pub-XXXX-Android-AAAA",
+          tappxShare:           0.5,
         });
 
         registerAdEvents();
@@ -189,10 +203,14 @@ Note that the admob ads are configured inside `onDeviceReady()`. This is because
     
     function onAdLoaded(e) {
       if (isAppForeground) {
-        if (e.adType === admob.AD_TYPE.INTERSTITIAL) {
-          console.log("An interstitial has been loaded and autoshown. If you want to load the interstitial first and show it later, set 'autoShowInterstitial: false' in admob.setOptions() and call 'admob.showInterstitialAd();' here");
-        } else if (e.adType === admob.AD_TYPE_BANNER) {
+        if (e.adType === admob.AD_TYPE.AD_TYPE_BANNER) {
           console.log("New banner received");
+        } else if (e.adType === admob.INTERSTITIAL) {
+          console.log("An interstitial has been loaded and autoshown. If you want to automatically show the interstitial ad, set 'autoShowInterstitial: true' in admob.setOptions() or remove it");
+          admob.showInterstitialAd();
+        } else if (e.adType === admob.AD_TYPE_REWARDED) {
+          console.log("New rewarded ad received");
+          admob.showRewardedAd();
         }
       }
     }
@@ -231,8 +249,11 @@ Note that the admob ads are configured inside `onDeviceReady()`. This is because
       // display a banner at startup
       admob.createBannerView();
         
-      // request an interstitial
+      // request an interstitial ad
       admob.requestInterstitialAd();
+
+      // request a rewarded ad
+      admob.requestRewardedAd();
     }
     
     document.addEventListener("deviceready", onDeviceReady, false);
