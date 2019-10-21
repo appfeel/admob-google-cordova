@@ -125,6 +125,7 @@ public class AdMobAds extends CordovaPlugin implements IConnectivityChange {
      * The adView to display to the user.
      */
     private AdView adView;
+    private String userId;
     /**
      * if want banner view overlap webview, we will need this layout
      */
@@ -322,6 +323,7 @@ public class AdMobAds extends CordovaPlugin implements IConnectivityChange {
         }
         if (options.has(OPT_AD_EXTRAS)) {
             this.adExtras = options.optJSONObject(OPT_AD_EXTRAS);
+            userId = this.adExtras.optString("userId");
         }
         if (options.has(OPT_AUTO_SHOW_BANNER)) {
             this.isBannerAutoShow = options.optBoolean(OPT_AUTO_SHOW_BANNER);
@@ -735,6 +737,7 @@ public class AdMobAds extends CordovaPlugin implements IConnectivityChange {
         rewardedAd = MobileAds.getRewardedVideoAdInstance(cordova.getActivity());
         rewardedAd.setRewardedVideoAdListener(rewardedListener);
         rewardedAd.loadAd(_rid, buildAdRequest());
+        rewardedAd.setUserId(userId);
     }
 
     private PluginResult executeCreateRewardedView(JSONObject options, final CallbackContext callbackContext) {
@@ -792,6 +795,7 @@ public class AdMobAds extends CordovaPlugin implements IConnectivityChange {
             public void run() {
                 if (rewardedAd.isLoaded()) {
                     isRewardedRequested = false;
+                    rewardedAd.setUserId(userId);
                     rewardedAd.show();
                 }
                 if (callbackContext != null) {
